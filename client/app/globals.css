@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.auth__neumorphism {
+    border-radius: 20px;
+    background: linear-gradient(145deg, #0b5d5c, #0d6e6d);
+    box-shadow: 29px 29px 58px #0a5857, -29px -29px 58px #0e7675;
+}

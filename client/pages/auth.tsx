@@ -7,6 +7,7 @@ import { AiOutlineUser, AiFillLock } from 'react-icons/ai';
 import { RootState } from '@/redux/store';
 import { loginUser } from '@/redux/slices/authSlice';
 import axios from 'axios';
+import Head from 'next/head';
 
 const Auth = () => {
     const [username, setUsername] = useState('');
@@ -44,34 +45,42 @@ const Auth = () => {
     };
 
     return (
-        <div className="min-h-screen bg-cover bg-center bg-blue-500 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-md shadow-md">
-                <h2 className="text-2xl font-semibold mb-4">Войти</h2>
-                <div className="mb-4 flex items-center relative">
-                    <AiOutlineUser className="absolute ml-2" />
-                    <input
-                        type="text"
-                        placeholder="Имя пользователя"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="border border-gray-100 p-2 pl-8 focus:outline-none rounded-md w-full"
-                    />
+        <>
+            <Head>
+                <title>EmergeSync | Authentication</title>
+            </Head>
+            <div
+                className="min-h-screen bg-cover bg-center bg-blue-500 flex items-center justify-center"
+                style={{ backgroundImage: `url(/login-bg.png)` }}
+            >
+                <div className="bg-white p-8 rounded-md shadow-md auth__neumorphism w-1/5">
+                    <h2 className="text-3xl font-semibold mb-8 text-white text-center">Авторизация</h2>
+                    <div className="mb-4 flex items-center relative">
+                        <AiOutlineUser className="absolute ml-2" />
+                        <input
+                            type="text"
+                            placeholder="Имя пользователя"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            className="border border-gray-100 p-2 pl-8 focus:outline-none rounded-md w-full"
+                        />
+                    </div>
+                    <div className="mb-4 flex items-center relative">
+                        <AiFillLock className="absolute ml-2" />
+                        <input
+                            type="password"
+                            placeholder="Пароль"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="border border-gray-100 p-2 pl-8 focus:outline-none rounded-md w-full"
+                        />
+                    </div>
+                    <button onClick={handleLogin} className="bg-[#1D9290] text-white py-2 px-4 rounded-md w-full">
+                        Войти
+                    </button>
                 </div>
-                <div className="mb-4 flex items-center relative">
-                    <AiFillLock className="absolute ml-2" />
-                    <input
-                        type="password"
-                        placeholder="Пароль"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="border border-gray-100 p-2 pl-8 focus:outline-none rounded-md w-full"
-                    />
-                </div>
-                <button onClick={handleLogin} className="bg-blue-500 text-white py-2 px-4 rounded-md">
-                    Войти
-                </button>
             </div>
-        </div>
+        </>
     );
 };
 
