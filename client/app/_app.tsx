@@ -2,12 +2,12 @@ import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 import store from '@/redux/store';
 
-import '@/app/globals.css';
-
-export default function App({ Component, pageProps }: AppProps) {
+function Home({ Component, pageProps }: AppProps) {
     return (
         <Provider store={store}>
             <Component {...pageProps} />
         </Provider>
     );
 }
+
+export default Home;
