@@ -17,14 +17,6 @@ const Auth = () => {
 
     const token = useSelector((state: RootState) => state.auth.token);
 
-    useEffect(() => {
-        const storedToken = localStorage.getItem('token');
-
-        if (storedToken) {
-            router.push('/dashboard');
-        }
-    }, []);
-
     const handleLogin = async () => {
         if (!username || !password) {
             console.error('Имя пользователя и пароль обязательны для входа.');
