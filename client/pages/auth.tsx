@@ -17,7 +17,7 @@ const Auth = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const token = useSelector((state: RootState) => state.auth.token);
+    // const token = useSelector((state: RootState) => state.auth.token);
 
     const handleLogin = async () => {
         if (!username || !password) {
@@ -28,10 +28,10 @@ const Auth = () => {
                     username,
                     password,
                 });
-                const { token } = response.data;
+                const { token, userId } = response.data;
 
                 if (token) {
-                    dispatch(loginUser(token));
+                    dispatch(loginUser({ token, userId }));
 
                     // localStorage.setItem('token', token);
 

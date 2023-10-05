@@ -16,6 +16,9 @@ const dashboard = () => {
         }
     }, []);
 
+    // const userId = useSelector((state: RootState) => state.auth.userId);
+    // console.log(userId);
+
     return (
         <div>
             <h1>Dashboard</h1>
