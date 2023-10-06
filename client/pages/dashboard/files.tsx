@@ -2,6 +2,7 @@ import { Sidenav } from '@/components';
 import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
 import { filesTableData } from '@/data/files-table-data';
 import Image from 'next/image';
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 
 const files = () => {
     return (
@@ -47,7 +48,12 @@ const files = () => {
                                                 {file.assignedTo}
                                             </td>
                                             <td className="py-3 px-5 text-left">
-                                                {/* Здесь вы можете добавить действие, если необходимо */}
+                                                <button className="mr-2 text-[#56CCF2] hover:bg-blue-gray-100 p-2 rounded-full">
+                                                    <AiFillEdit size={20} />
+                                                </button>
+                                                <button className="text-red-600 hover:bg-blue-gray-100 p-2 rounded-full">
+                                                    <AiFillDelete size={20} />
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
