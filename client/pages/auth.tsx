@@ -17,8 +17,6 @@ const Auth = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    // const token = useSelector((state: RootState) => state.auth.token);
-
     const handleLogin = async () => {
         if (!username || !password) {
             toast.error('Имя пользователя и пароль обязательны для входа.');
@@ -33,7 +31,8 @@ const Auth = () => {
                 if (token) {
                     dispatch(loginUser({ token, userId }));
 
-                    // localStorage.setItem('token', token);
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('userId', userId);
 
                     router.push('/dashboard');
                 } else {
