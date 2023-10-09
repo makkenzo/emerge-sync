@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AiOutlineUser, AiFillLock } from 'react-icons/ai';
@@ -15,6 +15,14 @@ const Auth = () => {
 
     const router = useRouter();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            router.push('/dashboard/files');
+        }
+    }, []);
 
     const handleLogin = async () => {
         if (!username || !password) {
