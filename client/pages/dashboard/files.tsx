@@ -1,17 +1,38 @@
 import { Sidenav } from '@/components';
-import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
-import { filesTableData } from '@/data/files-table-data';
-import Image from 'next/image';
+
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentPage } from '@/redux/slices/fileSlice';
+import { RootState } from '@/redux/store';
+
+import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
+
+import { filesTableData } from '@/data/files-table-data';
+
+import Image from 'next/image';
 import Link from 'next/link';
 
-const files = () => {
+const Files = () => {
+    const dispatch = useDispatch();
+
+    const currentPage = useSelector((state: RootState) => state.files.currentPage);
+    const itemsPerPage = useSelector((state: RootState) => state.files.itemsPerPage);
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filesTableData.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPages = Math.ceil(filesTableData.length / itemsPerPage);
+
+    const handlePageChange = (newPage: number) => {
+        dispatch(setCurrentPage(newPage));
+    };
+
     return (
         <div className="min-h-screen bg-slate-200 flex">
             <Sidenav />
-
-            <div className="container mx-auto py-8">
-                <div className="mt-4 mb-8 flex flex-col gap-12">
+            <div className="container mx-auto pt-8">
+                <div className="mt-4 flex flex-col justify-between h-[880px]">
                     <Card>
                         <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
                             Файлы
@@ -33,7 +54,7 @@ const files = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filesTableData.map((file, index) => (
+                                    {currentItems.map((file, index) => (
                                         <tr key={index} className="border-b border-blue-gray-100">
                                             <td className="py-3 px-5 text-left">{file.file}</td>
                                             <td className="py-3 px-5 text-left"></td>
@@ -68,10 +89,26 @@ const files = () => {
                             </table>
                         </CardBody>
                     </Card>
+                    <div className="flex justify-center">
+                        <ul className="flex space-x-2">
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <li key={index}>
+                                    <button
+                                        className={`px-2 py-1 ${
+                                            currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white text-black'
+                                        }`}
+                                        onClick={() => handlePageChange(index + 1)}
+                                    >
+                                        {index + 1}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default files;
+export default Files;
