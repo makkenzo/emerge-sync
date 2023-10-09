@@ -1,5 +1,3 @@
-import { Sidenav } from '@/components';
-
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentPage } from '@/redux/slices/fileSlice';
@@ -8,6 +6,8 @@ import { RootState } from '@/redux/store';
 import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
 
 import { filesTableData } from '@/data/files-table-data';
+
+import { DeleteButtonModal, Sidenav } from '@/components';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -37,7 +37,7 @@ const Files = () => {
                         <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
                             Файлы
                         </CardHeader>
-                        <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+                        <CardBody className="px-0 pt-0 pb-2">
                             <table className="w-full min-w-[640px] table-auto">
                                 <thead>
                                     <tr>
@@ -78,9 +78,7 @@ const Files = () => {
                                                     >
                                                         <AiFillEdit size={20} />
                                                     </Link>
-                                                    <button className="text-red-600 hover:text-black">
-                                                        <AiFillDelete size={20} />
-                                                    </button>
+                                                    <DeleteButtonModal file={file.file} />
                                                 </div>
                                             </td>
                                         </tr>
@@ -89,21 +87,34 @@ const Files = () => {
                             </table>
                         </CardBody>
                     </Card>
-                    <div className="flex justify-center">
-                        <ul className="flex space-x-2">
-                            {Array.from({ length: totalPages }, (_, index) => (
-                                <li key={index}>
-                                    <button
-                                        className={`px-2 py-1 ${
-                                            currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                                        }`}
-                                        onClick={() => handlePageChange(index + 1)}
-                                    >
-                                        {index + 1}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                    <div className="flex flex-col items-center justify-center">
+                        <span className="text-sm text-gray-700 dark:text-gray-400">
+                            Показаны с{' '}
+                            <span className="font-semibold text-gray-900 dark:text-white">{indexOfFirstItem + 1}</span>{' '}
+                            по{' '}
+                            <span className="font-semibold text-gray-900 dark:text-white">
+                                {Math.min(indexOfLastItem, filesTableData.length)}
+                            </span>{' '}
+                            из{' '}
+                            <span className="font-semibold text-gray-900 dark:text-white">{filesTableData.length}</span>{' '}
+                            записей
+                        </span>
+                        <div className="inline-flex mt-2 xs:mt-0">
+                            <button
+                                className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-[#607d8b] rounded-l hover:bg-[#4c6470]"
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                            >
+                                Prev
+                            </button>
+                            <button
+                                className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-[#607d8b] border-0 border-l border-gray-700 rounded-r hover:bg-[#4c6470]"
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

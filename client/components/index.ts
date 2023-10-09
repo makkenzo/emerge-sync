@@ -1,4 +1,4 @@
 import Sidenav from './Sidenav';
-import FilesTable from './FilesTable';
+import DeleteButtonModal from './DeleteButtonModal';
 
-export { Sidenav, FilesTable };
+export { Sidenav, DeleteButtonModal };
