@@ -1,18 +1,33 @@
 import Link from 'next/link';
-import { AiFillHome, AiOutlineLogout } from 'react-icons/ai';
+import { AiFillHome, AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Sidenav = () => {
     const router = useRouter();
+
+    type UserData = {
+        username: string;
+        role: string;
+        profilePic: string;
+    };
+
+    const [userData, setUserData] = useState<UserData | null>(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
 
         if (!token) {
             router.push('/auth');
+        } else {
+            const userId = localStorage.getItem('userId');
+
+            axios.get(`http://localhost:5000/api/v1/users/${userId}`).then((response) => {
+                setUserData(response.data);
+            });
         }
     }, []);
 
@@ -31,7 +46,7 @@ const Sidenav = () => {
                 </Link>
             </div>
             <div className="m-4">
-                <ul className="mb-4 flex flex-col gap-1">
+                <ul className="mb-4 flex flex-col gap-1 space-y-1">
                     <li>
                         <Link href="/dashboard/files">
                             <button
@@ -45,6 +60,21 @@ const Sidenav = () => {
                             </button>
                         </Link>
                     </li>
+                    {userData && (
+                        <li>
+                            <Link href={'/dashboard/profile'}>
+                                <button
+                                    type="button"
+                                    className={`w-full rounded-md flex items-center gap-4 px-4 py-4 hover:bg-blue-gray-500 ${
+                                        router.pathname === '/dashboard/profile' ? 'bg-white text-black' : 'text-white'
+                                    }`}
+                                >
+                                    <AiOutlineUser />
+                                    {userData.username}
+                                </button>
+                            </Link>
+                        </li>
+                    )}
                 </ul>
             </div>
             <div className="absolute bottom-8 left-8 w-[256px]">

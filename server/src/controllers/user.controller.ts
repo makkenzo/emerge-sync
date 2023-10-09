@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import UserModel from '../models/user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { ObjectId } from 'mongodb';
 
 export const registerUser = async (req: Request, res: Response) => {
     try {
@@ -58,6 +59,23 @@ export const loginUser = async (req: Request, res: Response) => {
         });
 
         return res.status(200).json({ token, userId: user._id, username: user.username });
+    } catch (error) {
+        console.error('Error logging in user:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const getUser = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.id;
+
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found.' });
+        }
+
+        return res.status(200).json(user);
     } catch (error) {
         console.error('Error logging in user:', error);
         return res.status(500).json({ message: 'Internal server error' });
