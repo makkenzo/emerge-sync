@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AiOutlineUser, AiFillLock } from 'react-icons/ai';
 import { ToastContainer, toast } from 'react-toastify';
 
-import { RootState } from '@/redux/store';
 import { loginUser } from '@/redux/slices/authSlice';
 import axios from 'axios';
 import Head from 'next/head';
@@ -34,7 +33,7 @@ const Auth = () => {
                     localStorage.setItem('token', token);
                     localStorage.setItem('userId', userId);
 
-                    router.push('/dashboard');
+                    router.push('/dashboard/files');
                 } else {
                     toast.error('Ошибка аутентификации: Токен не получен.');
                 }

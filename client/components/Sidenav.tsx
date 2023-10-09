@@ -3,9 +3,25 @@ import { AiFillHome, AiOutlineLogout } from 'react-icons/ai';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const Sidenav = () => {
     const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            router.push('/auth');
+        }
+    }, []);
+
+    const handleLogOut = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+
+        router.push('/');
+    };
 
     return (
         <aside className="bg-[#102E44] inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl">
@@ -17,11 +33,11 @@ const Sidenav = () => {
             <div className="m-4">
                 <ul className="mb-4 flex flex-col gap-1">
                     <li>
-                        <Link href="/dashboard">
+                        <Link href="/dashboard/files">
                             <button
                                 type="button"
-                                className={`w-full rounded-md flex items-center gap-4 px-4 py-4 capitalize hover:bg-slate-500 ${
-                                    router.pathname === '/dashboard' ? 'bg-white text-black' : 'text-white'
+                                className={`w-full rounded-md flex items-center gap-4 px-4 py-4 capitalize hover:bg-blue-gray-500 ${
+                                    router.pathname === '/dashboard/files' ? 'bg-white text-black' : 'text-white'
                                 }`}
                             >
                                 <AiFillHome />
@@ -34,8 +50,9 @@ const Sidenav = () => {
             <div className="absolute bottom-8 left-8 w-[256px]">
                 <Link href="/logout">
                     <button
+                        onClick={handleLogOut}
                         type="button"
-                        className="w-full rounded-md flex items-center gap-4 px-4 py-4 capitalize text-white hover:bg-slate-500"
+                        className="w-full rounded-md flex items-center gap-4 px-4 py-4 capitalize text-white hover:bg-blue-gray-500"
                     >
                         <AiOutlineLogout />
                         Logout

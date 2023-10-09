@@ -19,7 +19,7 @@ const files = () => {
                             <table className="w-full min-w-[640px] table-auto">
                                 <thead>
                                     <tr>
-                                        {['имя', 'прикреплен к', 'действие'].map((el) => (
+                                        {['имя', '', 'прикреплен к', 'действие'].map((el) => (
                                             <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
                                                 <Typography
                                                     variant="small"
@@ -35,6 +35,7 @@ const files = () => {
                                     {filesTableData.map((file, index) => (
                                         <tr key={index} className="border-b border-blue-gray-100">
                                             <td className="py-3 px-5 text-left">{file.file}</td>
+                                            <td className="py-3 px-5 text-left"></td>
                                             <td className="py-3 px-5 text-left flex items-center">
                                                 <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
                                                     <Image
@@ -48,10 +49,10 @@ const files = () => {
                                                 {file.assignedTo}
                                             </td>
                                             <td className="py-3 px-5 text-left">
-                                                <button className="mr-2 text-[#56CCF2] hover:bg-blue-gray-100 p-2 rounded-full">
+                                                <button className="mr-4 text-[#56CCF2] hover:text-black">
                                                     <AiFillEdit size={20} />
                                                 </button>
-                                                <button className="text-red-600 hover:bg-blue-gray-100 p-2 rounded-full">
+                                                <button className="text-red-600 hover:text-black">
                                                     <AiFillDelete size={20} />
                                                 </button>
                                             </td>
