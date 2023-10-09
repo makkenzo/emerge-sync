@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react
 import { filesTableData } from '@/data/files-table-data';
 import Image from 'next/image';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import Link from 'next/link';
 
 const files = () => {
     return (
@@ -49,12 +50,17 @@ const files = () => {
                                                 {file.assignedTo}
                                             </td>
                                             <td className="py-3 px-5 text-left">
-                                                <button className="mr-4 text-[#56CCF2] hover:text-black">
-                                                    <AiFillEdit size={20} />
-                                                </button>
-                                                <button className="text-red-600 hover:text-black">
-                                                    <AiFillDelete size={20} />
-                                                </button>
+                                                <div className="flex">
+                                                    <Link
+                                                        href={`/dashboard/files/${file._id}`}
+                                                        className="mr-2 text-[#56CCF2] hover:text-black"
+                                                    >
+                                                        <AiFillEdit size={20} />
+                                                    </Link>
+                                                    <button className="text-red-600 hover:text-black">
+                                                        <AiFillDelete size={20} />
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
