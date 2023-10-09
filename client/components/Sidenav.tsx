@@ -41,7 +41,7 @@ const Sidenav = () => {
     return (
         <aside className="bg-[#102E44] inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl">
             <div className="relative border-b border-white/20">
-                <Link href="/dashboard" className="flex items-center gap-4 py-6 px-8">
+                <Link href="/dashboard/files" className="flex items-center gap-4 py-6 px-8">
                     <Image src="/brand-logo.png" alt="brand logo" width={300} height={40} />
                 </Link>
             </div>
