@@ -23,6 +23,15 @@ export const registerUser = async (req: Request, res: Response) => {
             username,
             password: hashedPassword,
             role: role || 'user',
+            details: {
+                firstName: '',
+                lastName: '',
+                phoneNumber: '',
+                email: '',
+                location: '',
+                profilePic: '',
+                gender: '',
+            },
         });
 
         await user.save();

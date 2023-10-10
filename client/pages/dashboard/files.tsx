@@ -1,4 +1,4 @@
-import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { AiFillEdit } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentPage } from '@/redux/slices/fileSlice';
 import { RootState } from '@/redux/store';
