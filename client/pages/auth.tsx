@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { AiOutlineUser, AiFillLock } from 'react-icons/ai';
 import { ToastContainer, toast } from 'react-toastify';

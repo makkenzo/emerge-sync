@@ -3,16 +3,13 @@ import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import axios from 'axios';
 
-import { Sidenav } from '@/components';
-import { CardBody, CardHeader, Typography } from '@material-tailwind/react';
+import { Sidenav, ProfileInfo, SocialMediaButtons } from '@/components';
+import { CardBody, Typography } from '@material-tailwind/react';
 import { Avatar, Card } from '@material-tailwind/react';
-import { AiFillInstagram, AiFillLinkedin } from 'react-icons/ai';
-import { TbBrandTelegram } from 'react-icons/tb';
-import { FaXTwitter } from 'react-icons/fa6';
 import { UserData } from '@/types';
 
 const Profile = () => {
-    const [userData, setUserData] = useState<UserData | null>(null);
+    const [userData, setUserData] = useState<UserData>();
 
     const router = useRouter();
 
@@ -67,170 +64,12 @@ const Profile = () => {
                                     </Typography>
                                 </div>
                             </div>
-                            <div className="grid-cols-2 mb-12 grid gap-12 px-4">
-                                <div>
-                                    <Card color="transparent" shadow={false}>
-                                        <CardHeader
-                                            color="transparent"
-                                            shadow={false}
-                                            floated={false}
-                                            className="mx-0 mt-0 mb-4 flex items-center justify-between gap-4"
-                                        >
-                                            <Typography variant="h4" color="blue-gray">
-                                                Информация профиля
-                                            </Typography>
-                                        </CardHeader>
-                                        <CardBody className="p-0">
-                                            <ul className="flex flex-col gap-4 p-0">
-                                                <li className="flex items-center gap-4">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-semibold"
-                                                    >
-                                                        Имя:
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="font-normal text-blue-gray-500"
-                                                    >
-                                                        {userData?.details['firstName'] !== ''
-                                                            ? userData?.details['firstName']
-                                                            : 'пусто..'}
-                                                    </Typography>
-                                                </li>
-                                                <li className="flex items-center gap-4">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-semibold"
-                                                    >
-                                                        Фамилия:
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="font-normal text-blue-gray-500"
-                                                    >
-                                                        {userData?.details['lastName'] !== ''
-                                                            ? userData?.details['lastName']
-                                                            : 'пусто..'}
-                                                    </Typography>
-                                                </li>
-                                                <li className="flex items-center gap-4">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-semibold"
-                                                    >
-                                                        Номер телефона:
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="font-normal text-blue-gray-500"
-                                                    >
-                                                        {userData?.details['phoneNumber'] !== ''
-                                                            ? userData?.details['phoneNumber']
-                                                            : 'пусто..'}
-                                                    </Typography>
-                                                </li>
-                                                <li className="flex items-center gap-4">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-semibold"
-                                                    >
-                                                        E-mail:
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="font-normal text-blue-gray-500"
-                                                    >
-                                                        {userData?.details['email'] !== ''
-                                                            ? userData?.details['email']
-                                                            : 'пусто..'}
-                                                    </Typography>
-                                                </li>
-                                                <li className="flex items-center gap-4">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-semibold"
-                                                    >
-                                                        Расположение:
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="font-normal text-blue-gray-500"
-                                                    >
-                                                        {userData?.details['location'] !== ''
-                                                            ? userData?.details['location']
-                                                            : 'пусто..'}
-                                                    </Typography>
-                                                </li>
-                                                <li className="flex items-center gap-4">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-semibold"
-                                                    >
-                                                        Пол:
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="font-normal text-blue-gray-500"
-                                                    >
-                                                        {userData?.details['gender'] !== ''
-                                                            ? userData?.details['gender']
-                                                            : 'пусто..'}
-                                                    </Typography>
-                                                </li>
-                                            </ul>
-                                        </CardBody>
-                                    </Card>
+                            {userData && (
+                                <div className="grid-cols-2 mb-12 grid gap-12 px-4">
+                                    <ProfileInfo userData={userData} />
+                                    <SocialMediaButtons userData={userData} />
                                 </div>
-                                <div className="flex flex-col items-start justify-center space-y-3">
-                                    <button
-                                        className={`px-4 py-2 font-semibold text-2xl text-white inline-flex items-center space-x-2 rounded${
-                                            userData?.details.socialMedia.LinkedIn === ''
-                                                ? 'text-gray-400 bg-blue-gray-700 cursor-default'
-                                                : 'bg-[#007ab9] hover:shadow-2xl transition-shadow ease-in-out'
-                                        }`}
-                                    >
-                                        <AiFillLinkedin size={40} />
-                                        <span>LinkedIn</span>
-                                    </button>
-                                    <button
-                                        className={` text-white px-4 py-2 font-semibold text-2xl  inline-flex items-center space-x-2 rounded${
-                                            userData?.details.socialMedia.Instagram === ''
-                                                ? 'text-gray-400 bg-blue-gray-700 cursor-default'
-                                                : 'bg-gradient-to-r from-[#ffd600] via-[#ff0069] to-[#7638fa] hover:shadow-2xl transition-shadow ease-in-out'
-                                        }`}
-                                    >
-                                        <AiFillInstagram size={40} />
-                                        <span>Instagram</span>
-                                    </button>
-                                    <button
-                                        className={`px-4 py-2 font-semibold text-2xl text-white inline-flex items-center space-x-2 rounded${
-                                            userData?.details.socialMedia.Telegram === ''
-                                                ? 'text-gray-400 bg-blue-gray-700 cursor-default'
-                                                : 'bg-[#26a4e3] hover:shadow-2xl transition-shadow ease-in-out'
-                                        }`}
-                                    >
-                                        <TbBrandTelegram size={40} />
-                                        <span>Telegram</span>
-                                    </button>
-                                    <button
-                                        className={`px-4 py-2 font-semibold text-2xl text-white inline-flex items-center space-x-2 rounded ${
-                                            userData?.details.socialMedia.X === ''
-                                                ? 'text-gray-400 bg-blue-gray-700 cursor-default'
-                                                : 'bg-black hover:shadow-2xl transition-shadow ease-in-out'
-                                        }`}
-                                    >
-                                        <FaXTwitter size={40} />
-                                        <span>X</span>
-                                    </button>
-                                </div>
-                            </div>
+                            )}
                         </CardBody>
                     </Card>
                 </div>
