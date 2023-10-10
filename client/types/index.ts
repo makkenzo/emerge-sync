@@ -17,3 +17,9 @@ export type UserData = {
         };
     };
 };
+
+export type SocialMediaKey = 'LinkedIn' | 'Instagram' | 'Telegram' | 'X';
+
+export type SocialMediaData = {
+    [key in SocialMediaKey]: string;
+};
