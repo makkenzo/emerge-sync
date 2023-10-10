@@ -83,7 +83,11 @@ const Auth = () => {
                             className="border border-gray-100 p-2 pl-8 focus:outline-none rounded-md w-full"
                         />
                     </div>
-                    <button onClick={handleLogin} className="bg-[#398d8c] text-white py-2 px-4 rounded-md w-full">
+                    <button
+                        onClick={handleLogin}
+                        type="button"
+                        className="bg-[#398d8c] text-white py-2 px-4 rounded-md w-full"
+                    >
                         Войти
                     </button>
                 </div>
