@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .auth__neumorphism {
-    border-radius: 20px;
-    background: linear-gradient(145deg, #0b5d5c, #0d6e6d);
-    box-shadow: 29px 29px 58px #0a5857, -29px -29px 58px #0e7675;
+    border-radius: 30px;
+    background: linear-gradient(145deg, #0e7675, #0c6362);
+    box-shadow: 31px 31px 62px #0b5e5d, -31px -31px 62px #0f7f7d;
 }

@@ -58,8 +58,8 @@ const Auth = () => {
             </Head>
             <ToastContainer position="top-center" />
             <div
-                className="min-h-screen bg-cover bg-center bg-blue-500 flex items-center justify-center"
-                style={{ backgroundImage: `url(/login-bg.png)` }}
+                className="min-h-screen bg-cover bg-center bg-[#0d6e6d] flex items-center justify-center"
+                // style={{ backgroundImage: `url(/login-bg.png)` }}
             >
                 <div className="bg-white p-8 rounded-md shadow-md auth__neumorphism w-[400px]">
                     <h2 className="text-3xl font-semibold mb-8 text-white text-center">Авторизация</h2>
@@ -83,7 +83,7 @@ const Auth = () => {
                             className="border border-gray-100 p-2 pl-8 focus:outline-none rounded-md w-full"
                         />
                     </div>
-                    <button onClick={handleLogin} className="bg-[#1D9290] text-white py-2 px-4 rounded-md w-full">
+                    <button onClick={handleLogin} className="bg-[#398d8c] text-white py-2 px-4 rounded-md w-full">
                         Войти
                     </button>
                 </div>
