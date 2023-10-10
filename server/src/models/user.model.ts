@@ -12,6 +12,12 @@ export interface UserDocument extends Document {
         location: string;
         profilePic: string;
         gender: string;
+        socialMedia: {
+            LinkedIn: string;
+            Instagram: string;
+            Telegram: string;
+            X: string;
+        };
     };
 }
 
@@ -27,6 +33,12 @@ const userSchema = new Schema<UserDocument>({
         location: { type: String },
         profilePic: { type: String },
         gender: { type: String },
+        socialMedia: {
+            LinkedIn: { type: String },
+            Instagram: { type: String },
+            Telegram: { type: String },
+            X: { type: String },
+        },
     },
 });
 

@@ -31,6 +31,12 @@ export const registerUser = async (req: Request, res: Response) => {
                 location: '',
                 profilePic: '',
                 gender: '',
+                socialMedia: {
+                    LinkedIn: '',
+                    Instagram: '',
+                    Telegram: '',
+                    X: '',
+                },
             },
         });
 
