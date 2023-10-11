@@ -7,5 +7,6 @@ userRouter.post('/register', UserController.registerUser);
 userRouter.post('/login', UserController.loginUser);
 
 userRouter.get('/:id', UserController.getUser);
+userRouter.put('/:id', UserController.updateUser);
 
 export default userRouter;

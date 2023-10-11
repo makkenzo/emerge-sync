@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
-import UserModel from '../models/user.model';
+import UserModel, { UserDocument } from '../models/user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongodb';
 
 export const registerUser = async (req: Request, res: Response) => {
     try {
@@ -69,7 +68,7 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
-        const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET || '', {
             expiresIn: '1h',
         });
 
@@ -87,12 +86,39 @@ export const getUser = async (req: Request, res: Response) => {
         const user = await UserModel.findById(userId);
 
         if (!user) {
-            return res.status(404).json({ msg: 'User not found.' });
+            return res.status(404).json({ message: 'User not found.' });
         }
 
         return res.status(200).json(user);
     } catch (error) {
         console.error('Error logging in user:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.id;
+        const updateData = req.body;
+
+        const user: UserDocument | null = await UserModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (updateData.details) {
+            user.details = {
+                ...user.details,
+                ...updateData.details,
+            };
+        }
+
+        const updatedUser = await user.save();
+
+        return res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
