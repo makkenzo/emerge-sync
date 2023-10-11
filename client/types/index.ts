@@ -23,3 +23,9 @@ export type SocialMediaKey = 'LinkedIn' | 'Instagram' | 'Telegram' | 'X';
 export type SocialMediaData = {
     [key in SocialMediaKey]: string;
 };
+
+export type ProfileIndoModalTypes = {
+    isModalOpen: boolean;
+    closeModal: () => void;
+    userData: UserData;
+};

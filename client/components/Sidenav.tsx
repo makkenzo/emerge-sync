@@ -60,21 +60,20 @@ const Sidenav = () => {
                             </button>
                         </Link>
                     </li>
-                    {userData && (
-                        <li>
-                            <Link href={'/dashboard/profile'}>
-                                <button
-                                    type="button"
-                                    className={`w-full rounded-md flex items-center gap-4 px-4 py-4 hover:bg-blue-gray-500 ${
-                                        router.pathname === '/dashboard/profile' ? 'bg-white text-black' : 'text-white'
-                                    }`}
-                                >
-                                    <AiOutlineUser />
-                                    {userData.username}
-                                </button>
-                            </Link>
-                        </li>
-                    )}
+
+                    <li>
+                        <Link href={'/dashboard/profile'}>
+                            <button
+                                type="button"
+                                className={`w-full rounded-md flex items-center gap-4 px-4 py-4 hover:bg-blue-gray-500 ${
+                                    router.pathname === '/dashboard/profile' ? 'bg-white text-black' : 'text-white'
+                                }`}
+                            >
+                                <AiOutlineUser />
+                                {userData ? userData.username : 'Profile'}
+                            </button>
+                        </Link>
+                    </li>
                 </ul>
             </div>
             <div className="absolute bottom-8 left-8 w-[256px]">

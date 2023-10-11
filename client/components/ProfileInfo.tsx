@@ -1,10 +1,20 @@
 import { UserData } from '@/types';
 import { Card, CardHeader, CardBody, Typography } from '@material-tailwind/react';
-import { Tooltip } from 'flowbite-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
+import { EditProfileInfoModal } from '.';
 
 const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
+    const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+
+    const handleEditDetails = () => {
+        setIsOpenModal(true);
+    };
+
+    const closeModal = () => {
+        setIsOpenModal(false);
+    };
+
     return (
         <div>
             <Card color="transparent" shadow={false}>
@@ -17,10 +27,9 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
                     <Typography variant="h4" color="blue-gray">
                         Информация профиля
                     </Typography>
-                    {/* TODO: Fix tooltip content */}
-                    <Tooltip content="Редактировать профиль">
-                        <AiFillEdit size={20} className="cursor-pointer text-blue-gray-500" />
-                    </Tooltip>
+                    <button onClick={handleEditDetails} className="text-blue-gray-500">
+                        <AiFillEdit size={20} className="hover:text-black" />
+                    </button>
                 </CardHeader>
                 <CardBody className="p-0">
                     <ul className="flex flex-col gap-4 p-0">
@@ -79,6 +88,7 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
                     </ul>
                 </CardBody>
             </Card>
+            <EditProfileInfoModal isModalOpen={isModalOpen} closeModal={closeModal} userData={userData} />
         </div>
     );
 };
