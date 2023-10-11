@@ -1,7 +1,60 @@
 import { ProfileIndoModalTypes } from '@/types';
-import { Button, Checkbox, Label, Modal, Select, TextInput } from 'flowbite-react';
+import axios from 'axios';
+import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
+import React, { useState } from 'react';
 
 const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTypes) => {
+    const [formData, setFormData] = useState({
+        details: {
+            firstName: userData.details.firstName,
+            lastName: userData.details.lastName,
+            phoneNumber: userData.details.phoneNumber,
+            email: userData.details.email,
+            location: userData.details.location,
+            gender: userData.details.gender,
+            socialMedia: {
+                LinkedIn: userData.details.socialMedia.LinkedIn,
+                Instagram: userData.details.socialMedia.Instagram,
+                Telegram: userData.details.socialMedia.Telegram,
+                X: userData.details.socialMedia.X,
+            },
+        },
+    });
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        console.log(e.target);
+
+        setFormData({
+            ...formData,
+            details: {
+                ...formData.details,
+                [id]: value,
+            },
+        });
+    };
+
+    const handleSaveChanges = async () => {
+        console.log(formData);
+
+        try {
+            // Отправьте PUT-запрос на сервер с данными formData
+            const response = await axios.put(`http://localhost:5000/api/v1/users/${userData._id}`, formData);
+
+            if (response.status === 200) {
+                // Обработайте успешный ответ
+                // Например, закройте модальное окно
+                closeModal();
+            } else {
+                // Обработайте ошибку
+            }
+        } catch (error) {
+            // Обработайте ошибку, если PUT-запрос не удался
+            console.error('Error updating user:', error);
+            // Дополнительная обработка ошибки
+        }
+    };
+
     return (
         <Modal show={isModalOpen} popup onClose={closeModal}>
             <Modal.Header className="mb-2">
@@ -13,7 +66,12 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                         <div className="mb-2 block">
                             <Label htmlFor="firstName" value="Имя" />
                         </div>
-                        <TextInput id="firstName" type="text" placeholder={userData.details.firstName} />
+                        <TextInput
+                            id="firstName"
+                            type="text"
+                            placeholder={userData.details.firstName}
+                            onChange={(e) => handleInputChange(e)}
+                        />
                     </div>
                     <div>
                         <div className="mb-2 block">
@@ -53,7 +111,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                         </Select>
                     </div>
                     <div className="w-full">
-                        <Button>Сохранить</Button>
+                        <Button onClick={handleSaveChanges}>Сохранить</Button>
                     </div>
                 </div>
             </Modal.Body>

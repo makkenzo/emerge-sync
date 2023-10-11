@@ -1,6 +1,6 @@
 import { UserData } from '@/types';
 import { Card, CardHeader, CardBody, Typography } from '@material-tailwind/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { EditProfileInfoModal } from '.';
 
@@ -14,6 +14,10 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
     const closeModal = () => {
         setIsOpenModal(false);
     };
+
+    // useEffect(() => {
+    //     console.log(userData);
+    // }, []);
 
     return (
         <div>
