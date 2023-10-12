@@ -101,22 +101,14 @@ export const updateUser = async (req: Request, res: Response) => {
         const userId = req.params.id;
         const updateData = req.body;
 
-        const user: UserDocument | null = await UserModel.findById(userId);
+        const result = await UserModel.updateOne({ _id: userId }, { $set: { details: updateData.details } });
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+        if (result.modifiedCount === 1) {
+            const updatedUser = await UserModel.findById(userId);
+            return res.status(200).json(updatedUser);
+        } else {
+            return res.status(500).json({ message: 'Failed to update user' });
         }
-
-        if (updateData.details) {
-            user.details = {
-                ...user.details,
-                ...updateData.details,
-            };
-        }
-
-        const updatedUser = await user.save();
-
-        return res.status(200).json(updatedUser);
     } catch (error) {
         console.error('Error updating user:', error);
         return res.status(500).json({ message: 'Internal server error' });
