@@ -23,7 +23,6 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
-        console.log(e.target);
 
         setFormData({
             ...formData,
@@ -34,24 +33,26 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
         });
     };
 
-    const handleSaveChanges = async () => {
-        console.log(formData);
+    const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedGender = e.target.value;
+        setFormData({
+            ...formData,
+            details: {
+                ...formData.details,
+                gender: selectedGender,
+            },
+        });
+    };
 
+    const handleSaveChanges = async () => {
         try {
-            // Отправьте PUT-запрос на сервер с данными formData
             const response = await axios.put(`http://localhost:5000/api/v1/users/${userData._id}`, formData);
 
             if (response.status === 200) {
-                // Обработайте успешный ответ
-                // Например, закройте модальное окно
                 closeModal();
-            } else {
-                // Обработайте ошибку
             }
         } catch (error) {
-            // Обработайте ошибку, если PUT-запрос не удался
             console.error('Error updating user:', error);
-            // Дополнительная обработка ошибки
         }
     };
 
@@ -77,25 +78,45 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                         <div className="mb-2 block">
                             <Label htmlFor="lastName" value="Фамилия" />
                         </div>
-                        <TextInput id="lastName" type="text" placeholder={userData.details.lastName} />
+                        <TextInput
+                            id="lastName"
+                            type="text"
+                            placeholder={userData.details.lastName}
+                            onChange={(e) => handleInputChange(e)}
+                        />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="phoneNumber" value="Номер телефона" />
                         </div>
-                        <TextInput id="phoneNumber" type="text" placeholder={userData.details.phoneNumber} />
+                        <TextInput
+                            id="phoneNumber"
+                            type="text"
+                            placeholder={userData.details.phoneNumber}
+                            onChange={(e) => handleInputChange(e)}
+                        />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="email" value="E-mail" />
                         </div>
-                        <TextInput id="email" type="email" placeholder={userData.details.email} />
+                        <TextInput
+                            id="email"
+                            type="email"
+                            placeholder={userData.details.email}
+                            onChange={(e) => handleInputChange(e)}
+                        />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="location" value="Расположение" />
                         </div>
-                        <TextInput id="location" type="text" placeholder={userData.details.location} />
+                        <TextInput
+                            id="location"
+                            type="text"
+                            placeholder={userData.details.location}
+                            onChange={(e) => handleInputChange(e)}
+                        />
                     </div>
                     <div>
                         <div className="mb-2 block">
@@ -104,6 +125,8 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                         <Select
                             id="genders"
                             defaultValue={userData.details.gender !== '' ? userData.details.gender : ''}
+                            value={formData.details.gender}
+                            onChange={(e) => handleGenderChange(e)}
                         >
                             <option value="Мужской">Мужской</option>
                             <option value="Женский">Женский</option>

@@ -101,7 +101,17 @@ export const updateUser = async (req: Request, res: Response) => {
         const userId = req.params.id;
         const updateData = req.body;
 
-        const result = await UserModel.updateOne({ _id: userId }, { $set: { details: updateData.details } });
+        const result = await UserModel.updateOne(
+            { _id: userId },
+            {
+                $set: {
+                    details: {
+                        ...updateData.details,
+                        profilePic: '', // todo
+                    },
+                },
+            }
+        );
 
         if (result.modifiedCount === 1) {
             const updatedUser = await UserModel.findById(userId);

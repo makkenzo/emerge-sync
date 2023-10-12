@@ -19,6 +19,8 @@ const Profile = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        console.log(userData?.details);
+
         const userId = localStorage.getItem('userId');
 
         if (!userId) {

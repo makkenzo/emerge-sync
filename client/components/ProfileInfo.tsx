@@ -15,10 +15,6 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
         setIsOpenModal(false);
     };
 
-    // useEffect(() => {
-    //     console.log(userData);
-    // }, []);
-
     return (
         <div>
             <Card color="transparent" shadow={false}>
