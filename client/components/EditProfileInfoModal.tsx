@@ -1,9 +1,12 @@
 import { ProfileIndoModalTypes } from '@/types';
+import { Typography } from '@material-tailwind/react';
 import axios from 'axios';
 import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
+import validator from 'validator';
 
 const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTypes) => {
+    const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
     const [formData, setFormData] = useState({
         details: {
             firstName: userData.details.firstName,
@@ -29,6 +32,11 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
             details: {
                 ...formData.details,
                 [id]: value,
+
+                socialMedia: {
+                    ...formData.details.socialMedia,
+                    [id]: value,
+                },
             },
         });
     };
@@ -45,6 +53,9 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
     };
 
     const handleSaveChanges = async () => {
+        if (!checkIsEmailValid(formData.details.email)) {
+            return;
+        }
         try {
             const response = await axios.put(`http://localhost:5000/api/v1/users/${userData._id}`, formData);
 
@@ -56,12 +67,21 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
         }
     };
 
+    const checkIsEmailValid = (email: string) => {
+        const state = validator.isEmail(email);
+        setIsEmailValid(state);
+        return state;
+    };
+
     return (
         <Modal show={isModalOpen} popup onClose={closeModal}>
             <Modal.Header className="mb-2">
                 <h3 className="text-xl font-medium text-gray-900 ml-4 mt-2">Редактировать данные</h3>
             </Modal.Header>
             <Modal.Body>
+                <Typography variant="lead" className="mb-2 font-semibold">
+                    Данные профиля
+                </Typography>
                 <div className="space-y-4">
                     <div>
                         <div className="mb-2 block">
@@ -101,6 +121,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="email" value="E-mail" />
                         </div>
                         <TextInput
+                            color={isEmailValid ? 'gray' : 'failure'}
                             id="email"
                             type="email"
                             placeholder={userData.details.email}
@@ -132,6 +153,53 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <option value="Женский">Женский</option>
                             <option value="Другое">Другое</option>
                         </Select>
+                    </div>
+                    <Typography variant="lead" className="mb-2 font-semibold">
+                        Социальные сети
+                    </Typography>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="LinkedIn" value="LinkedIn" />
+                        </div>
+                        <TextInput
+                            id="LinkedIn"
+                            type="url"
+                            placeholder={userData.details.socialMedia.LinkedIn}
+                            onChange={(e) => handleInputChange(e)}
+                        />
+                    </div>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="Instagram" value="Instagram" />
+                        </div>
+                        <TextInput
+                            id="Instagram"
+                            type="url"
+                            placeholder={userData.details.socialMedia.Instagram}
+                            onChange={(e) => handleInputChange(e)}
+                        />
+                    </div>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="Telegram" value="Telegram" />
+                        </div>
+                        <TextInput
+                            id="Telegram"
+                            type="url"
+                            placeholder={userData.details.socialMedia.Telegram}
+                            onChange={(e) => handleInputChange(e)}
+                        />
+                    </div>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="X" value="X" />
+                        </div>
+                        <TextInput
+                            id="X"
+                            type="url"
+                            placeholder={userData.details.socialMedia.X}
+                            onChange={(e) => handleInputChange(e)}
+                        />
                     </div>
                     <div className="w-full">
                         <Button onClick={handleSaveChanges}>Сохранить</Button>
