@@ -7,6 +7,8 @@ import validator from 'validator';
 
 const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTypes) => {
     const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+    const [isPhoneValid, setIsPhoneValid] = useState<boolean>(true);
+
     const [formData, setFormData] = useState({
         details: {
             firstName: userData.details.firstName,
@@ -53,7 +55,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
     };
 
     const handleSaveChanges = async () => {
-        if (!checkIsEmailValid(formData.details.email)) {
+        if (!checkIsEmailValid(formData.details.email) || !checkIsPhoneValid(formData.details.phoneNumber)) {
             return;
         }
         try {
@@ -70,6 +72,14 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
     const checkIsEmailValid = (email: string) => {
         const state = validator.isEmail(email);
         setIsEmailValid(state);
+
+        return state;
+    };
+
+    const checkIsPhoneValid = (phone: string) => {
+        const state = validator.isMobilePhone(phone);
+        setIsPhoneValid(state);
+
         return state;
     };
 
@@ -110,6 +120,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="phoneNumber" value="Номер телефона" />
                         </div>
                         <TextInput
+                            color={isPhoneValid ? 'gray' : 'failure'}
                             id="phoneNumber"
                             type="text"
                             placeholder={userData.details.phoneNumber}
