@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import fileReducer from './slices/fileSlice';
 import loadingReducer from './slices/loadingSlice';
+import validationReducer from './slices/validationSlice';
 
 const store = configureStore({
     reducer: {
         auth: authReducer,
         files: fileReducer,
         loading: loadingReducer,
+        validation: validationReducer,
     },
 });
 

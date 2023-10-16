@@ -1,13 +1,19 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsEmailValid, setIsPhoneValid, setIsURLValid } from '@/redux/slices/validationSlice';
+import { RootState } from '@/redux/store';
 import { ProfileIndoModalTypes } from '@/types';
 import { Typography } from '@material-tailwind/react';
-import axios from 'axios';
 import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
 import validator from 'validator';
+import axios from 'axios';
 
 const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTypes) => {
-    const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
-    const [isPhoneValid, setIsPhoneValid] = useState<boolean>(true);
+    const isEmailValid = useSelector((state: RootState) => state.validation.isEmailValid);
+    const isPhoneValid = useSelector((state: RootState) => state.validation.isPhoneValid);
+    const isURLValid = useSelector((state: RootState) => state.validation.isURLValid);
+
+    const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
         details: {
@@ -55,7 +61,14 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
     };
 
     const handleSaveChanges = async () => {
-        if (!checkIsEmailValid(formData.details.email) || !checkIsPhoneValid(formData.details.phoneNumber)) {
+        if (
+            !checkIsEmailValid(formData.details.email) ||
+            !checkIsPhoneValid(formData.details.phoneNumber) ||
+            !checkIsURLValid(formData.details.socialMedia.LinkedIn) ||
+            !checkIsURLValid(formData.details.socialMedia.Instagram) ||
+            !checkIsURLValid(formData.details.socialMedia.Telegram) ||
+            !checkIsURLValid(formData.details.socialMedia.X)
+        ) {
             return;
         }
         try {
@@ -71,14 +84,26 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
 
     const checkIsEmailValid = (email: string) => {
         const state = validator.isEmail(email);
-        setIsEmailValid(state);
+        dispatch(setIsEmailValid(state));
 
         return state;
     };
 
     const checkIsPhoneValid = (phone: string) => {
         const state = validator.isMobilePhone(phone);
-        setIsPhoneValid(state);
+        dispatch(setIsPhoneValid(state));
+
+        return state;
+    };
+
+    const checkIsURLValid = (url: string) => {
+        const state = validator.isURL(url);
+        dispatch(setIsURLValid(state));
+
+        if (url.trim() === '') {
+            dispatch(setIsURLValid(true));
+            return true;
+        }
 
         return state;
     };
@@ -173,6 +198,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="LinkedIn" value="LinkedIn" />
                         </div>
                         <TextInput
+                            color={isURLValid ? 'gray' : 'failure'}
                             id="LinkedIn"
                             type="url"
                             placeholder={userData.details.socialMedia.LinkedIn}
@@ -184,6 +210,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="Instagram" value="Instagram" />
                         </div>
                         <TextInput
+                            color={isURLValid ? 'gray' : 'failure'}
                             id="Instagram"
                             type="url"
                             placeholder={userData.details.socialMedia.Instagram}
@@ -195,6 +222,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="Telegram" value="Telegram" />
                         </div>
                         <TextInput
+                            color={isURLValid ? 'gray' : 'failure'}
                             id="Telegram"
                             type="url"
                             placeholder={userData.details.socialMedia.Telegram}
@@ -206,6 +234,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="X" value="X" />
                         </div>
                         <TextInput
+                            color={isURLValid ? 'gray' : 'failure'}
                             id="X"
                             type="url"
                             placeholder={userData.details.socialMedia.X}
