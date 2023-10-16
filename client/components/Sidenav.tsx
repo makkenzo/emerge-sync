@@ -70,7 +70,7 @@ const Sidenav = () => {
                                 }`}
                             >
                                 <AiOutlineUser />
-                                {userData ? userData.username : 'Profile'}
+                                Profile
                             </button>
                         </Link>
                     </li>

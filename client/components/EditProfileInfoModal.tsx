@@ -13,6 +13,11 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
     const isPhoneValid = useSelector((state: RootState) => state.validation.isPhoneValid);
     const isURLValid = useSelector((state: RootState) => state.validation.isURLValid);
 
+    const [linkedInError, setLinkedInError] = useState<boolean>(false);
+    const [instagramError, setInstagramError] = useState<boolean>(false);
+    const [telegramError, setTelegramError] = useState<boolean>(false);
+    const [xError, setXError] = useState<boolean>(false);
+
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
@@ -61,14 +66,23 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
     };
 
     const handleSaveChanges = async () => {
-        if (
-            !checkIsEmailValid(formData.details.email) ||
-            !checkIsPhoneValid(formData.details.phoneNumber) ||
-            !checkIsURLValid(formData.details.socialMedia.LinkedIn) ||
-            !checkIsURLValid(formData.details.socialMedia.Instagram) ||
-            !checkIsURLValid(formData.details.socialMedia.Telegram) ||
-            !checkIsURLValid(formData.details.socialMedia.X)
-        ) {
+        if (!checkIsURLValid(formData.details.socialMedia.LinkedIn)) {
+            setLinkedInError(true);
+            return;
+        }
+        if (!checkIsURLValid(formData.details.socialMedia.Instagram)) {
+            setInstagramError(true);
+            return;
+        }
+        if (!checkIsURLValid(formData.details.socialMedia.Telegram)) {
+            setTelegramError(true);
+            return;
+        }
+        if (!checkIsURLValid(formData.details.socialMedia.X)) {
+            setXError(true);
+            return;
+        }
+        if (!checkIsEmailValid(formData.details.email) || !checkIsPhoneValid(formData.details.phoneNumber)) {
             return;
         }
         try {
@@ -76,6 +90,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
 
             if (response.status === 200) {
                 closeModal();
+                window.location.reload();
             }
         } catch (error) {
             console.error('Error updating user:', error);
@@ -198,7 +213,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="LinkedIn" value="LinkedIn" />
                         </div>
                         <TextInput
-                            color={isURLValid ? 'gray' : 'failure'}
+                            color={!linkedInError ? 'gray' : 'failure'}
                             id="LinkedIn"
                             type="url"
                             placeholder={userData.details.socialMedia.LinkedIn}
@@ -210,7 +225,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="Instagram" value="Instagram" />
                         </div>
                         <TextInput
-                            color={isURLValid ? 'gray' : 'failure'}
+                            color={!instagramError ? 'gray' : 'failure'}
                             id="Instagram"
                             type="url"
                             placeholder={userData.details.socialMedia.Instagram}
@@ -222,7 +237,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="Telegram" value="Telegram" />
                         </div>
                         <TextInput
-                            color={isURLValid ? 'gray' : 'failure'}
+                            color={!telegramError ? 'gray' : 'failure'}
                             id="Telegram"
                             type="url"
                             placeholder={userData.details.socialMedia.Telegram}
@@ -234,7 +249,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <Label htmlFor="X" value="X" />
                         </div>
                         <TextInput
-                            color={isURLValid ? 'gray' : 'failure'}
+                            color={!xError ? 'gray' : 'failure'}
                             id="X"
                             type="url"
                             placeholder={userData.details.socialMedia.X}
