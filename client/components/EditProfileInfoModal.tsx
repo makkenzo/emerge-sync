@@ -124,141 +124,151 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
     };
 
     return (
-        <Modal show={isModalOpen} popup onClose={closeModal}>
+        <Modal size="5xl" show={isModalOpen} popup onClose={closeModal}>
             <Modal.Header className="mb-2">
                 <h3 className="text-xl font-medium text-gray-900 ml-4 mt-2">Редактировать данные</h3>
             </Modal.Header>
             <Modal.Body>
-                <Typography variant="lead" className="mb-2 font-semibold">
-                    Данные профиля
-                </Typography>
-                <div className="space-y-4">
+                <div className=" grid grid-cols-2 gap-4">
                     <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="firstName" value="Имя" />
+                        <Typography variant="lead" className="mb-2 font-semibold">
+                            Данные профиля
+                        </Typography>
+                        <div className="space-y-4">
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="firstName" value="Имя" />
+                                </div>
+                                <TextInput
+                                    id="firstName"
+                                    type="text"
+                                    placeholder={userData.details.firstName}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="lastName" value="Фамилия" />
+                                </div>
+                                <TextInput
+                                    id="lastName"
+                                    type="text"
+                                    placeholder={userData.details.lastName}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="phoneNumber" value="Номер телефона" />
+                                </div>
+                                <TextInput
+                                    color={isPhoneValid ? 'gray' : 'failure'}
+                                    id="phoneNumber"
+                                    type="text"
+                                    placeholder={userData.details.phoneNumber}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="email" value="E-mail" />
+                                </div>
+                                <TextInput
+                                    color={isEmailValid ? 'gray' : 'failure'}
+                                    id="email"
+                                    type="email"
+                                    placeholder={userData.details.email}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="location" value="Расположение" />
+                                </div>
+                                <TextInput
+                                    id="location"
+                                    type="text"
+                                    placeholder={userData.details.location}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="genders" value="Пол" />
+                                </div>
+                                <Select
+                                    id="genders"
+                                    defaultValue={userData.details.gender !== '' ? userData.details.gender : ''}
+                                    value={formData.details.gender}
+                                    onChange={(e) => handleGenderChange(e)}
+                                >
+                                    <option value="Мужской">Мужской</option>
+                                    <option value="Женский">Женский</option>
+                                    <option value="Другое">Другое</option>
+                                </Select>
+                            </div>
                         </div>
-                        <TextInput
-                            id="firstName"
-                            type="text"
-                            placeholder={userData.details.firstName}
-                            onChange={(e) => handleInputChange(e)}
-                        />
                     </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="lastName" value="Фамилия" />
+                    <div className="relative">
+                        <Typography variant="lead" className="mb-2 font-semibold">
+                            Социальные сети
+                        </Typography>
+                        <div className="space-y-4">
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="LinkedIn" value="LinkedIn" />
+                                </div>
+                                <TextInput
+                                    color={!linkedInError ? 'gray' : 'failure'}
+                                    id="LinkedIn"
+                                    type="url"
+                                    placeholder={userData.details.socialMedia.LinkedIn}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="Instagram" value="Instagram" />
+                                </div>
+                                <TextInput
+                                    color={!instagramError ? 'gray' : 'failure'}
+                                    id="Instagram"
+                                    type="url"
+                                    placeholder={userData.details.socialMedia.Instagram}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="Telegram" value="Telegram" />
+                                </div>
+                                <TextInput
+                                    color={!telegramError ? 'gray' : 'failure'}
+                                    id="Telegram"
+                                    type="url"
+                                    placeholder={userData.details.socialMedia.Telegram}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="X" value="X" />
+                                </div>
+                                <TextInput
+                                    color={!xError ? 'gray' : 'failure'}
+                                    id="X"
+                                    type="url"
+                                    placeholder={userData.details.socialMedia.X}
+                                    onChange={(e) => handleInputChange(e)}
+                                />
+                            </div>
                         </div>
-                        <TextInput
-                            id="lastName"
-                            type="text"
-                            placeholder={userData.details.lastName}
-                            onChange={(e) => handleInputChange(e)}
-                        />
                     </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="phoneNumber" value="Номер телефона" />
-                        </div>
-                        <TextInput
-                            color={isPhoneValid ? 'gray' : 'failure'}
-                            id="phoneNumber"
-                            type="text"
-                            placeholder={userData.details.phoneNumber}
-                            onChange={(e) => handleInputChange(e)}
-                        />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="email" value="E-mail" />
-                        </div>
-                        <TextInput
-                            color={isEmailValid ? 'gray' : 'failure'}
-                            id="email"
-                            type="email"
-                            placeholder={userData.details.email}
-                            onChange={(e) => handleInputChange(e)}
-                        />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="location" value="Расположение" />
-                        </div>
-                        <TextInput
-                            id="location"
-                            type="text"
-                            placeholder={userData.details.location}
-                            onChange={(e) => handleInputChange(e)}
-                        />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="genders" value="Пол" />
-                        </div>
-                        <Select
-                            id="genders"
-                            defaultValue={userData.details.gender !== '' ? userData.details.gender : ''}
-                            value={formData.details.gender}
-                            onChange={(e) => handleGenderChange(e)}
-                        >
-                            <option value="Мужской">Мужской</option>
-                            <option value="Женский">Женский</option>
-                            <option value="Другое">Другое</option>
-                        </Select>
-                    </div>
-                    <Typography variant="lead" className="mb-2 font-semibold">
-                        Социальные сети
-                    </Typography>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="LinkedIn" value="LinkedIn" />
-                        </div>
-                        <TextInput
-                            color={!linkedInError ? 'gray' : 'failure'}
-                            id="LinkedIn"
-                            type="url"
-                            placeholder={userData.details.socialMedia.LinkedIn}
-                            onChange={(e) => handleInputChange(e)}
-                        />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="Instagram" value="Instagram" />
-                        </div>
-                        <TextInput
-                            color={!instagramError ? 'gray' : 'failure'}
-                            id="Instagram"
-                            type="url"
-                            placeholder={userData.details.socialMedia.Instagram}
-                            onChange={(e) => handleInputChange(e)}
-                        />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="Telegram" value="Telegram" />
-                        </div>
-                        <TextInput
-                            color={!telegramError ? 'gray' : 'failure'}
-                            id="Telegram"
-                            type="url"
-                            placeholder={userData.details.socialMedia.Telegram}
-                            onChange={(e) => handleInputChange(e)}
-                        />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="X" value="X" />
-                        </div>
-                        <TextInput
-                            color={!xError ? 'gray' : 'failure'}
-                            id="X"
-                            type="url"
-                            placeholder={userData.details.socialMedia.X}
-                            onChange={(e) => handleInputChange(e)}
-                        />
-                    </div>
-                    <div className="w-full">
-                        <Button onClick={handleSaveChanges}>Сохранить</Button>
-                    </div>
+                </div>
+                <div className="w-full mt-4">
+                    <Button className="w-full" onClick={handleSaveChanges}>
+                        Сохранить
+                    </Button>
                 </div>
             </Modal.Body>
         </Modal>
