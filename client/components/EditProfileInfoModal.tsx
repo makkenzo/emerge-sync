@@ -3,7 +3,7 @@ import { setIsEmailValid, setIsPhoneValid, setIsURLValid } from '@/redux/slices/
 import { RootState } from '@/redux/store';
 import { ProfileIndoModalTypes } from '@/types';
 import { Typography } from '@material-tailwind/react';
-import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
+import { Button, FileInput, Label, Modal, Select, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
 import validator from 'validator';
 import axios from 'axios';
@@ -135,6 +135,12 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             Данные профиля
                         </Typography>
                         <div className="space-y-4">
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="file" value="Фото профиля" />
+                                </div>
+                                <FileInput className="bg-red-200" id="file" />
+                            </div>
                             <div>
                                 <div className="mb-2 block">
                                     <Label htmlFor="firstName" value="Имя" />
