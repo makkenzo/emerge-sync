@@ -3,24 +3,33 @@ import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import axios from 'axios';
 
-import { Sidenav, ProfileInfo, SocialMediaButtons } from '@/components';
+import { Sidenav, ProfileInfo, SocialMediaButtons, EditProfilePictureModal } from '@/components';
 import { CardBody, Typography } from '@material-tailwind/react';
 import { Avatar, Card } from '@material-tailwind/react';
 import { UserData } from '@/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setIsLoading } from '@/redux/slices/loadingSlice';
+import { AiFillEdit } from 'react-icons/ai';
 
 const Profile = () => {
     const [userData, setUserData] = useState<UserData>();
     const isLoading = useSelector((state: RootState) => state.loading.isLoading);
 
+    const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+
+    const handleEditProfilePicture = () => {
+        setIsOpenModal(true);
+    };
+
+    const closeModal = () => {
+        setIsOpenModal(false);
+    };
+
     const router = useRouter();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log(userData?.details);
-
         const userId = localStorage.getItem('userId');
 
         if (!userId) {
@@ -75,6 +84,9 @@ const Profile = () => {
                                                 {userData.role.toUpperCase()}
                                             </Typography>
                                         </div>
+                                        <button onClick={handleEditProfilePicture} className="text-blue-gray-500 ml-4">
+                                            <AiFillEdit size={20} className="hover:text-black" />
+                                        </button>
                                     </div>
                                     <div className="grid-cols-2 mb-12 grid gap-12 px-4">
                                         <ProfileInfo userData={userData} />
@@ -97,6 +109,9 @@ const Profile = () => {
                     </Card>
                 </div>
             </div>
+            {userData && (
+                <EditProfilePictureModal isModalOpen={isModalOpen} closeModal={closeModal} userData={userData} />
+            )}
         </>
     );
 };
