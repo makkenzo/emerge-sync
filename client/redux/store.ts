@@ -3,6 +3,7 @@ import authReducer from './slices/authSlice';
 import fileReducer from './slices/fileSlice';
 import loadingReducer from './slices/loadingSlice';
 import validationReducer from './slices/validationSlice';
+import pfpReducer from './slices/pfpSlice';
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         files: fileReducer,
         loading: loadingReducer,
         validation: validationReducer,
+        pfp: pfpReducer,
     },
 });
 
