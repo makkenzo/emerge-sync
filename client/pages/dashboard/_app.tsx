@@ -1,3 +1,4 @@
+import { EdgeStoreProvider } from '@/lib/edgestore';
 import store, { RootState } from '@/redux/store';
 import { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
@@ -5,7 +6,9 @@ import { Provider } from 'react-redux';
 const dashboard = ({ Component, pageProps }: AppProps) => {
     return (
         <Provider store={store}>
-            <Component {...pageProps} />
+            <EdgeStoreProvider>
+                <Component {...pageProps} />
+            </EdgeStoreProvider>
         </Provider>
     );
 };

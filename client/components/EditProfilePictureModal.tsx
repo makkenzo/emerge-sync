@@ -3,12 +3,18 @@ import { Modal, Button, Label, FileInput } from 'flowbite-react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { setFile } from '@/redux/slices/pfpSlice';
+import { setFile, setThumbnail, setUrl } from '@/redux/slices/pfpSlice';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useEdgeStore } from '@/lib/edgestore';
 
 const EditProfilePictureModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTypes) => {
-    const dispatch = useDispatch();
     const file = useSelector((state: RootState) => state.pfp.file);
+    const url = useSelector((state: RootState) => state.pfp.url);
+    const thumbnail = useSelector((state: RootState) => state.pfp.thumbnail);
+
+    const dispatch = useDispatch();
+
+    const { edgestore } = useEdgeStore();
 
     const handleSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
@@ -16,8 +22,17 @@ const EditProfilePictureModal = ({ isModalOpen, closeModal, userData }: ProfileI
         }
     };
 
-    const handleUpload = () => {
-        console.log(file);
+    const handleUpload = async () => {
+        if (file) {
+            try {
+                const res = await edgestore.myPublicImages.upload({ file });
+
+                dispatch(setUrl({ url: res.url }));
+                dispatch(setThumbnail({ thumbnail: res.thumbnailUrl }));
+            } catch (error) {
+                console.error(error);
+            }
+        }
     };
 
     return (
@@ -30,12 +45,7 @@ const EditProfilePictureModal = ({ isModalOpen, closeModal, userData }: ProfileI
                     <div className="mb-2 block">
                         <Label htmlFor="file" value="Фото профиля" />
                     </div>
-                    <FileInput
-                        onChange={(e) => {
-                            handleSelectFile(e);
-                        }}
-                        id="file"
-                    />
+                    <FileInput onChange={(e) => handleSelectFile(e)} id="file" />
                 </div>
                 <div className="w-full mt-4">
                     <Button onClick={handleUpload}>Сохранить</Button>
