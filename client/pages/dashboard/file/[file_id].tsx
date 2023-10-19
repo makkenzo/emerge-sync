@@ -1,4 +1,5 @@
 import { Sidenav } from '@/components';
+import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -37,27 +38,46 @@ const FilePage = () => {
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />
                 <div className="container mx-auto pt-8">
-                    <input type="file" accept=".xlsx, .xls" onChange={importExcel} />
-                    {data.length > 0 && (
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    {Object.keys(data[0]).map((key) => (
-                                        <th key={key}>{key}</th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.map((row, rowIndex) => (
-                                    <tr key={rowIndex}>
-                                        {Object.values(row).map((value, colIndex) => (
-                                            <td key={colIndex}>{String(value)}</td>
+                    <Card>
+                        <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
+                            Файл
+                        </CardHeader>
+                        <CardBody className="px-0 pt-0 pb-2">
+                            {data.length > 0 && (
+                                <table className="w-full min-w-[640px] table-auto">
+                                    <thead>
+                                        <tr>
+                                            {Object.keys(data[0]).map((key) => (
+                                                <th
+                                                    key={key}
+                                                    className="border-b border-blue-gray-50 py-3 px-5 text-left"
+                                                >
+                                                    <Typography
+                                                        variant="small"
+                                                        className="font-bold uppercase text-blue-gray-400"
+                                                    >
+                                                        {key}
+                                                    </Typography>
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {data.map((row, rowIndex) => (
+                                            <tr key={rowIndex} className="border-b border-blue-gray-100">
+                                                {Object.values(row).map((value, colIndex) => (
+                                                    <td key={colIndex} className="py-3 px-5 text-left">
+                                                        {String(value)}
+                                                    </td>
+                                                ))}
+                                            </tr>
                                         ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
+                                    </tbody>
+                                </table>
+                            )}
+                        </CardBody>
+                    </Card>
+                    <input type="file" accept=".xlsx, .xls" onChange={importExcel} />
                 </div>
             </div>
         </>
