@@ -4,7 +4,10 @@ import { initEdgeStore } from '@edgestore/server';
 const es = initEdgeStore.create();
 
 const edgeStoreRouter = es.router({
-    myPublicImages: es.imageBucket(),
+    myPublicImages: es.imageBucket().beforeDelete(({ ctx, fileInfo }) => {
+        console.log('beforeDelete', ctx, fileInfo);
+        return true; // allow delete
+    }),
 });
 
 const handler = createEdgeStoreNextHandler({

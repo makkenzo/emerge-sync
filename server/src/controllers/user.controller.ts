@@ -101,13 +101,15 @@ export const updateUser = async (req: Request, res: Response) => {
         const userId = req.params.id;
         const updateData = req.body;
 
+        const user = await UserModel.findById(userId);
+
         const result = await UserModel.updateOne(
             { _id: userId },
             {
                 $set: {
                     details: {
                         ...updateData.details,
-                        profilePic: '', // todo
+                        profilePic: user?.details.profilePic, // todo
                     },
                 },
             }
@@ -121,6 +123,32 @@ export const updateUser = async (req: Request, res: Response) => {
         }
     } catch (error) {
         console.error('Error updating user:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const updateProfilePic = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.id;
+        const profilePicUrl = req.body.url; // Предполагаем, что вы отправляете URL изображения
+
+        const result = await UserModel.updateOne(
+            { _id: userId },
+            {
+                $set: {
+                    'details.profilePic': profilePicUrl,
+                },
+            }
+        );
+
+        if (result.modifiedCount === 1) {
+            const updatedUser = await UserModel.findById(userId);
+            return res.status(200).json(updatedUser);
+        } else {
+            return res.status(500).json({ message: 'Failed to update profilePic' });
+        }
+    } catch (error) {
+        console.error('Error updating profilePic:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 };

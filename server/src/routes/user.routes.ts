@@ -8,5 +8,6 @@ userRouter.post('/login', UserController.loginUser);
 
 userRouter.get('/:id', UserController.getUser);
 userRouter.put('/:id', UserController.updateUser);
+userRouter.put('/update-pfp/:id', UserController.updateProfilePic);
 
 export default userRouter;

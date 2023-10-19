@@ -29,6 +29,32 @@ const EditProfilePictureModal = ({ isModalOpen, closeModal, userData }: ProfileI
 
                 dispatch(setUrl({ url: res.url }));
                 dispatch(setThumbnail({ thumbnail: res.thumbnailUrl }));
+
+                try {
+                    console.log(res.url);
+
+                    const getResponse = await axios.get(`http://localhost:5000/api/v1/users/${userData._id}`);
+
+                    const oldPfp = getResponse.data.details.profilePic;
+
+                    const postResponse = await axios.put(
+                        `http://localhost:5000/api/v1/users/update-pfp/${userData._id}`,
+                        {
+                            url: res.url,
+                        }
+                    );
+
+                    await edgestore.myPublicImages.delete({
+                        url: oldPfp,
+                    });
+
+                    // if (postResponse.status === 200) {
+                    closeModal();
+                    window.location.reload();
+                    // }
+                } catch (error) {
+                    console.error('Error updating user:', error);
+                }
             } catch (error) {
                 console.error(error);
             }

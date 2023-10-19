@@ -73,7 +73,9 @@ const Profile = () => {
                                                 }
                                                 alt="user pic"
                                                 size="xl"
-                                                className="rounded-lg shadow-lg shadow-blue-gray-500/40"
+                                                className="p-0.5"
+                                                variant="rounded"
+                                                withBorder={true}
                                             />
                                         </div>
                                         <div className="h-full my-auto ml-2">
