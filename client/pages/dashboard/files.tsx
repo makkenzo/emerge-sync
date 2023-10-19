@@ -81,7 +81,7 @@ const Files = () => {
                                                 <td className="py-3 px-5 text-left">
                                                     <div className="flex">
                                                         <Link
-                                                            href={`/dashboard/files/${file._id}`}
+                                                            href={`/dashboard/file/${file._id}`}
                                                             className="mr-2 text-[#56CCF2] hover:text-black"
                                                         >
                                                             <AiFillEdit size={20} />

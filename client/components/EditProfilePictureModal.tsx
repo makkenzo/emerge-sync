@@ -31,8 +31,6 @@ const EditProfilePictureModal = ({ isModalOpen, closeModal, userData }: ProfileI
                 dispatch(setThumbnail({ thumbnail: res.thumbnailUrl }));
 
                 try {
-                    console.log(res.url);
-
                     const getResponse = await axios.get(`http://localhost:5000/api/v1/users/${userData._id}`);
 
                     const oldPfp = getResponse.data.details.profilePic;
