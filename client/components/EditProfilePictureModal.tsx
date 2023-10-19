@@ -48,10 +48,8 @@ const EditProfilePictureModal = ({ isModalOpen, closeModal, userData }: ProfileI
                         url: oldPfp,
                     });
 
-                    // if (postResponse.status === 200) {
                     closeModal();
                     window.location.reload();
-                    // }
                 } catch (error) {
                     console.error('Error updating user:', error);
                 }

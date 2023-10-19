@@ -135,12 +135,6 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             Данные профиля
                         </Typography>
                         <div className="space-y-4">
-                            {/* <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="file" value="Фото профиля" />
-                                </div>
-                                <FileInput className="bg-red-200" id="file" />
-                            </div> */}
                             <div>
                                 <div className="mb-2 block">
                                     <Label htmlFor="firstName" value="Имя" />
@@ -166,6 +160,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <div>
                                 <div className="mb-2 block">
                                     <Label htmlFor="phoneNumber" value="Номер телефона" />
+                                    <Label htmlFor="phoneNumber" value="*" className="ml-1 text-red-700" />
                                 </div>
                                 <TextInput
                                     color={isPhoneValid ? 'gray' : 'failure'}
@@ -178,6 +173,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <div>
                                 <div className="mb-2 block">
                                     <Label htmlFor="email" value="E-mail" />
+                                    <Label htmlFor="phoneNumber" value="*" className="ml-1 text-red-700" />
                                 </div>
                                 <TextInput
                                     color={isEmailValid ? 'gray' : 'failure'}

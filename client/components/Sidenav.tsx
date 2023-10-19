@@ -77,16 +77,14 @@ const Sidenav = () => {
                 </ul>
             </div>
             <div className="absolute bottom-8 left-8 w-[256px]">
-                <Link href="/logout">
-                    <button
-                        onClick={handleLogOut}
-                        type="button"
-                        className="w-full rounded-md flex items-center gap-4 px-4 py-4 capitalize text-white hover:bg-blue-gray-500"
-                    >
-                        <AiOutlineLogout />
-                        Logout
-                    </button>
-                </Link>
+                <button
+                    onClick={handleLogOut}
+                    type="button"
+                    className="w-full rounded-md flex items-center gap-4 px-4 py-4 capitalize text-white hover:bg-blue-gray-500"
+                >
+                    <AiOutlineLogout />
+                    Logout
+                </button>
             </div>
         </aside>
     );
