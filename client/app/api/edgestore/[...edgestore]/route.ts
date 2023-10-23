@@ -7,6 +7,9 @@ const edgeStoreRouter = es.router({
     myPublicImages: es.imageBucket().beforeDelete(({ ctx, fileInfo }) => {
         return true;
     }),
+    myPublicXlsxFiles: es.fileBucket().beforeDelete(({ ctx, fileInfo }) => {
+        return true;
+    }),
 });
 
 const handler = createEdgeStoreNextHandler({

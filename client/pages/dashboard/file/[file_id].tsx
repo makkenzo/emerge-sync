@@ -37,6 +37,7 @@ const FilePage = () => {
     const importExcel = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             const file = e.target.files[0];
+            console.log(file);
 
             const reader = new FileReader();
             reader.readAsBinaryString(file);
@@ -47,6 +48,7 @@ const FilePage = () => {
                 const sheet = workbook.Sheets[sheetName];
                 const parsedData = XLSX.utils.sheet_to_json(sheet);
                 setData(parsedData);
+                console.log(parsedData);
             };
         }
     };

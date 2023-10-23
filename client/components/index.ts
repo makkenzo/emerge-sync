@@ -4,5 +4,14 @@ import SocialMediaButtons from './SocialMediaButtons';
 import EditProfileInfoModal from './EditProfileInfoModal';
 import DeleteButtonModal from './DeleteButtonModal';
 import EditProfilePictureModal from './EditProfilePictureModal';
+import AddFileModal from './AddFileModal';
 
-export { Sidenav, DeleteButtonModal, ProfileInfo, SocialMediaButtons, EditProfileInfoModal, EditProfilePictureModal };
+export {
+    Sidenav,
+    DeleteButtonModal,
+    ProfileInfo,
+    SocialMediaButtons,
+    EditProfileInfoModal,
+    EditProfilePictureModal,
+    AddFileModal,
+};

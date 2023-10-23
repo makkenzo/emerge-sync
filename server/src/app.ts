@@ -6,6 +6,10 @@ import dotenv from 'dotenv';
 import userRouter from './routes/user.routes';
 import documentRouter from './routes/document.routes';
 
+import multer from 'multer';
+import xlsx from 'xlsx';
+import DocumentModel from './models/document.model';
+
 dotenv.config();
 
 const app = express();

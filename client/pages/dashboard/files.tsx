@@ -1,4 +1,4 @@
-import { AiFillEdit } from 'react-icons/ai';
+import { AiFillEdit, AiFillFileAdd } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentPage } from '@/redux/slices/fileSlice';
 import { RootState } from '@/redux/store';
@@ -7,13 +7,20 @@ import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react
 
 import { filesTableData } from '@/data/files-table-data';
 
-import { DeleteButtonModal, Sidenav } from '@/components';
+import { AddFileModal, DeleteButtonModal, Sidenav } from '@/components';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
+import { Button } from 'flowbite-react';
+import { useState, useEffect } from 'react';
+import { UserData } from '@/types';
+import axios from 'axios';
 
 const Files = () => {
+    const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+    const [userData, setUserData] = useState<UserData>();
+
     const dispatch = useDispatch();
 
     const currentPage = useSelector((state: RootState) => state.files.currentPage);
@@ -28,6 +35,24 @@ const Files = () => {
     const handlePageChange = (newPage: number) => {
         dispatch(setCurrentPage(newPage));
     };
+
+    const handleAddFile = () => {
+        setIsOpenModal(true);
+    };
+
+    const closeModal = () => {
+        setIsOpenModal(false);
+    };
+
+    useEffect(() => {
+        const userId = localStorage.getItem('userId');
+
+        try {
+            axios.get(`http://localhost:5000/api/v1/users/${userId}`).then((response) => {
+                setUserData(response.data);
+            });
+        } catch (error) {}
+    }, []);
 
     return (
         <>
@@ -128,9 +153,16 @@ const Files = () => {
                                 </button>
                             </div>
                         </div>
+                        <div className="flex justify-end">
+                            <Button onClick={handleAddFile}>
+                                <AiFillFileAdd size={15} className="mr-2" />
+                                Добавить
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
+            {userData && <AddFileModal isModalOpen={isModalOpen} closeModal={closeModal} userData={userData} />}
         </>
     );
 };

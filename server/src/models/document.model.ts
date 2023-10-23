@@ -2,14 +2,14 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface DocumentDocument extends Document {
     file: string;
-    filePath: string;
+    data: Buffer;
     assignedTo: string;
     date: Date;
 }
 
 const documentSchema = new Schema<DocumentDocument>({
     file: { type: String, required: true, unique: true },
-    filePath: { type: String, required: true, unique: true },
+    data: { type: Buffer, required: true },
     assignedTo: { type: String, required: true },
     date: { type: Date },
 });
