@@ -30,3 +30,14 @@ export type ProfileIndoModalTypes = {
     closeModal: () => void;
     userData: UserData;
 };
+
+// export type DocumentType = {
+//     fieldname: string;
+//     originalname: string;
+//     encoding: string;
+//     mimetype: string;
+//     destination: string;
+//     filename: string;
+//     path: string;
+//     size: number;
+// };

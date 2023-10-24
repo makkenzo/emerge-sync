@@ -1,29 +1,12 @@
 import { useEdgeStore } from '@/lib/edgestore';
-import { setFile, setUrl } from '@/redux/slices/pfpSlice';
-import { RootState } from '@/redux/store';
 import { ProfileIndoModalTypes } from '@/types';
 import axios from 'axios';
 import { Button, FileInput, Label, Modal, TextInput } from 'flowbite-react';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-type DocumentType = {
-    fieldname: string;
-    originalname: string;
-    encoding: string;
-    mimetype: string;
-    destination: string;
-    filename: string;
-    path: string;
-    size: number;
-};
+import { ChangeEvent, useState } from 'react';
 
 const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTypes) => {
-    const [data, setData] = useState<DocumentType[]>([]);
     const [file, setFile] = useState<File>();
     const [assignedTo, setAssignedTo] = useState<string>();
-
-    const { edgestore } = useEdgeStore();
 
     const handleSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
@@ -38,18 +21,14 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
                 formData.append('files', file);
 
                 const uploadFile = await axios.post(`http://localhost:5000/api`, formData).then((res) => {
+                    console.log(res.data[0]);
+
                     axios.post(`http://localhost:5000/api/v1/documents/add-document`, {
                         file: res.data[0].filename,
                         filePath: res.data[0].path,
                         assignedTo: !assignedTo ? userData.username : assignedTo,
                     });
                 });
-
-                // await axios.post(`http://localhost:5000/api/v1/documents/add-document`, {
-                //     file: data[0].filename,
-                //     filePath: data[0].path,
-                //     assignedTo: assignedTo,
-                // });
 
                 closeModal();
                 // window.location.reload();
@@ -58,29 +37,6 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
             }
         }
     };
-    // useEffect(() => {
-    //     const response = async () => {
-    //         await axios.post(`http://localhost:5000/api/v1/documents/add-document`, {
-    //             file: data?.[0].filename,
-    //             filePath: data?.[0].path,
-    //             assignedTo: assignedTo,
-    //         });
-    //     };
-
-    //     response();
-    // }, [data]);
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const response = await axios.post(`http://localhost:5000/api/v1/documents/add-document`, {
-    //             file: data?.[0].filename,
-    //             filePath: data?.[0].path,
-    //             assignedTo: assignedTo,
-    //         });
-    //     };
-
-    //     fetchData();
-    // }, [fileSent]);
 
     return (
         <Modal show={isModalOpen} popup onClose={closeModal}>

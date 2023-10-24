@@ -19,18 +19,14 @@ export const getDocument = async (req: Request, res: Response) => {
 
 export const addDocument = async (req: Request, res: Response) => {
     try {
-        console.log(`${Date.now()}: ${req.body.file}`);
-
         const { file, filePath, assignedTo } = req.body;
 
-        // Проверяем, что обязательные поля указаны в теле запроса
+        console.log(file, file, assignedTo);
+
         if (!file || !filePath || !assignedTo) {
             return res.status(400).json({ message: 'Missing required fields.' });
         }
 
-        console.log(Date.now());
-
-        // Создаем новый документ на основе модели DocumentModel
         const newDocument = new DocumentModel({
             file,
             filePath,
@@ -38,7 +34,6 @@ export const addDocument = async (req: Request, res: Response) => {
             date: Date.now(),
         });
 
-        // Сохраняем документ в базу данных
         await newDocument.save();
 
         return res.status(201).json(newDocument);
