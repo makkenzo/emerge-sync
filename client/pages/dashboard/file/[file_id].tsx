@@ -47,28 +47,38 @@ const FilePage = () => {
                         </CardHeader>
                         <CardBody className="px-0 pt-0 pb-2">
                             {document && document.length > 0 ? (
-                                <table className="table-auto">
-                                    <thead>
-                                        <tr>
-                                            {Object.keys(document[0]).map((header, index) => (
-                                                <th key={index} className="px-4 py-2">
-                                                    {header}
-                                                </th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {document.map((row, rowIndex) => (
-                                            <tr key={rowIndex}>
-                                                {Object.keys(row).map((key, cellIndex) => (
-                                                    <td key={cellIndex} className="border px-4 py-2">
-                                                        {row[key]}
-                                                    </td>
+                                <div className="w-full h-[815px] overflow-x-auto">
+                                    <table className="table-auto w-max">
+                                        <thead>
+                                            <tr>
+                                                {Object.keys(document[0]).map((header, index) => (
+                                                    <th
+                                                        key={index}
+                                                        className="border-b border-blue-gray-50 px-5 py-3 text-left"
+                                                    >
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-[11px] font-bold uppercase text-blue-gray-400"
+                                                        >
+                                                            {header}
+                                                        </Typography>
+                                                    </th>
                                                 ))}
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {document.map((row, rowIndex) => (
+                                                <tr key={rowIndex} className="border-b border-blue-gray-100">
+                                                    {Object.keys(row).map((key, cellIndex) => (
+                                                        <td key={cellIndex} className="border px-4 py-2">
+                                                            {row[key]}
+                                                        </td>
+                                                    ))}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             ) : (
                                 <p>No data available</p>
                             )}
