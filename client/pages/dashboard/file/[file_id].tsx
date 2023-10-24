@@ -8,8 +8,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from 'react';
 
 import * as XLSX from 'xlsx';
-const license =
-    'MjEzYzA4NDg5NmMwYjViMmFiM2RhMjlmMTdjMmUxMTU1MGE3YmE0ZmFhNGFmMzVjNDg2ZDE4MDcyNzNjODA5YzNkNzZlYTczMTkxYTY5YTBkMGNlYmJhYmIxYzU0NDE3M2ViZWIyZWMxZjliNGI4MDNkODFmOGFlNTliMWZhMGYsZXlKdVlXMWxJam9pU25Od2NtVmhaSE5vWldWMElpd2laR0YwWlNJNk1UWTVPREUwTVRJME5pd2laRzl0WVdsdUlqcGJJbXB6Y0hKbFlXUnphR1ZsZEM1amIyMGlMQ0pqYjJSbGMyRnVaR0p2ZUM1cGJ5SXNJbXB6YUdWc2JDNXVaWFFpTENKamMySXVZWEJ3SWl3aWQyVmlJaXdpYkc5allXeG9iM04wSWwwc0luQnNZVzRpT2lJek5DSXNJbk5qYjNCbElqcGJJblkzSWl3aWRqZ2lMQ0oyT1NJc0luWXhNQ0lzSW1Ob1lYSjBjeUlzSW1admNtMXpJaXdpWm05eWJYVnNZU0lzSW5CaGNuTmxjaUlzSW5KbGJtUmxjaUlzSW1OdmJXMWxiblJ6SWl3aWFXMXdiM0owSWl3aVltRnlJaXdpZG1Gc2FXUmhkR2x2Ym5NaUxDSnpaV0Z5WTJnaUxDSndjbWx1ZENJc0luTm9aV1YwY3lKZExDSmtaVzF2SWpwMGNuVmxmUT09';
 
 const FilePage = () => {
     const router = useRouter();

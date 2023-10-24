@@ -35,7 +35,7 @@ const Sidenav = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
 
-        router.push('/');
+        router.push('/auth');
     };
 
     return (

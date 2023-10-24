@@ -7,6 +7,7 @@ import userRouter from './routes/user.routes';
 import documentRouter from './routes/document.routes';
 
 import multer from 'multer';
+import path from 'path';
 import xlsx from 'xlsx';
 import DocumentModel from './models/document.model';
 
@@ -23,6 +24,22 @@ app.use(express.json());
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/documents', documentRouter);
+
+const storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, path.join(__dirname, 'uploads'));
+    },
+    filename: function (req, file, callback) {
+        callback(null, file.originalname);
+    },
+});
+
+// Set storage options:
+const upload = multer({ storage: storage });
+
+app.post('/api', upload.array('files'), (req, res) => {
+    res.json(req.files);
+});
 
 app.use((req, res) => {
     res.status(404).json({ message: 'Route not found' });

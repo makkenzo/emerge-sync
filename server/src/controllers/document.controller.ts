@@ -19,6 +19,8 @@ export const getDocument = async (req: Request, res: Response) => {
 
 export const addDocument = async (req: Request, res: Response) => {
     try {
+        console.log(`${Date.now()}: ${req.body.file}`);
+
         const { file, filePath, assignedTo } = req.body;
 
         // Проверяем, что обязательные поля указаны в теле запроса
