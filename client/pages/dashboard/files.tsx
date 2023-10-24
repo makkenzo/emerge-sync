@@ -139,7 +139,7 @@ const Files = () => {
                                                             >
                                                                 <AiFillEdit size={20} />
                                                             </Link>
-                                                            <DeleteButtonModal file={file.file} />
+                                                            <DeleteButtonModal file={file.file} fileId={file._id} />
                                                         </div>
                                                     </td>
                                                 </tr>

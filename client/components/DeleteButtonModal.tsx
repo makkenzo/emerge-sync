@@ -6,10 +6,17 @@ import { Button, Modal } from 'flowbite-react';
 
 import { AiFillDelete } from 'react-icons/ai';
 import { PiWarningCircleBold } from 'react-icons/pi';
+import axios from 'axios';
 
-const DeleteButtonModal = ({ file }: { file: string }) => {
+const DeleteButtonModal = ({ file, fileId }: { file: string; fileId: string }) => {
     const [openModal, setOpenModal] = useState<string | undefined>();
     const props = { openModal, setOpenModal };
+
+    const handleDeleteDocument = async () => {
+        const response = await axios.delete(`http://localhost:5000/api/v1/documents/delete-document/${fileId}`);
+
+        window.location.reload();
+    };
 
     return (
         <>
@@ -25,7 +32,7 @@ const DeleteButtonModal = ({ file }: { file: string }) => {
                             Вы уверены, что хотите удалить файл "{file}"?
                         </h3>
                         <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={() => props.setOpenModal(undefined)}>
+                            <Button color="failure" onClick={handleDeleteDocument}>
                                 Да, я уверен
                             </Button>
                             <Button color="gray" onClick={() => props.setOpenModal(undefined)}>
