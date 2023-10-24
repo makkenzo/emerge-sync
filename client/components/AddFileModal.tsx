@@ -20,9 +20,7 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
                 const formData = new FormData();
                 formData.append('files', file);
 
-                const uploadFile = await axios.post(`http://localhost:5000/api`, formData).then((res) => {
-                    console.log(res.data[0]);
-
+                const uploadFile = await axios.post(`http://localhost:5000/upload-file`, formData).then((res) => {
                     axios.post(`http://localhost:5000/api/v1/documents/add-document`, {
                         file: res.data[0].filename,
                         filePath: res.data[0].path,

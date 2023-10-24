@@ -21,10 +21,15 @@ export const addDocument = async (req: Request, res: Response) => {
     try {
         const { file, filePath, assignedTo } = req.body;
 
-        console.log(file, file, assignedTo);
-
         if (!file || !filePath || !assignedTo) {
             return res.status(400).json({ message: 'Missing required fields.' });
+        }
+
+        // Check if a document with the same filename already exists
+        const existingDocument = await DocumentModel.findOne({ file });
+
+        if (existingDocument) {
+            return res.status(409).json({ message: 'A document with the same filename already exists.' });
         }
 
         const newDocument = new DocumentModel({
