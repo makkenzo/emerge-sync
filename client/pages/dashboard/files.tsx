@@ -45,6 +45,8 @@ const Files = () => {
         setIsOpenModal(false);
     };
 
+    const isSinglePage = userFiles.length <= itemsPerPage;
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -88,58 +90,64 @@ const Files = () => {
                             <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
                                 Файлы
                             </CardHeader>
-                            <CardBody className="px-0 pt-0 pb-2">
-                                <table className="w-full min-w-[640px] table-auto">
-                                    <thead>
-                                        <tr>
-                                            {['имя', '', 'прикреплен к', 'действие'].map((el) => (
-                                                <th
-                                                    key={el}
-                                                    className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                                                >
-                                                    <Typography
-                                                        variant="small"
-                                                        className="text-[11px] font-bold uppercase text-blue-gray-400"
+                            {userFiles.length === 0 ? (
+                                <div className="text-center mb-4">
+                                    <p>Файлов нет</p>
+                                </div>
+                            ) : (
+                                <CardBody className="px-0 pt-0 pb-2">
+                                    <table className="w-full min-w-[640px] table-auto">
+                                        <thead>
+                                            <tr>
+                                                {['имя', '', 'прикреплен к', 'действие'].map((el) => (
+                                                    <th
+                                                        key={el}
+                                                        className="border-b border-blue-gray-50 py-3 px-5 text-left"
                                                     >
-                                                        {el}
-                                                    </Typography>
-                                                </th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {userFiles.map((file, index) => (
-                                            <tr key={index} className="border-b border-blue-gray-100">
-                                                <td className="py-3 px-5 text-left">{file.file}</td>
-                                                <td className="py-3 px-5 text-left"></td>
-                                                <td className="py-3 px-5 text-left flex items-center">
-                                                    <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                                                        {/* <Image
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-[11px] font-bold uppercase text-blue-gray-400"
+                                                        >
+                                                            {el}
+                                                        </Typography>
+                                                    </th>
+                                                ))}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {userFiles.map((file, index) => (
+                                                <tr key={index} className="border-b border-blue-gray-100">
+                                                    <td className="py-3 px-5 text-left">{file.file}</td>
+                                                    <td className="py-3 px-5 text-left"></td>
+                                                    <td className="py-3 px-5 text-left flex items-center">
+                                                        <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
+                                                            {/* <Image
                                                             src={file.imgAssignedTo}
                                                             alt="pfp"
                                                             width={80}
                                                             height={80}
                                                             className="object-contain"
                                                         /> */}
-                                                    </div>
-                                                    {file.assignedTo}
-                                                </td>
-                                                <td className="py-3 px-5 text-left">
-                                                    <div className="flex">
-                                                        <Link
-                                                            href={`/dashboard/file/${file._id}`}
-                                                            className="mr-2 text-[#56CCF2] hover:text-black"
-                                                        >
-                                                            <AiFillEdit size={20} />
-                                                        </Link>
-                                                        <DeleteButtonModal file={file.file} />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </CardBody>
+                                                        </div>
+                                                        {file.assignedTo}
+                                                    </td>
+                                                    <td className="py-3 px-5 text-left">
+                                                        <div className="flex">
+                                                            <Link
+                                                                href={`/dashboard/file/${file._id}`}
+                                                                className="mr-2 text-[#56CCF2] hover:text-black"
+                                                            >
+                                                                <AiFillEdit size={20} />
+                                                            </Link>
+                                                            <DeleteButtonModal file={file.file} />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </CardBody>
+                            )}
                         </Card>
                         <div className="flex flex-col items-center justify-center">
                             <span className="text-sm text-gray-700 dark:text-gray-400">
@@ -166,7 +174,7 @@ const Files = () => {
                                 <button
                                     className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-[#607d8b] border-0 border-l border-gray-700 rounded-r hover:bg-[#4c6470]"
                                     onClick={() => handlePageChange(currentPage + 1)}
-                                    disabled={currentPage === totalPages}
+                                    disabled={currentPage === totalPages || isSinglePage}
                                 >
                                     Next
                                 </button>
