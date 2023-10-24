@@ -29,7 +29,7 @@ export const addDocument = async (req: Request, res: Response) => {
         const existingDocument = await DocumentModel.findOne({ file });
 
         if (existingDocument) {
-            return res.status(409).json({ message: 'A document with the same filename already exists.' });
+            return res.status(400).json({ message: 'Документ с таким именем файла уже существует.' });
         }
 
         const newDocument = new DocumentModel({

@@ -57,10 +57,7 @@ const Auth = () => {
                 <title>EmergeSync | Authentication</title>
             </Head>
             <ToastContainer position="top-center" />
-            <div
-                className="min-h-screen bg-cover bg-center bg-[#0d6e6d] flex items-center justify-center"
-                // style={{ backgroundImage: `url(/login-bg.png)` }}
-            >
+            <div className="min-h-screen bg-cover bg-center bg-[#0d6e6d] flex items-center justify-center">
                 <div className="bg-white p-8 rounded-md shadow-md auth__neumorphism w-[400px]">
                     <h2 className="text-3xl font-semibold mb-8 text-white text-center">Авторизация</h2>
                     <div className="mb-4 flex items-center relative">
