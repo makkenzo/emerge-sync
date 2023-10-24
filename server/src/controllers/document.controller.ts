@@ -87,3 +87,20 @@ export const deleteDocument = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Failed to delete document.' });
     }
 };
+
+export const getAllDocuments = async (req: Request, res: Response) => {
+    try {
+        // Use Mongoose's find() method to retrieve all documents
+        const documents = await DocumentModel.find();
+
+        // Check if there are no documents
+        if (documents.length === 0) {
+            return res.status(404).json({ message: 'No documents found.' });
+        }
+
+        // Return the list of documents as a JSON response
+        return res.status(200).json(documents);
+    } catch (error) {
+        return res.status(500).json({ message: 'Failed to get documents' });
+    }
+};

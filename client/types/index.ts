@@ -31,13 +31,10 @@ export type ProfileIndoModalTypes = {
     userData: UserData;
 };
 
-// export type DocumentType = {
-//     fieldname: string;
-//     originalname: string;
-//     encoding: string;
-//     mimetype: string;
-//     destination: string;
-//     filename: string;
-//     path: string;
-//     size: number;
-// };
+export type Document = {
+    _id: string;
+    file: string;
+    filePath: string;
+    assignedTo: string;
+    date: Date;
+};

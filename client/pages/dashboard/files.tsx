@@ -14,12 +14,13 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { Button } from 'flowbite-react';
 import { useState, useEffect } from 'react';
-import { UserData } from '@/types';
+import { Document, UserData } from '@/types';
 import axios from 'axios';
 
 const Files = () => {
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const [userData, setUserData] = useState<UserData>();
+    const [userFiles, setUserFiles] = useState<Document[]>([]);
 
     const dispatch = useDispatch();
 
@@ -45,13 +46,27 @@ const Files = () => {
     };
 
     useEffect(() => {
-        const userId = localStorage.getItem('userId');
+        const fetchData = async () => {
+            try {
+                const userId = localStorage.getItem('userId');
 
-        try {
-            axios.get(`http://localhost:5000/api/v1/users/${userId}`).then((response) => {
-                setUserData(response.data);
-            });
-        } catch (error) {}
+                const userResponse = await axios.get(`http://localhost:5000/api/v1/users/${userId}`);
+                const userData = userResponse.data;
+                setUserData(userData);
+
+                const documentsResponse = await axios.get('http://localhost:5000/api/v1/documents/get-documents');
+                const documents: Document[] = documentsResponse.data;
+
+                const filteredDocuments = documents.filter((doc) => doc.assignedTo === userData?.username);
+                setUserFiles(filteredDocuments);
+
+                console.log(userFiles);
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     return (
@@ -63,6 +78,12 @@ const Files = () => {
                 <Sidenav />
                 <div className="container mx-auto pt-8">
                     <div className="mt-4 flex flex-col justify-between h-[880px]">
+                        {/* {userFiles && userFiles.length > 0 && (
+                            <div>
+                                <h1>{userFiles[0].file}</h1>
+                            </div>
+                        )} */}
+
                         <Card>
                             <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
                                 Файлы
@@ -87,19 +108,19 @@ const Files = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {currentItems.map((file, index) => (
+                                        {userFiles.map((file, index) => (
                                             <tr key={index} className="border-b border-blue-gray-100">
                                                 <td className="py-3 px-5 text-left">{file.file}</td>
                                                 <td className="py-3 px-5 text-left"></td>
                                                 <td className="py-3 px-5 text-left flex items-center">
                                                     <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                                                        <Image
+                                                        {/* <Image
                                                             src={file.imgAssignedTo}
                                                             alt="pfp"
                                                             width={80}
                                                             height={80}
                                                             className="object-contain"
-                                                        />
+                                                        /> */}
                                                     </div>
                                                     {file.assignedTo}
                                                 </td>
@@ -128,12 +149,10 @@ const Files = () => {
                                 </span>{' '}
                                 по{' '}
                                 <span className="font-semibold text-gray-900 dark:text-white">
-                                    {Math.min(indexOfLastItem, filesTableData.length)}
+                                    {Math.min(indexOfLastItem, userFiles.length)}
                                 </span>{' '}
                                 из{' '}
-                                <span className="font-semibold text-gray-900 dark:text-white">
-                                    {filesTableData.length}
-                                </span>{' '}
+                                <span className="font-semibold text-gray-900 dark:text-white">{userFiles.length}</span>{' '}
                                 записей
                             </span>
                             <div className="inline-flex mt-2 xs:mt-0">
