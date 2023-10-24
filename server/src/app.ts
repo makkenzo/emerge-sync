@@ -8,8 +8,6 @@ import documentRouter from './routes/document.routes';
 
 import multer from 'multer';
 import path from 'path';
-import xlsx from 'xlsx';
-import DocumentModel from './models/document.model';
 
 dotenv.config();
 
