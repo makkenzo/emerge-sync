@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import DocumentModel from '../models/document.model';
 import fs from 'fs';
-import path from 'path';
+import xlsx from 'xlsx-populate';
+
+// interface Document {
+//     file: string;
+//     filePath: string;
+//     assignedTo: string;
+//     date: Date;
+// }
 
 export const getDocument = async (req: Request, res: Response) => {
     try {
@@ -13,7 +20,29 @@ export const getDocument = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Document not found.' });
         }
 
-        return res.status(200).json(document);
+        // Check if the filePath field exists in the document object
+        if (!document.filePath) {
+            return res.status(400).json({ message: 'File path not provided.' });
+        }
+
+        const workbook = await xlsx.fromFileAsync(document.filePath);
+
+        const worksheet = workbook.sheet(0);
+        const data = worksheet.usedRange().value();
+
+        // Assuming the first row in the data contains headers
+        const headers = data[0];
+
+        // Map the data into an array of objects
+        const jsonData = data.slice(1).map((row) => {
+            const rowObject = {};
+            row.forEach((cell, index) => {
+                rowObject[headers[index]] = cell;
+            });
+            return rowObject;
+        });
+
+        return res.status(200).json(jsonData);
     } catch (error) {
         return res.status(500).json({ message: 'Failed to get document' });
     }
