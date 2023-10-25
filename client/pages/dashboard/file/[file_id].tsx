@@ -13,12 +13,14 @@ const FilePage = () => {
     const fileId = router.query.file_id;
 
     const [document, setDocument] = useState<{ [key: string]: any }[]>([]);
+    const [editCell, setEditCell] = useState({ rowIndex: -1, colIndex: -1 });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/v1/documents/get-document/${fileId}`);
                 setDocument(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error(error);
             }
@@ -31,6 +33,8 @@ const FilePage = () => {
 
     const handleSave = async () => {
         try {
+            console.log(document);
+
             await axios.put(`http://localhost:5000/api/v1/documents/update-document/${fileId}`, document);
             window.location.reload();
         } catch (error) {
@@ -80,7 +84,7 @@ const FilePage = () => {
                                         </tbody>
                                     </table>
                                 ) : (
-                                    <h1>nothing</h1>
+                                    <h1>No data</h1>
                                 )}
                             </div>
                         </CardBody>

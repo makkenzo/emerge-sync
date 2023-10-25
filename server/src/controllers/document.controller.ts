@@ -3,6 +3,7 @@ import DocumentModel from '../models/document.model';
 import fs from 'fs';
 import xlsx from 'xlsx-populate';
 import * as xlsx2 from 'xlsx';
+import * as excel from 'exceljs';
 
 // interface Document {
 //     file: string;
@@ -139,7 +140,6 @@ export const updateDocument = async (req: Request, res: Response) => {
     try {
         const docId = req.params.id;
         const updatedData = req.body; // The updated JSON data
-        // console.log(updatedData);
 
         const document = await DocumentModel.findById(docId);
 
@@ -150,25 +150,38 @@ export const updateDocument = async (req: Request, res: Response) => {
         // Assuming the filePath field exists in the document object
         const filePath = document.filePath;
 
-        // Open the existing XLSX workbook
-        const workbook = await xlsx.fromFileAsync(filePath);
+        // Load the existing XLSX workbook
+        const workbook = new excel.Workbook();
+        await workbook.xlsx.readFile(filePath);
 
-        // Get the first sheet in the workbook
-        const sheet = workbook.sheet(0);
+        // Assuming there's only one worksheet in the workbook
+        const sheet = workbook.getWorksheet(1);
+
+        if (!sheet) {
+            return res.status(500).json({ message: 'Worksheet not found.' });
+        }
 
         // Clear the existing sheet data
-        sheet.usedRange().clear();
+        sheet.eachRow((row, rowNumber) => {
+            if (rowNumber !== 1) {
+                row.eachCell((cell) => {
+                    cell.value = null;
+                });
+            }
+        });
 
         // Write the updated data to the sheet
         updatedData.forEach((rowData, rowIndex) => {
+            const row = sheet.getRow(rowIndex + 1);
+
             Object.keys(rowData).forEach((key, cellIndex) => {
                 const cellValue = rowData[key];
-                sheet.cell(rowIndex + 1, cellIndex + 1).value(cellValue);
+                row.getCell(cellIndex + 1).value = cellValue;
             });
         });
 
-        // Save the workbook back to the original file path
-        await workbook.toFileAsync(filePath);
+        // Save the updated workbook back to the original file path
+        await workbook.xlsx.writeFile(filePath);
 
         return res.status(200).json({ message: 'Document updated successfully' });
     } catch (error) {
