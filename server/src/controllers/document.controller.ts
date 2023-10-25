@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import DocumentModel from '../models/document.model';
 import fs from 'fs';
 import xlsx from 'xlsx-populate';
+import * as xlsx2 from 'xlsx';
 
 // interface Document {
 //     file: string;
@@ -131,5 +132,47 @@ export const getAllDocuments = async (req: Request, res: Response) => {
         return res.status(200).json(documents);
     } catch (error) {
         return res.status(500).json({ message: 'Failed to get documents' });
+    }
+};
+
+export const updateDocument = async (req: Request, res: Response) => {
+    try {
+        const docId = req.params.id;
+        const updatedData = req.body; // The updated JSON data
+        // console.log(updatedData);
+
+        const document = await DocumentModel.findById(docId);
+
+        if (!document) {
+            return res.status(404).json({ message: 'Document not found.' });
+        }
+
+        // Assuming the filePath field exists in the document object
+        const filePath = document.filePath;
+
+        // Open the existing XLSX workbook
+        const workbook = await xlsx.fromFileAsync(filePath);
+
+        // Get the first sheet in the workbook
+        const sheet = workbook.sheet(0);
+
+        // Clear the existing sheet data
+        sheet.usedRange().clear();
+
+        // Write the updated data to the sheet
+        updatedData.forEach((rowData, rowIndex) => {
+            Object.keys(rowData).forEach((key, cellIndex) => {
+                const cellValue = rowData[key];
+                sheet.cell(rowIndex + 1, cellIndex + 1).value(cellValue);
+            });
+        });
+
+        // Save the workbook back to the original file path
+        await workbook.toFileAsync(filePath);
+
+        return res.status(200).json({ message: 'Document updated successfully' });
+    } catch (error) {
+        console.error('An error occurred:', error);
+        return res.status(500).json({ message: 'Failed to update document.' });
     }
 };

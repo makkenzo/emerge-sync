@@ -8,6 +8,8 @@ documentRouter.get('/get-documents', DocumentController.getAllDocuments);
 
 documentRouter.post('/add-document', DocumentController.addDocument);
 
+documentRouter.put('/update-document/:id', DocumentController.updateDocument);
+
 documentRouter.delete('/delete-document/:id', DocumentController.deleteDocument);
 
 export default documentRouter;
