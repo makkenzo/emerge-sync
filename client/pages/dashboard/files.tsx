@@ -60,7 +60,11 @@ const Files = () => {
                 const documents: Document[] = documentsResponse.data;
 
                 const filteredDocuments = documents.filter((doc) => doc.assignedTo === userData?.username);
-                setUserFiles(filteredDocuments);
+                if (userData.role === 'admin') {
+                    setUserFiles(documents);
+                } else {
+                    setUserFiles(filteredDocuments);
+                }
 
                 console.log(userFiles);
             } catch (error) {

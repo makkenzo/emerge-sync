@@ -91,49 +91,55 @@ const FilePage = () => {
                             </div>
                         </CardHeader>
                         <CardBody className="px-0 pt-0 pb-2 gap-4">
-                            <div className="w-full h-[795px] overflow-x-auto">
+                            <div className="w-[1300px] h-[795px] overflow-x-auto flex mx-4">
                                 {document && document.length > 0 ? (
-                                    <table className="w-max table-auto">
-                                        <tbody>
-                                            <tr className="border border-blue-gray-100">
-                                                {Object.keys(document[0]).map((key, index) => (
-                                                    <td key={index} className="py-3 px-5 text-left border">
-                                                        {key}
-                                                    </td>
-                                                ))}
-                                            </tr>
-                                            {document.map((item, rowIndex) => (
-                                                <tr key={rowIndex} className="border border-blue-gray-100">
-                                                    {Object.values(item).map((value, colIndex) => (
-                                                        <td
-                                                            key={colIndex}
-                                                            className={`py-3 px-5 text-left border ${
-                                                                isEditing &&
-                                                                isEditing.row === rowIndex &&
-                                                                isEditing.col === colIndex
-                                                                    ? 'bg-yellow-100'
-                                                                    : ''
-                                                            }`}
-                                                            onDoubleClick={() => handleDoubleClick(rowIndex, colIndex)}
-                                                        >
-                                                            {isEditing &&
-                                                            isEditing.row === rowIndex &&
-                                                            isEditing.col === colIndex ? (
-                                                                <input
-                                                                    type="text"
-                                                                    value={editedData}
-                                                                    onChange={(e) => setEditedData(e.target.value)}
-                                                                    onBlur={handleBlur}
-                                                                />
-                                                            ) : (
-                                                                value
-                                                            )}
+                                    <>
+                                        <table className="w-max table-auto">
+                                            <tbody>
+                                                <tr className="border border-blue-gray-100">
+                                                    {Object.keys(document[0]).map((key, index) => (
+                                                        <td key={index} className="py-3 px-5 text-left border">
+                                                            {key}
                                                         </td>
                                                     ))}
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+
+                                                {document.map((item, rowIndex) => (
+                                                    <tr key={rowIndex} className="border border-blue-gray-100">
+                                                        {Object.values(item).map((value, colIndex) => (
+                                                            <td
+                                                                key={colIndex}
+                                                                className={`py-3 px-5 text-left border ${
+                                                                    isEditing &&
+                                                                    isEditing.row === rowIndex &&
+                                                                    isEditing.col === colIndex
+                                                                        ? 'bg-yellow-100'
+                                                                        : ''
+                                                                }`}
+                                                                onDoubleClick={() =>
+                                                                    handleDoubleClick(rowIndex, colIndex)
+                                                                }
+                                                            >
+                                                                {isEditing &&
+                                                                isEditing.row === rowIndex &&
+                                                                isEditing.col === colIndex ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editedData}
+                                                                        onChange={(e) => setEditedData(e.target.value)}
+                                                                        onBlur={handleBlur}
+                                                                    />
+                                                                ) : (
+                                                                    value
+                                                                )}
+                                                            </td>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                        {/* <Button className="h-[40px] ml-3 mt-1">Добавить столбец</Button> */}
+                                    </>
                                 ) : (
                                     <h1>No data</h1>
                                 )}
