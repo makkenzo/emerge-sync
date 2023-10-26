@@ -7,6 +7,8 @@ import { Button } from 'flowbite-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from 'react';
+import { PiExport } from 'react-icons/pi';
+import { BiSave } from 'react-icons/bi';
 
 const FilePage = () => {
     const router = useRouter();
@@ -37,7 +39,6 @@ const FilePage = () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/v1/documents/get-document/${fileId}`);
                 setDocument(response.data);
-                // console.log(response.data);
             } catch (error) {
                 console.error(error);
             }
@@ -58,6 +59,10 @@ const FilePage = () => {
         }
     };
 
+    const handleExport = () => {
+        console.log('Export button clicked');
+    };
+
     return (
         <>
             <Head>
@@ -74,8 +79,15 @@ const FilePage = () => {
                             className="mb-8 p-6 flex justify-between items-center"
                         >
                             Документ
-                            <div className="">
-                                <Button onClick={handleSave}>Сохранить</Button>
+                            <div className="flex space-x-4">
+                                <Button onClick={handleExport}>
+                                    <PiExport className="mr-1" size={20} />
+                                    <p>Экспорт</p>
+                                </Button>
+                                <Button color="dark" onClick={handleSave}>
+                                    <BiSave size={20} className="mr-1" />
+                                    <p>Сохранить</p>
+                                </Button>
                             </div>
                         </CardHeader>
                         <CardBody className="px-0 pt-0 pb-2 gap-4">
