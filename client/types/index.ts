@@ -31,7 +31,7 @@ export type ProfileIndoModalTypes = {
     userData: UserData;
 };
 
-export type Document = {
+export type XlsxDocument = {
     _id: string;
     file: string;
     filePath: string;

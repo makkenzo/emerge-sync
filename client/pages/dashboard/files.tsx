@@ -14,13 +14,13 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { Button } from 'flowbite-react';
 import { useState, useEffect } from 'react';
-import { Document, UserData } from '@/types';
+import { XlsxDocument, UserData } from '@/types';
 import axios from 'axios';
 
 const Files = () => {
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const [userData, setUserData] = useState<UserData>();
-    const [userFiles, setUserFiles] = useState<Document[]>([]);
+    const [userFiles, setUserFiles] = useState<XlsxDocument[]>([]);
 
     const dispatch = useDispatch();
 
@@ -57,7 +57,7 @@ const Files = () => {
                 setUserData(userData);
 
                 const documentsResponse = await axios.get('http://localhost:5000/api/v1/documents/get-documents');
-                const documents: Document[] = documentsResponse.data;
+                const documents: XlsxDocument[] = documentsResponse.data;
 
                 const filteredDocuments = documents.filter((doc) => doc.assignedTo === userData?.username);
                 if (userData.role === 'admin') {

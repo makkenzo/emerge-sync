@@ -8,6 +8,7 @@ import documentRouter from './routes/document.routes';
 
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -38,6 +39,21 @@ const upload = multer({ storage: storage });
 
 app.post('/upload-file', upload.array('files'), (req, res) => {
     res.json(req.files);
+});
+
+app.get('/export-document/:filePath', (req, res) => {
+    const filePath = req.params.filePath;
+
+    // Определяем полный путь к файлу
+    const fileFullPath = path.join(__dirname, 'uploads', filePath);
+
+    // Проверяем, существует ли файл
+    if (fs.existsSync(fileFullPath)) {
+        // Отправляем файл как ответ
+        res.download(fileFullPath);
+    } else {
+        res.status(404).send('Файл не найден');
+    }
 });
 
 app.use((req, res) => {

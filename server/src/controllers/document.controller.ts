@@ -152,7 +152,6 @@ export const updateDocument = async (req: Request, res: Response) => {
                 sheet.cell(startRow + index, colIndex + 1).value(data[key]);
             });
         });
-        console.log(updatedData);
 
         await workbook.toFileAsync(document.filePath);
 
@@ -162,57 +161,3 @@ export const updateDocument = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Failed to update document.' });
     }
 };
-
-// export const updateDocument = async (req: Request, res: Response) => {
-//     try {
-//         const docId = req.params.id;
-//         const updatedData = req.body; // The updated JSON data
-
-//         const document = await DocumentModel.findById(docId);
-
-//         if (!document) {
-//             return res.status(404).json({ message: 'Document not found.' });
-//         }
-
-//         // Assuming the filePath field exists in the document object
-//         const filePath = document.filePath;
-
-//         // Load the existing XLSX workbook
-//         const workbook = new excel.Workbook();
-//         await workbook.xlsx.readFile(filePath);
-
-//         // Assuming there's only one worksheet in the workbook
-//         const sheet = workbook.getWorksheet(1);
-
-//         if (!sheet) {
-//             return res.status(500).json({ message: 'Worksheet not found.' });
-//         }
-
-//         // Clear the existing sheet data
-//         sheet.eachRow((row, rowNumber) => {
-//             if (rowNumber !== 1) {
-//                 row.eachCell((cell) => {
-//                     cell.value = null;
-//                 });
-//             }
-//         });
-
-//         // Write the updated data to the sheet
-//         updatedData.forEach((rowData, rowIndex) => {
-//             const row = sheet.getRow(rowIndex + 1);
-
-//             Object.keys(rowData).forEach((key, cellIndex) => {
-//                 const cellValue = rowData[key];
-//                 row.getCell(cellIndex + 1).value = cellValue;
-//             });
-//         });
-
-//         // Save the updated workbook back to the original file path
-//         await workbook.xlsx.writeFile(filePath);
-
-//         return res.status(200).json({ message: 'Document updated successfully' });
-//     } catch (error) {
-//         console.error('An error occurred:', error);
-//         return res.status(500).json({ message: 'Failed to update document.' });
-//     }
-// };

@@ -9,26 +9,29 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from 'react';
 import { PiExport } from 'react-icons/pi';
 import { BiSave } from 'react-icons/bi';
+import { XlsxDocument } from '@/types';
 
 const FilePage = () => {
     const router = useRouter();
     const fileId = router.query.file_id;
 
-    const [document, setDocument] = useState<{ [key: string]: any }[]>([]);
+    const [xlsxDocument, setDocument] = useState<{ [key: string]: any }[]>([]);
 
     const [isEditing, setIsEditing] = useState<{ row: number; col: number } | null>(null);
     const [editedData, setEditedData] = useState<string | number>('');
+    const [allDocuments, setAllDocuments] = useState<XlsxDocument[]>([]);
+    const [filePath, setFilePath] = useState('');
 
     const handleDoubleClick = (rowIndex: number, colIndex: number) => {
         setIsEditing({ row: rowIndex, col: colIndex });
-        setEditedData(document[rowIndex][Object.keys(document[0])[colIndex]]);
+        setEditedData(xlsxDocument[rowIndex][Object.keys(xlsxDocument[0])[colIndex]]);
     };
 
     const handleBlur = () => {
         if (isEditing) {
             const { row, col } = isEditing;
-            const updatedDocument = [...document];
-            updatedDocument[row][Object.keys(document[0])[col]] = editedData;
+            const updatedDocument = [...xlsxDocument];
+            updatedDocument[row][Object.keys(xlsxDocument[0])[col]] = editedData;
             setDocument(updatedDocument);
             setIsEditing(null);
         }
@@ -39,6 +42,9 @@ const FilePage = () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/v1/documents/get-document/${fileId}`);
                 setDocument(response.data);
+
+                const getFilePath = await axios.get('http://localhost:5000/api/v1/documents/get-documents');
+                setAllDocuments(getFilePath.data);
             } catch (error) {
                 console.error(error);
             }
@@ -49,9 +55,19 @@ const FilePage = () => {
         }
     }, [setDocument, fileId]);
 
+    useEffect(() => {
+        if (fileId && allDocuments.length > 0) {
+            const filteredDocument = allDocuments.find((doc) => doc._id === fileId);
+
+            if (filteredDocument) {
+                setFilePath(filteredDocument.file);
+            }
+        }
+    }, [fileId, allDocuments]);
+
     const handleSave = async () => {
         try {
-            await axios.put(`http://localhost:5000/api/v1/documents/update-document/${fileId}`, document);
+            await axios.put(`http://localhost:5000/api/v1/documents/update-document/${fileId}`, xlsxDocument);
             window.location.reload();
         } catch (error) {
             console.error('Failed to save document:', error);
@@ -59,7 +75,9 @@ const FilePage = () => {
     };
 
     const handleExport = () => {
-        console.log('Export button clicked');
+        if (filePath !== '') {
+            window.open(`http://localhost:5000/export-document/${encodeURIComponent(filePath)}`);
+        }
     };
 
     return (
@@ -91,19 +109,19 @@ const FilePage = () => {
                         </CardHeader>
                         <CardBody className="px-0 pt-0 pb-2 gap-4">
                             <div className="w-[1300px] h-[795px] overflow-x-auto flex mx-4">
-                                {document && document.length > 0 ? (
+                                {xlsxDocument && xlsxDocument.length > 0 ? (
                                     <>
                                         <table className="w-max table-auto">
                                             <tbody>
                                                 <tr className="border border-blue-gray-100">
-                                                    {Object.keys(document[0]).map((key, index) => (
+                                                    {Object.keys(xlsxDocument[0]).map((key, index) => (
                                                         <td key={index} className="py-3 px-5 text-left border">
                                                             {key}
                                                         </td>
                                                     ))}
                                                 </tr>
 
-                                                {document.map((item, rowIndex) => (
+                                                {xlsxDocument.map((item, rowIndex) => (
                                                     <tr key={rowIndex} className="border border-blue-gray-100">
                                                         {Object.values(item).map((value, colIndex) => (
                                                             <td
