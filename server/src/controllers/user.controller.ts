@@ -5,10 +5,14 @@ import jwt from 'jsonwebtoken';
 
 export const registerUser = async (req: Request, res: Response) => {
     try {
-        const { username, password, role } = req.body;
+        const { username, password, role, secret } = req.body;
 
         if (!username || !password) {
             return res.status(400).json({ message: 'Username and password are required' });
+        }
+
+        if (secret !== 'secret123') {
+            return res.status(400).json({ message: 'Invalid secret' });
         }
 
         const existingUser = await UserModel.findOne({ username });

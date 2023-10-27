@@ -65,8 +65,6 @@ const Files = () => {
                 } else {
                     setUserFiles(filteredDocuments);
                 }
-
-                console.log(userFiles);
             } catch (error) {
                 console.error('An error occurred:', error);
             }
@@ -84,12 +82,6 @@ const Files = () => {
                 <Sidenav />
                 <div className="container mx-auto pt-8">
                     <div className="mt-4 flex flex-col justify-between h-[880px]">
-                        {/* {userFiles && userFiles.length > 0 && (
-                            <div>
-                                <h1>{userFiles[0].file}</h1>
-                            </div>
-                        )} */}
-
                         <Card>
                             <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
                                 Файлы
@@ -103,7 +95,7 @@ const Files = () => {
                                     <table className="w-full min-w-[640px] table-auto">
                                         <thead>
                                             <tr>
-                                                {['имя', '', 'прикреплен к', 'действие'].map((el) => (
+                                                {['имя', '', 'прикреплен к', 'дата', 'действие'].map((el) => (
                                                     <th
                                                         key={el}
                                                         className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -124,16 +116,10 @@ const Files = () => {
                                                     <td className="py-3 px-5 text-left">{file.file}</td>
                                                     <td className="py-3 px-5 text-left"></td>
                                                     <td className="py-3 px-5 text-left flex items-center">
-                                                        <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                                                            {/* <Image
-                                                            src={file.imgAssignedTo}
-                                                            alt="pfp"
-                                                            width={80}
-                                                            height={80}
-                                                            className="object-contain"
-                                                        /> */}
-                                                        </div>
                                                         {file.assignedTo}
+                                                    </td>
+                                                    <td className="py-3 px-5 text-left">
+                                                        {String(new Date(file.date).toLocaleString())}
                                                     </td>
                                                     <td className="py-3 px-5 text-left">
                                                         <div className="flex">
@@ -153,42 +139,46 @@ const Files = () => {
                                 </CardBody>
                             )}
                         </Card>
-                        <div className="flex flex-col items-center justify-center">
-                            <span className="text-sm text-gray-700 dark:text-gray-400">
-                                Показаны с{' '}
-                                <span className="font-semibold text-gray-900 dark:text-white">
-                                    {indexOfFirstItem + 1}
-                                </span>{' '}
-                                по{' '}
-                                <span className="font-semibold text-gray-900 dark:text-white">
-                                    {Math.min(indexOfLastItem, userFiles.length)}
-                                </span>{' '}
-                                из{' '}
-                                <span className="font-semibold text-gray-900 dark:text-white">{userFiles.length}</span>{' '}
-                                записей
-                            </span>
-                            <div className="inline-flex mt-2 xs:mt-0">
-                                <button
-                                    className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-[#607d8b] rounded-l hover:bg-[#4c6470]"
-                                    onClick={() => handlePageChange(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                >
-                                    Prev
-                                </button>
-                                <button
-                                    className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-[#607d8b] border-0 border-l border-gray-700 rounded-r hover:bg-[#4c6470]"
-                                    onClick={() => handlePageChange(currentPage + 1)}
-                                    disabled={currentPage === totalPages || isSinglePage}
-                                >
-                                    Next
-                                </button>
+                        <div>
+                            <div className="flex flex-col items-center justify-center">
+                                <span className="text-sm text-gray-700 dark:text-gray-400">
+                                    Показаны с{' '}
+                                    <span className="font-semibold text-gray-900 dark:text-white">
+                                        {indexOfFirstItem + 1}
+                                    </span>{' '}
+                                    по{' '}
+                                    <span className="font-semibold text-gray-900 dark:text-white">
+                                        {Math.min(indexOfLastItem, userFiles.length)}
+                                    </span>{' '}
+                                    из{' '}
+                                    <span className="font-semibold text-gray-900 dark:text-white">
+                                        {userFiles.length}
+                                    </span>{' '}
+                                    записей
+                                </span>
+                                <div className="inline-flex mt-2 xs:mt-0">
+                                    <button
+                                        className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-[#607d8b] rounded-l hover:bg-[#4c6470]"
+                                        onClick={() => handlePageChange(currentPage - 1)}
+                                        disabled={currentPage === 1}
+                                    >
+                                        Prev
+                                    </button>
+                                    <button
+                                        className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-[#607d8b] border-0 border-l border-gray-700 rounded-r hover:bg-[#4c6470]"
+                                        onClick={() => handlePageChange(currentPage + 1)}
+                                        disabled={currentPage === totalPages || isSinglePage}
+                                    >
+                                        Next
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex justify-end">
-                            <Button onClick={handleAddFile}>
-                                <AiFillFileAdd size={15} className="mr-2" />
-                                Добавить
-                            </Button>
+                            <div className="flex justify-end">
+                                <Button onClick={handleAddFile}>
+                                    <AiFillFileAdd size={15} className="mr-2" />
+                                    Добавить
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
