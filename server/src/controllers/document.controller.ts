@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import DocumentModel from '../models/document.model';
 import fs from 'fs';
 import xlsx from 'xlsx-populate';
+import UserModel from '../models/user.model';
 
 export const getDocument = async (req: Request, res: Response) => {
     try {
@@ -45,6 +46,12 @@ export const addDocument = async (req: Request, res: Response) => {
 
         if (!file || !filePath || !assignedTo) {
             return res.status(400).json({ message: 'Missing required fields.' });
+        }
+
+        const existingUser = await UserModel.findOne({ username: assignedTo });
+
+        if (!existingUser) {
+            return res.status(400).json({ message: 'Пользователь с таким именем не существует.' });
         }
 
         const existingDocument = await DocumentModel.findOne({ file });
