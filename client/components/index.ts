@@ -5,6 +5,7 @@ import EditProfileInfoModal from './EditProfileInfoModal';
 import DeleteButtonModal from './DeleteButtonModal';
 import EditProfilePictureModal from './EditProfilePictureModal';
 import AddFileModal from './AddFileModal';
+import FunctionModal from './FunctionModal';
 
 export {
     Sidenav,
@@ -14,4 +15,5 @@ export {
     EditProfileInfoModal,
     EditProfilePictureModal,
     AddFileModal,
+    FunctionModal,
 };
