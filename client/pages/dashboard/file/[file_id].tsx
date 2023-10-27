@@ -51,9 +51,8 @@ const FilePage = () => {
 
     const handleSave = async () => {
         try {
-            console.log(document);
-            // await axios.put(`http://localhost:5000/api/v1/documents/update-document/${fileId}`, document);
-            // window.location.reload();
+            await axios.put(`http://localhost:5000/api/v1/documents/update-document/${fileId}`, document);
+            window.location.reload();
         } catch (error) {
             console.error('Failed to save document:', error);
         }

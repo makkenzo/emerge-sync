@@ -2,15 +2,6 @@ import { Request, Response } from 'express';
 import DocumentModel from '../models/document.model';
 import fs from 'fs';
 import xlsx from 'xlsx-populate';
-import * as xlsx2 from 'xlsx';
-import * as excel from 'exceljs';
-
-// interface Document {
-//     file: string;
-//     filePath: string;
-//     assignedTo: string;
-//     date: Date;
-// }
 
 export const getDocument = async (req: Request, res: Response) => {
     try {
@@ -22,7 +13,6 @@ export const getDocument = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Document not found.' });
         }
 
-        // Check if the filePath field exists in the document object
         if (!document.filePath) {
             return res.status(400).json({ message: 'File path not provided.' });
         }
@@ -30,12 +20,11 @@ export const getDocument = async (req: Request, res: Response) => {
         const workbook = await xlsx.fromFileAsync(document.filePath);
 
         const worksheet = workbook.sheet(0);
+
         const data = worksheet.usedRange().value();
 
-        // Assuming the first row in the data contains headers
         const headers = data[0];
 
-        // Map the data into an array of objects
         const jsonData = data.slice(1).map((row) => {
             const rowObject = {};
             row.forEach((cell, index) => {
@@ -121,15 +110,12 @@ export const deleteDocument = async (req: Request, res: Response) => {
 
 export const getAllDocuments = async (req: Request, res: Response) => {
     try {
-        // Use Mongoose's find() method to retrieve all documents
         const documents = await DocumentModel.find();
 
-        // Check if there are no documents
         if (documents.length === 0) {
             return res.status(404).json({ message: 'No documents found.' });
         }
 
-        // Return the list of documents as a JSON response
         return res.status(200).json(documents);
     } catch (error) {
         return res.status(500).json({ message: 'Failed to get documents' });
@@ -139,53 +125,94 @@ export const getAllDocuments = async (req: Request, res: Response) => {
 export const updateDocument = async (req: Request, res: Response) => {
     try {
         const docId = req.params.id;
-        const updatedData = req.body; // The updated JSON data
+        const updatedData = req.body;
 
         const document = await DocumentModel.findById(docId);
 
         if (!document) {
-            return res.status(404).json({ message: 'Document not found.' });
+            return res.status(404).json({ message: 'Document not found' });
         }
 
-        // Assuming the filePath field exists in the document object
-        const filePath = document.filePath;
-
-        // Load the existing XLSX workbook
-        const workbook = new excel.Workbook();
-        await workbook.xlsx.readFile(filePath);
-
-        // Assuming there's only one worksheet in the workbook
-        const sheet = workbook.getWorksheet(1);
-
-        if (!sheet) {
-            return res.status(500).json({ message: 'Worksheet not found.' });
+        if (!document.filePath) {
+            return res.status(400).json({ message: 'File path not provided.' });
         }
 
-        // Clear the existing sheet data
-        sheet.eachRow((row, rowNumber) => {
-            if (rowNumber !== 1) {
-                row.eachCell((cell) => {
-                    cell.value = null;
-                });
-            }
-        });
+        const workbook = await xlsx.fromFileAsync(document.filePath);
 
-        // Write the updated data to the sheet
-        updatedData.forEach((rowData, rowIndex) => {
-            const row = sheet.getRow(rowIndex + 1);
+        if (!workbook) {
+            return res.status(500).json({ message: 'Failed to load the XLSX workbook.' });
+        }
 
-            Object.keys(rowData).forEach((key, cellIndex) => {
-                const cellValue = rowData[key];
-                row.getCell(cellIndex + 1).value = cellValue;
+        const sheet = workbook.sheet(0);
+
+        const startRow = 2;
+
+        updatedData.forEach((data, index) => {
+            Object.keys(data).forEach((key, colIndex) => {
+                sheet.cell(startRow + index, colIndex + 1).value(data[key]);
             });
         });
+        console.log(updatedData);
 
-        // Save the updated workbook back to the original file path
-        await workbook.xlsx.writeFile(filePath);
+        await workbook.toFileAsync(document.filePath);
 
-        return res.status(200).json({ message: 'Document updated successfully' });
+        return res.status(200).json({ message: 'Document updated successfully.' });
     } catch (error) {
         console.error('An error occurred:', error);
         return res.status(500).json({ message: 'Failed to update document.' });
     }
 };
+
+// export const updateDocument = async (req: Request, res: Response) => {
+//     try {
+//         const docId = req.params.id;
+//         const updatedData = req.body; // The updated JSON data
+
+//         const document = await DocumentModel.findById(docId);
+
+//         if (!document) {
+//             return res.status(404).json({ message: 'Document not found.' });
+//         }
+
+//         // Assuming the filePath field exists in the document object
+//         const filePath = document.filePath;
+
+//         // Load the existing XLSX workbook
+//         const workbook = new excel.Workbook();
+//         await workbook.xlsx.readFile(filePath);
+
+//         // Assuming there's only one worksheet in the workbook
+//         const sheet = workbook.getWorksheet(1);
+
+//         if (!sheet) {
+//             return res.status(500).json({ message: 'Worksheet not found.' });
+//         }
+
+//         // Clear the existing sheet data
+//         sheet.eachRow((row, rowNumber) => {
+//             if (rowNumber !== 1) {
+//                 row.eachCell((cell) => {
+//                     cell.value = null;
+//                 });
+//             }
+//         });
+
+//         // Write the updated data to the sheet
+//         updatedData.forEach((rowData, rowIndex) => {
+//             const row = sheet.getRow(rowIndex + 1);
+
+//             Object.keys(rowData).forEach((key, cellIndex) => {
+//                 const cellValue = rowData[key];
+//                 row.getCell(cellIndex + 1).value = cellValue;
+//             });
+//         });
+
+//         // Save the updated workbook back to the original file path
+//         await workbook.xlsx.writeFile(filePath);
+
+//         return res.status(200).json({ message: 'Document updated successfully' });
+//     } catch (error) {
+//         console.error('An error occurred:', error);
+//         return res.status(500).json({ message: 'Failed to update document.' });
+//     }
+// };
