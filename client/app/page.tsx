@@ -1,13 +1,13 @@
-import store from '@/redux/store';
-import { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
+'use client';
 
-function Home({ Component, pageProps }: AppProps) {
-    return (
-        <Provider store={store}>
-            <Component {...pageProps} />
-        </Provider>
-    );
-}
+import { redirect } from 'next/navigation';
+import React, { useEffect } from 'react';
 
-export default Home;
+const Page = () => {
+    useEffect(() => {
+        redirect('/auth');
+    }, []);
+    return <div></div>;
+};
+
+export default Page;
