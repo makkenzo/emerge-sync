@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@import '../node_modules/@syncfusion/ej2-base/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-react-grids/styles/tailwind.css';
+@import '../node_modules/@syncfusion/ej2-react-popups/styles/tailwind.css';
+
 .auth__neumorphism {
     border-radius: 30px;
     background: linear-gradient(145deg, #0e7675, #0c6362);

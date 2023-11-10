@@ -10,6 +10,22 @@ import { useEffect, useState, useRef } from 'react';
 import { PiExport } from 'react-icons/pi';
 import { BiSave } from 'react-icons/bi';
 import { XlsxDocument } from '@/types';
+import {
+    ColumnDirective,
+    ColumnsDirective,
+    Edit,
+    EditSettingsModel,
+    Filter,
+    GridComponent,
+    Group,
+    Inject,
+    Page,
+    Sort,
+    Toolbar,
+    ToolbarItems,
+} from '@syncfusion/ej2-react-grids';
+import { data } from '@/lib/datasource';
+import { DataManager, RemoteSaveAdaptor } from '@syncfusion/ej2-data';
 
 const FilePage = () => {
     const router = useRouter();
@@ -55,6 +71,10 @@ const FilePage = () => {
         }
     }, [setDocument, fileId]);
 
+    // useEffect(() => {
+    //     console.log(xlsxDocument);
+    // }, [xlsxDocument]);
+
     useEffect(() => {
         if (fileId && allDocuments.length > 0) {
             const filteredDocument = allDocuments.find((doc) => doc._id === fileId);
@@ -79,6 +99,12 @@ const FilePage = () => {
             window.open(`http://localhost:5000/export-document/${encodeURIComponent(filePath)}`);
         }
     };
+
+    const pageSettings: object = { pageSize: 19 };
+    const filterSettings: object = { type: 'Excel' };
+
+    const editOptions = { allowEditing: true, allowAdding: true, allowDeleting: true };
+    const toolbarOptions = ['Add', 'Edit', 'Delete', 'Update', 'Cancel'];
 
     return (
         <>
@@ -109,7 +135,7 @@ const FilePage = () => {
                         </CardHeader>
                         <CardBody className="px-0 pt-0 pb-2 gap-4">
                             <div className="w-[1300px] h-[795px] overflow-x-auto flex mx-4">
-                                {xlsxDocument && xlsxDocument.length > 0 ? (
+                                {/* {xlsxDocument && xlsxDocument.length > 0 ? (
                                     <>
                                         <table className="w-max table-auto">
                                             <tbody>
@@ -120,7 +146,6 @@ const FilePage = () => {
                                                         </td>
                                                     ))}
                                                 </tr>
-
                                                 {xlsxDocument.map((item, rowIndex) => (
                                                     <tr key={rowIndex} className="border border-blue-gray-100">
                                                         {Object.values(item).map((value, colIndex) => (
@@ -155,8 +180,34 @@ const FilePage = () => {
                                                 ))}
                                             </tbody>
                                         </table>
-                                        {/* <Button className="h-[40px] ml-3 mt-1">Добавить столбец</Button> */}
                                     </>
+                                ) : (
+                                    <h1>No data</h1>
+                                )} */}
+                                {xlsxDocument && xlsxDocument.length > 0 ? (
+                                    <GridComponent
+                                        dataSource={xlsxDocument}
+                                        editSettings={editOptions}
+                                        toolbar={toolbarOptions}
+                                        // allowGrouping={true}
+                                        allowSorting={true}
+                                        allowFiltering={true}
+                                        allowPaging={true}
+                                        pageSettings={pageSettings}
+                                        filterSettings={filterSettings}
+                                        height={670}
+                                    >
+                                        <ColumnsDirective>
+                                            {Object.keys(xlsxDocument[0]).map((key, index) => (
+                                                <ColumnDirective
+                                                    field={key}
+                                                    headerText={key}
+                                                    isPrimaryKey={index === 0}
+                                                />
+                                            ))}
+                                        </ColumnsDirective>
+                                        <Inject services={[Page, Edit, Toolbar, Filter, Sort]} />
+                                    </GridComponent>
                                 ) : (
                                     <h1>No data</h1>
                                 )}

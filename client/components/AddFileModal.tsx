@@ -52,14 +52,6 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
                         </div>
                         <FileInput onChange={(e) => handleSelectFile(e)} id="file" />
                     </div>
-                    {userData.role === 'admin' && (
-                        <div className="mb-2">
-                            <div className="mb-2 block">
-                                <Label htmlFor="assignedTo" value="Прикреплен к" />
-                            </div>
-                            <TextInput onChange={(e) => setAssignedTo(e.target.value)} id="assignedTo" />
-                        </div>
-                    )}
                     <div className="w-full mt-4">
                         <Button onClick={handleUpload}>Сохранить</Button>
                     </div>
