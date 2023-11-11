@@ -25,33 +25,41 @@ import {
     ToolbarItems,
 } from '@syncfusion/ej2-react-grids';
 import { data } from '@/lib/datasource';
-import { DataManager, RemoteSaveAdaptor } from '@syncfusion/ej2-data';
+import { DataManager, Query, RemoteSaveAdaptor, ReturnOption, WebApiAdaptor } from '@syncfusion/ej2-data';
+import { registerLicense } from '@syncfusion/ej2-base';
+import { SERVICE_URI } from '@/lib/api';
+
+interface ResponseData {
+    Items: any[];
+    Count: number;
+}
 
 const FilePage = () => {
+    registerLicense('ORg4AjUWIQA/Gnt2VlhhQlJCfV5DQmVWfFN0RnNRdVt0flZBcC0sT3RfQF5iSX5Udk1mXH1bdHJQQg==');
     const router = useRouter();
     const fileId = router.query.file_id;
 
-    const [xlsxDocument, setDocument] = useState<{ [key: string]: any }[]>([]);
+    const [xlsxDocument, setDocument] = useState<ResponseData>();
 
     const [isEditing, setIsEditing] = useState<{ row: number; col: number } | null>(null);
     const [editedData, setEditedData] = useState<string | number>('');
     const [allDocuments, setAllDocuments] = useState<XlsxDocument[]>([]);
     const [filePath, setFilePath] = useState('');
 
-    const handleDoubleClick = (rowIndex: number, colIndex: number) => {
-        setIsEditing({ row: rowIndex, col: colIndex });
-        setEditedData(xlsxDocument[rowIndex][Object.keys(xlsxDocument[0])[colIndex]]);
-    };
+    // const handleDoubleClick = (rowIndex: number, colIndex: number) => {
+    //     setIsEditing({ row: rowIndex, col: colIndex });
+    //     setEditedData(xlsxDocument[rowIndex][Object.keys(xlsxDocument[0])[colIndex]]);
+    // };
 
-    const handleBlur = () => {
-        if (isEditing) {
-            const { row, col } = isEditing;
-            const updatedDocument = [...xlsxDocument];
-            updatedDocument[row][Object.keys(xlsxDocument[0])[col]] = editedData;
-            setDocument(updatedDocument);
-            setIsEditing(null);
-        }
-    };
+    // const handleBlur = () => {
+    //     if (isEditing) {
+    //         const { row, col } = isEditing;
+    //         const updatedDocument = [...xlsxDocument];
+    //         updatedDocument[row][Object.keys(xlsxDocument[0])[col]] = editedData;
+    //         setDocument(updatedDocument);
+    //         setIsEditing(null);
+    //     }
+    // };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -99,6 +107,16 @@ const FilePage = () => {
             window.open(`http://localhost:5000/export-document/${encodeURIComponent(filePath)}`);
         }
     };
+
+    const data = new DataManager({
+        adaptor: new WebApiAdaptor(),
+        url: `http://localhost:5000/api/v1/documents/get-document/${fileId}`,
+        // json: xlsxDocument,
+    });
+
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
 
     const pageSettings: object = { pageSize: 19 };
     const filterSettings: object = { type: 'Excel' };
@@ -184,9 +202,9 @@ const FilePage = () => {
                                 ) : (
                                     <h1>No data</h1>
                                 )} */}
-                                {xlsxDocument && xlsxDocument.length > 0 ? (
+                                {xlsxDocument && xlsxDocument.Items.length > 0 ? (
                                     <GridComponent
-                                        dataSource={xlsxDocument}
+                                        dataSource={data}
                                         editSettings={editOptions}
                                         toolbar={toolbarOptions}
                                         // allowGrouping={true}
@@ -198,11 +216,13 @@ const FilePage = () => {
                                         height={670}
                                     >
                                         <ColumnsDirective>
-                                            {Object.keys(xlsxDocument[0]).map((key, index) => (
+                                            {Object.keys(xlsxDocument.Items[0]).map((key) => (
                                                 <ColumnDirective
+                                                    key={key}
                                                     field={key}
                                                     headerText={key}
-                                                    isPrimaryKey={index === 0}
+                                                    // Assuming 'Номер' is a unique identifier
+                                                    isPrimaryKey={key === 'Номер'}
                                                 />
                                             ))}
                                         </ColumnsDirective>

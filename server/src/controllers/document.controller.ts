@@ -34,7 +34,12 @@ export const getDocument = async (req: Request, res: Response) => {
             return rowObject;
         });
 
-        return res.status(200).json(jsonData);
+        const responseData = {
+            Items: jsonData,
+            Count: jsonData.length,
+        };
+
+        return res.status(200).json(responseData);
     } catch (error) {
         return res.status(500).json({ message: 'Failed to get document' });
     }
