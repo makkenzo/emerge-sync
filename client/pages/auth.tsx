@@ -6,10 +6,10 @@ import { AiOutlineUser, AiFillLock } from 'react-icons/ai';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { loginUser } from '@/redux/slices/authSlice';
-import axios from 'axios';
 import Head from 'next/head';
 import { Typography } from '@material-tailwind/react';
 import { registerLicense } from '@syncfusion/ej2-base';
+import instance from '@/lib/api';
 
 const Auth = () => {
     registerLicense('ORg4AjUWIQA/Gnt2VlhhQlJCfV5DQmVWfFN0RnNRdVt0flZBcC0sT3RfQF5iSX5Udk1mXH1bdHJQQg==');
@@ -32,17 +32,26 @@ const Auth = () => {
             toast.error('Имя пользователя и пароль обязательны для входа.');
         } else {
             try {
-                const response = await axios.post('http://localhost:5000/api/v1/users/login', {
+                const response = await instance.post('/user/login', {
                     username,
                     password,
                 });
-                const { token, userId } = response.data;
+                const { accsess_token } = response.data;
 
-                if (token) {
-                    dispatch(loginUser({ token, userId }));
+                const headers = {
+                    Authorization: `Bearer ${accsess_token}`,
+                    'Content-Type': 'multipart/form-data',
+                };
 
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('userId', userId);
+                const getUserId = await instance.get('/user', { headers });
+
+                const { user_id } = getUserId.data;
+
+                if (accsess_token) {
+                    // dispatch(loginUser({ accsess_token, userId }));
+
+                    localStorage.setItem('token', accsess_token);
+                    localStorage.setItem('userId', user_id);
 
                     router.push('/dashboard/files');
                 } else {

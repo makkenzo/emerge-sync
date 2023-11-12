@@ -27,7 +27,7 @@ import {
 import { data } from '@/lib/datasource';
 import { DataManager, Query, RemoteSaveAdaptor, ReturnOption, WebApiAdaptor } from '@syncfusion/ej2-data';
 import { registerLicense } from '@syncfusion/ej2-base';
-import { SERVICE_URI } from '@/lib/api';
+import instance, { SERVICE_URI } from '@/lib/api';
 
 interface ResponseData {
     Items: any[];
@@ -35,7 +35,7 @@ interface ResponseData {
 }
 
 const FilePage = () => {
-    registerLicense('ORg4AjUWIQA/Gnt2VlhhQlJCfV5DQmVWfFN0RnNRdVt0flZBcC0sT3RfQF5iSX5Udk1mXH1bdHJQQg==');
+    registerLicense('Ngo9BigBOggjHTQxAR8/V1NHaF5cXmpCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdgWH9eeXRWQmFdVUJ/X0o=');
     const router = useRouter();
     const fileId = router.query.file_id;
 
@@ -64,11 +64,11 @@ const FilePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/v1/documents/get-document/${fileId}`);
+                const response = await instance.get(`/workflow_item/${fileId}`, { headers });
                 setDocument(response.data);
 
-                const getFilePath = await axios.get('http://localhost:5000/api/v1/documents/get-documents');
-                setAllDocuments(getFilePath.data);
+                // const getFilePath = await instance.get('/api/v1/documents/get-documents');
+                // setAllDocuments(getFilePath.data);
             } catch (error) {
                 console.error(error);
             }
@@ -83,19 +83,19 @@ const FilePage = () => {
     //     console.log(xlsxDocument);
     // }, [xlsxDocument]);
 
-    useEffect(() => {
-        if (fileId && allDocuments.length > 0) {
-            const filteredDocument = allDocuments.find((doc) => doc._id === fileId);
+    // useEffect(() => {
+    //     if (fileId && allDocuments.length > 0) {
+    //         const filteredDocument = allDocuments.find((doc) => doc._id === fileId);
 
-            if (filteredDocument) {
-                setFilePath(filteredDocument.file);
-            }
-        }
-    }, [fileId, allDocuments]);
+    //         if (filteredDocument) {
+    //             setFilePath(filteredDocument.file);
+    //         }
+    //     }
+    // }, [fileId, allDocuments]);
 
     const handleSave = async () => {
         try {
-            await axios.put(`http://localhost:5000/api/v1/documents/update-document/${fileId}`, xlsxDocument);
+            await instance.put(`/api/v1/documents/update-document/${fileId}`, xlsxDocument);
             window.location.reload();
         } catch (error) {
             console.error('Failed to save document:', error);
@@ -104,19 +104,34 @@ const FilePage = () => {
 
     const handleExport = () => {
         if (filePath !== '') {
-            window.open(`http://localhost:5000/export-document/${encodeURIComponent(filePath)}`);
+            window.open(`${SERVICE_URI}/export-document/${encodeURIComponent(filePath)}`);
         }
     };
 
-    const data = new DataManager({
-        adaptor: new WebApiAdaptor(),
-        url: `http://localhost:5000/api/v1/documents/get-document/${fileId}`,
-        // json: xlsxDocument,
-    });
+    const [token, setToken] = useState('');
+    const [headers, setHeaders] = useState({});
 
     useEffect(() => {
-        console.log(data);
-    }, [data]);
+        const tok = localStorage.getItem('token') ?? '';
+        const hed = {
+            Authorization: `Bearer ${tok}`,
+            'Content-Type': 'multipart/form-data',
+        };
+
+        setToken(tok);
+        setHeaders(hed);
+    }, []);
+
+    const data = new DataManager({
+        url: `${SERVICE_URI}/workflow_item/${fileId}`,
+        adaptor: new WebApiAdaptor(),
+        headers: [
+            {
+                Authorization: `Bearer ${token}`,
+            },
+        ],
+        crossDomain: true,
+    });
 
     const pageSettings: object = { pageSize: 19 };
     const filterSettings: object = { type: 'Excel' };
@@ -202,7 +217,7 @@ const FilePage = () => {
                                 ) : (
                                     <h1>No data</h1>
                                 )} */}
-                                {xlsxDocument && xlsxDocument.Items.length > 0 ? (
+                                {xlsxDocument && data ? (
                                     <GridComponent
                                         dataSource={data}
                                         editSettings={editOptions}
@@ -210,23 +225,19 @@ const FilePage = () => {
                                         // allowGrouping={true}
                                         allowSorting={true}
                                         allowFiltering={true}
-                                        allowPaging={true}
-                                        pageSettings={pageSettings}
+                                        // allowPaging={true}
+                                        // pageSettings={pageSettings}
                                         filterSettings={filterSettings}
-                                        height={670}
+                                        // height={670}
+                                        height={710}
                                     >
                                         <ColumnsDirective>
+                                            {/* <ColumnDirective field="0" headerText="0" /> */}
                                             {Object.keys(xlsxDocument.Items[0]).map((key) => (
-                                                <ColumnDirective
-                                                    key={key}
-                                                    field={key}
-                                                    headerText={key}
-                                                    // Assuming 'Номер' is a unique identifier
-                                                    isPrimaryKey={key === 'Номер'}
-                                                />
+                                                <ColumnDirective key={key} field={key} headerText={key} />
                                             ))}
                                         </ColumnsDirective>
-                                        <Inject services={[Page, Edit, Toolbar, Filter, Sort]} />
+                                        <Inject services={[Edit, Toolbar, Filter, Sort]} />
                                     </GridComponent>
                                 ) : (
                                     <h1>No data</h1>

@@ -16,6 +16,7 @@ import { Button } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { XlsxDocument, UserData } from '@/types';
 import axios from 'axios';
+import instance from '@/lib/api';
 
 const Files = () => {
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
@@ -51,20 +52,22 @@ const Files = () => {
         const fetchData = async () => {
             try {
                 const userId = localStorage.getItem('userId');
+                const token = localStorage.getItem('token');
 
-                const userResponse = await axios.get(`http://localhost:5000/api/v1/users/${userId}`);
+                const headers = {
+                    Authorization: `Bearer ${token}`, // Замените YOUR_ACCESS_TOKEN на реальный токен
+                    'Content-Type': 'multipart/form-data', // Устанавливаем тип содержимого как multipart/form-data
+                };
+
+                const userResponse = await instance.get(`/user`, { headers });
+
                 const userData = userResponse.data;
                 setUserData(userData);
 
-                const documentsResponse = await axios.get('http://localhost:5000/api/v1/documents/get-documents');
+                const documentsResponse = await instance.get('/workflow', { headers });
                 const documents: XlsxDocument[] = documentsResponse.data;
 
-                const filteredDocuments = documents.filter((doc) => doc.assignedTo === userData?.username);
-                if (userData.role === 'admin') {
-                    setUserFiles(documents);
-                } else {
-                    setUserFiles(filteredDocuments);
-                }
+                setUserFiles(documents);
             } catch (error) {
                 console.error('An error occurred:', error);
             }
@@ -86,7 +89,7 @@ const Files = () => {
                             <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
                                 Файлы
                             </CardHeader>
-                            {userFiles.length === 0 ? (
+                            {!userFiles ? (
                                 <div className="text-center mb-4">
                                     <p>Файлов нет</p>
                                 </div>
@@ -95,7 +98,7 @@ const Files = () => {
                                     <table className="w-full min-w-[640px] table-auto">
                                         <thead>
                                             <tr>
-                                                {['имя', '', 'прикреплен к', 'дата', 'действие'].map((el) => (
+                                                {['имя', '', '', 'дата', 'действие'].map((el) => (
                                                     <th
                                                         key={el}
                                                         className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -113,13 +116,13 @@ const Files = () => {
                                         <tbody>
                                             {userFiles.map((file, index) => (
                                                 <tr key={index} className="border-b border-blue-gray-100">
-                                                    <td className="py-3 px-5 text-left">{file.file}</td>
+                                                    <td className="py-3 px-5 text-left">{file.name}</td>
                                                     <td className="py-3 px-5 text-left"></td>
-                                                    <td className="py-3 px-5 text-left flex items-center">
-                                                        {file.assignedTo}
+                                                    <td className="py-3 px-5 text-left">
+                                                        {/* {userData?.first_name} */}
                                                     </td>
                                                     <td className="py-3 px-5 text-left">
-                                                        {String(new Date(file.date).toLocaleString())}
+                                                        {String(new Date(file.create_at).toLocaleString())}
                                                     </td>
                                                     <td className="py-3 px-5 text-left">
                                                         <div className="flex">
@@ -129,7 +132,7 @@ const Files = () => {
                                                             >
                                                                 <AiFillEdit size={20} />
                                                             </Link>
-                                                            <DeleteButtonModal file={file.file} fileId={file._id} />
+                                                            <DeleteButtonModal file={file.name} fileId={file._id} />
                                                         </div>
                                                     </td>
                                                 </tr>

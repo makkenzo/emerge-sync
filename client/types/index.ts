@@ -1,22 +1,10 @@
 export type UserData = {
     _id: string;
-    username: string;
-    role: string;
-    details: {
-        firstName: string;
-        lastName: string;
-        phoneNumber: string;
-        email: string;
-        location: string;
-        profilePic: string;
-        gender: string;
-        socialMedia: {
-            LinkedIn: string;
-            Instagram: string;
-            Telegram: string;
-            X: string;
-        };
-    };
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    email: string;
 };
 
 export type SocialMediaKey = 'LinkedIn' | 'Instagram' | 'Telegram' | 'X';
@@ -33,8 +21,8 @@ export type ProfileIndoModalTypes = {
 
 export type XlsxDocument = {
     _id: string;
-    file: string;
-    filePath: string;
-    assignedTo: string;
-    date: Date;
+    name: string;
+    create_at: string;
+    last_modify: string;
+    user_id: string;
 };

@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { AiFillLock, AiOutlineUser } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from '@/lib/api';
+import instance from '@/lib/api';
 import { Typography } from '@material-tailwind/react';
 
 const RegisterPage = () => {
@@ -24,17 +24,23 @@ const RegisterPage = () => {
                 return toast.error('Пароли должны совпадать.');
             }
             try {
-                const response = await axios.post('/api/v1/users/register', {
+                const response = await instance.post('/user', {
                     username,
                     password,
                 });
-                const { token, userId } = response.data;
+                const user_id = response.data;
 
-                if (token) {
-                    dispatch(registerUser({ token, userId }));
+                const reponse2 = await instance.post('/user/login', {
+                    username,
+                    password,
+                });
+                const { accsess_token } = reponse2.data;
 
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('userId', userId);
+                if (accsess_token) {
+                    // dispatch(registerUser({ token, userId }));
+
+                    localStorage.setItem('token', accsess_token);
+                    localStorage.setItem('userId', user_id);
 
                     router.push('/dashboard/files');
                 } else {

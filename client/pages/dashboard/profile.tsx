@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setIsLoading } from '@/redux/slices/loadingSlice';
 import { AiFillEdit } from 'react-icons/ai';
+import instance from '@/lib/api';
 
 const Profile = () => {
     const [userData, setUserData] = useState<UserData>();
@@ -38,7 +39,13 @@ const Profile = () => {
         }
 
         try {
-            axios.get(`http://localhost:5000/api/v1/users/${userId}`).then((response) => {
+            const token = localStorage.getItem('token');
+            const headers = {
+                Authorization: `Bearer ${token}`, // Замените YOUR_ACCESS_TOKEN на реальный токен
+                'Content-Type': 'multipart/form-data', // Устанавливаем тип содержимого как multipart/form-data
+            };
+
+            instance.get(`/user`, { headers }).then((response) => {
                 setUserData(response.data);
                 dispatch(setIsLoading(false));
             });
@@ -66,11 +73,7 @@ const Profile = () => {
                                     <div className="mb-10 flex gap-2">
                                         <div className="flex flex-col items-center gap-6">
                                             <Avatar
-                                                src={
-                                                    userData.details.profilePic === ''
-                                                        ? '/users/default.jpg'
-                                                        : userData.details.profilePic
-                                                }
+                                                src="/users/default.jpg"
                                                 alt="user pic"
                                                 size="xl"
                                                 className="p-0.5"
@@ -80,19 +83,19 @@ const Profile = () => {
                                         </div>
                                         <div className="h-full my-auto ml-2">
                                             <Typography variant="h5" className="mb-1" color="blue-gray">
-                                                {userData.username}
+                                                {userData.first_name !== '' ? userData.first_name : 'Пользователь'}
                                             </Typography>
-                                            <Typography variant="small" className="font-normal text-blue-gray-600">
+                                            {/* <Typography variant="small" className="font-normal text-blue-gray-600">
                                                 {userData.role.toUpperCase()}
-                                            </Typography>
+                                            </Typography> */}
                                         </div>
-                                        <button onClick={handleEditProfilePicture} className="text-blue-gray-500 ml-4">
+                                        {/* <button onClick={handleEditProfilePicture} className="text-blue-gray-500 ml-4">
                                             <AiFillEdit size={20} className="hover:text-black" />
-                                        </button>
+                                        </button> */}
                                     </div>
                                     <div className="grid-cols-2 mb-12 grid gap-12 px-4">
                                         <ProfileInfo userData={userData} />
-                                        <SocialMediaButtons userData={userData} />
+                                        {/* <SocialMediaButtons userData={userData} /> */}
                                     </div>
                                 </>
                             ) : (

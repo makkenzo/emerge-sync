@@ -38,9 +38,7 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
                                 Имя:
                             </Typography>
                             <Typography variant="small" className="font-normal text-blue-gray-500">
-                                {userData?.details['firstName'] !== ''
-                                    ? userData?.details['firstName']
-                                    : 'Данных нет..'}
+                                {userData.first_name !== '' ? userData.first_name : 'Данных нет..'}
                             </Typography>
                         </li>
                         <li className="flex items-center gap-4">
@@ -48,7 +46,7 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
                                 Фамилия:
                             </Typography>
                             <Typography variant="small" className="font-normal text-blue-gray-500">
-                                {userData?.details['lastName'] !== '' ? userData?.details['lastName'] : 'Данных нет..'}
+                                {userData.last_name !== '' ? userData.last_name : 'Данных нет..'}
                             </Typography>
                         </li>
                         <li className="flex items-center gap-4">
@@ -56,9 +54,7 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
                                 Номер телефона:
                             </Typography>
                             <Typography variant="small" className="font-normal text-blue-gray-500">
-                                {userData?.details['phoneNumber'] !== ''
-                                    ? userData?.details['phoneNumber']
-                                    : 'Данных нет..'}
+                                {userData.phone !== '' ? userData.phone : 'Данных нет..'}
                             </Typography>
                         </li>
                         <li className="flex items-center gap-4">
@@ -66,10 +62,10 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
                                 E-mail:
                             </Typography>
                             <Typography variant="small" className="font-normal text-blue-gray-500">
-                                {userData?.details['email'] !== '' ? userData?.details['email'] : 'Данных нет..'}
+                                {userData.email !== '' ? userData.email : 'Данных нет..'}
                             </Typography>
                         </li>
-                        <li className="flex items-center gap-4">
+                        {/* <li className="flex items-center gap-4">
                             <Typography variant="small" color="blue-gray" className="font-semibold">
                                 Расположение:
                             </Typography>
@@ -84,7 +80,7 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
                             <Typography variant="small" className="font-normal text-blue-gray-500 capitalize">
                                 {userData?.details['gender'] !== '' ? userData?.details['gender'] : 'Данных нет..'}
                             </Typography>
-                        </li>
+                        </li> */}
                     </ul>
                 </CardBody>
             </Card>

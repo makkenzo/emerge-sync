@@ -9,28 +9,6 @@ import axios from 'axios';
 const Sidenav = () => {
     const router = useRouter();
 
-    type UserData = {
-        username: string;
-        role: string;
-        profilePic: string;
-    };
-
-    const [userData, setUserData] = useState<UserData | null>(null);
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            router.push('/auth');
-        } else {
-            const userId = localStorage.getItem('userId');
-
-            axios.get(`http://localhost:5000/api/v1/users/${userId}`).then((response) => {
-                setUserData(response.data);
-            });
-        }
-    }, []);
-
     const handleLogOut = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
