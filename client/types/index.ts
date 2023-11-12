@@ -26,3 +26,11 @@ export type XlsxDocument = {
     last_modify: string;
     user_id: string;
 };
+
+export type LogsData = {
+    _id: string;
+    workflow_id: string;
+    user_id: string;
+    op: string;
+    change: string;
+};

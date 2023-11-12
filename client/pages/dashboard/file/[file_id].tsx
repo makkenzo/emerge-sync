@@ -1,5 +1,6 @@
 'use client';
 
+import { ClickEventArgs } from '@syncfusion/ej2-navigations';
 import { Sidenav } from '@/components';
 import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
 import axios from 'axios';
@@ -15,7 +16,9 @@ import {
     ColumnsDirective,
     Edit,
     EditSettingsModel,
+    ExcelExport,
     Filter,
+    Grid,
     GridComponent,
     Group,
     Inject,
@@ -131,13 +134,21 @@ const FilePage = () => {
             },
         ],
         crossDomain: true,
+        updateUrl: `${SERVICE_URI}/workflow_item/${fileId}/`,
     });
 
     const pageSettings: object = { pageSize: 19 };
     const filterSettings: object = { type: 'Excel' };
 
+    let grid: Grid | null;
+
     const editOptions = { allowEditing: true, allowAdding: true, allowDeleting: true };
-    const toolbarOptions = ['Add', 'Edit', 'Delete', 'Update', 'Cancel'];
+    const toolbarOptions = ['Add', 'Edit', 'Delete', 'Update', 'Cancel', 'ExcelExport'];
+    const toolbarClick = (args: ClickEventArgs) => {
+        if (grid) {
+            grid.excelExport();
+        }
+    };
 
     return (
         <>
@@ -230,14 +241,28 @@ const FilePage = () => {
                                         filterSettings={filterSettings}
                                         // height={670}
                                         height={710}
+                                        allowExcelExport={true}
+                                        toolbarClick={toolbarClick}
+                                        ref={(g) => (grid = g)}
                                     >
                                         <ColumnsDirective>
                                             {/* <ColumnDirective field="0" headerText="0" /> */}
-                                            {Object.keys(xlsxDocument.Items[0]).map((key) => (
-                                                <ColumnDirective key={key} field={key} headerText={key} />
-                                            ))}
+                                            {Object.keys(xlsxDocument.Items[0]).map((key) => {
+                                                if (key === '_id' || key === 'workflow_id') {
+                                                    return (
+                                                        <ColumnDirective
+                                                            key={key}
+                                                            field={key}
+                                                            headerText={key}
+                                                            visible={false}
+                                                        />
+                                                    );
+                                                } else {
+                                                    return <ColumnDirective key={key} field={key} headerText={key} />;
+                                                }
+                                            })}
                                         </ColumnsDirective>
-                                        <Inject services={[Edit, Toolbar, Filter, Sort]} />
+                                        <Inject services={[Edit, Toolbar, Filter, Sort, ExcelExport]} />
                                     </GridComponent>
                                 ) : (
                                     <h1>No data</h1>

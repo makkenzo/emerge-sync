@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Sidenav, ProfileInfo, SocialMediaButtons, EditProfilePictureModal } from '@/components';
 import { CardBody, Typography } from '@material-tailwind/react';
 import { Avatar, Card } from '@material-tailwind/react';
-import { UserData } from '@/types';
+import { LogsData, UserData, XlsxDocument } from '@/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setIsLoading } from '@/redux/slices/loadingSlice';
@@ -15,6 +15,10 @@ import instance from '@/lib/api';
 
 const Profile = () => {
     const [userData, setUserData] = useState<UserData>();
+    const [logs, setLogs] = useState<LogsData[]>();
+    const [workflows, setWorkflows] = useState<XlsxDocument[]>();
+    const [matchingWorkflow, setMatchingWorkflow] = useState<XlsxDocument | undefined>(undefined);
+
     const isLoading = useSelector((state: RootState) => state.loading.isLoading);
 
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
@@ -49,11 +53,39 @@ const Profile = () => {
                 setUserData(response.data);
                 dispatch(setIsLoading(false));
             });
+            instance
+                .get(`/workflow_log/6550b49e5b02c0ae2880e5c7`, { headers })
+                .then((response) => setLogs(response.data));
+
+            instance.get('/workflow', { headers }).then((res) => {
+                setWorkflows(res.data);
+            });
         } catch (error) {
             console.error(error);
             dispatch(setIsLoading(false));
         }
     }, []);
+
+    useEffect(() => {
+        const filter = () => {
+            const workflowId = logs?.[0]?.workflow_id;
+
+            // Check if workflows is defined and not empty
+            if (workflows && workflows.length > 0) {
+                const matchingWorkflow = workflows.find((workflow) => workflow._id === workflowId);
+
+                if (matchingWorkflow) {
+                    // console.log('Matching Workflow:', matchingWorkflow);
+                    setMatchingWorkflow(matchingWorkflow);
+                }
+            }
+        };
+
+        // Check if workflows is defined
+        if (workflows) {
+            filter();
+        }
+    }, [workflows]);
 
     return (
         <>
@@ -96,6 +128,24 @@ const Profile = () => {
                                     <div className="grid-cols-2 mb-12 grid gap-12 px-4">
                                         <ProfileInfo userData={userData} />
                                         {/* <SocialMediaButtons userData={userData} /> */}
+                                        <div>
+                                            <Typography variant="h5" className="mb-1" color="blue-gray">
+                                                Логи
+                                            </Typography>
+                                            <div className="max-h-60 overflow-y-auto p-4 bg-gray-100 rounded-md">
+                                                <ul className="list-disc pl-4">
+                                                    {logs &&
+                                                        workflows &&
+                                                        logs.map((log) => (
+                                                            <li key={log._id} className="mb-2">
+                                                                <strong className="text-blue-500">{log.op}</strong>:{' '}
+                                                                {log.change}
+                                                                {matchingWorkflow && <p>{matchingWorkflow.name}</p>}
+                                                            </li>
+                                                        ))}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </>
                             ) : (

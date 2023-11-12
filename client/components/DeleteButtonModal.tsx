@@ -7,13 +7,14 @@ import { Button, Modal } from 'flowbite-react';
 import { AiFillDelete } from 'react-icons/ai';
 import { PiWarningCircleBold } from 'react-icons/pi';
 import axios from 'axios';
+import instance from '@/lib/api';
 
 const DeleteButtonModal = ({ file, fileId }: { file: string; fileId: string }) => {
     const [openModal, setOpenModal] = useState<string | undefined>();
     const props = { openModal, setOpenModal };
 
     const handleDeleteDocument = async () => {
-        const response = await axios.delete(`http://localhost:5000/api/v1/documents/delete-document/${fileId}`);
+        const response = await instance.delete(`/workflow/${fileId}`);
 
         window.location.reload();
     };
