@@ -123,8 +123,8 @@ const FilePage = () => {
     }, []);
 
     const data = new DataManager({
-        url: `${SERVICE_URI}/workflow_item/${fileId}`,
         adaptor: new WebApiAdaptor(),
+        url: `${SERVICE_URI}/workflow_item/${fileId}`,
         headers: [
             {
                 Authorization: `Bearer ${token}`,
