@@ -19,6 +19,12 @@ export type ProfileIndoModalTypes = {
     userData: UserData;
 };
 
+export type RoleModalTypes = {
+    isModalOpen: boolean;
+    closeModal: () => void;
+    fileId: string | string[];
+};
+
 export type XlsxDocument = {
     _id: string;
     name: string;
@@ -34,3 +40,35 @@ export type LogsData = {
     op: string;
     change: string;
 };
+
+// Интерфейс для структуры полей
+export interface Fields {
+    [key: string]: string;
+}
+
+// Интерфейс для модели
+export interface MyModel {
+    status: number;
+    fields: Fields;
+    is_delete: boolean;
+}
+
+interface Field {
+    // Ваши уникальные ключи и значения
+    [key: string]: any;
+}
+
+interface Rule {
+    id: string;
+    status: number;
+    fields: Field;
+    is_delete: boolean;
+}
+
+export interface RoleModel {
+    name: string;
+    rule: Rule[];
+    user_id: string;
+    is_delete: boolean;
+    workflow_id: string;
+}

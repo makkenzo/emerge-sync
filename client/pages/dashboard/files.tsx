@@ -1,7 +1,7 @@
-import { AiFillEdit, AiFillFileAdd } from 'react-icons/ai';
-import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentPage } from '@/redux/slices/fileSlice';
 import { RootState } from '@/redux/store';
+import { AiFillEdit, AiFillFileAdd } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
 
@@ -9,14 +9,13 @@ import { filesTableData } from '@/data/files-table-data';
 
 import { AddFileModal, DeleteButtonModal, Sidenav } from '@/components';
 
-import Image from 'next/image';
-import Link from 'next/link';
-import Head from 'next/head';
-import { Button } from 'flowbite-react';
-import { useState, useEffect } from 'react';
-import { XlsxDocument, UserData } from '@/types';
-import axios from 'axios';
 import instance from '@/lib/api';
+import { UserData, XlsxDocument } from '@/types';
+import { Button } from 'flowbite-react';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { IoMdSettings } from 'react-icons/io';
 
 const Files = () => {
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
@@ -55,8 +54,8 @@ const Files = () => {
                 const token = localStorage.getItem('token');
 
                 const headers = {
-                    Authorization: `Bearer ${token}`, // Замените YOUR_ACCESS_TOKEN на реальный токен
-                    'Content-Type': 'multipart/form-data', // Устанавливаем тип содержимого как multipart/form-data
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
                 };
 
                 const userResponse = await instance.get(`/user`, { headers });
@@ -128,11 +127,17 @@ const Files = () => {
                                                         <div className="flex">
                                                             <Link
                                                                 href={`/dashboard/file/${file._id}`}
-                                                                className="mr-2 text-[#56CCF2] hover:text-black"
+                                                                className="mr-2 text-[#52cf4c] hover:text-black"
                                                             >
                                                                 <AiFillEdit size={20} />
                                                             </Link>
                                                             <DeleteButtonModal file={file.name} fileId={file._id} />
+                                                            <Link
+                                                                href={`/dashboard/file/access/${file._id}`}
+                                                                className="ml-2 text-[#56CCF2] hover:text-black"
+                                                            >
+                                                                <IoMdSettings size={20} />
+                                                            </Link>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -165,19 +170,19 @@ const Files = () => {
                                         onClick={() => handlePageChange(currentPage - 1)}
                                         disabled={currentPage === 1}
                                     >
-                                        Prev
+                                        Назад
                                     </button>
                                     <button
                                         className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-[#607d8b] border-0 border-l border-gray-700 rounded-r hover:bg-[#4c6470]"
                                         onClick={() => handlePageChange(currentPage + 1)}
                                         disabled={currentPage === totalPages || isSinglePage}
                                     >
-                                        Next
+                                        Вперед
                                     </button>
                                 </div>
                             </div>
                             <div className="flex justify-end">
-                                <Button onClick={handleAddFile}>
+                                <Button onClick={handleAddFile} className="bg-[#607d8b]">
                                     <AiFillFileAdd size={15} className="mr-2" />
                                     Добавить
                                 </Button>

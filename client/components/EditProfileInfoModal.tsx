@@ -75,9 +75,6 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
             <Modal.Body>
                 <div className="">
                     <div>
-                        {/* <Typography variant="lead" className="mb-2 font-semibold">
-                            Данные профиля
-                        </Typography> */}
                         <div className="space-y-4">
                             <div>
                                 <div className="mb-2 block">
@@ -104,7 +101,6 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             <div>
                                 <div className="mb-2 block">
                                     <Label htmlFor="phone" value="Номер телефона" />
-                                    {/* <Label htmlFor="phone" value="*" className="ml-1 text-red-700" /> */}
                                 </div>
                                 <TextInput
                                     color={isPhoneValid ? 'gray' : 'failure'}
@@ -129,64 +125,9 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                             </div>
                         </div>
                     </div>
-                    {/* <div className="relative">
-                        <Typography variant="lead" className="mb-2 font-semibold">
-                            Социальные сети
-                        </Typography>
-                        <div className="space-y-4">
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="LinkedIn" value="LinkedIn" />
-                                </div>
-                                <TextInput
-                                    color={!linkedInError ? 'gray' : 'failure'}
-                                    id="LinkedIn"
-                                    type="url"
-                                    placeholder={userData.details.socialMedia.LinkedIn}
-                                    onChange={(e) => handleInputChange(e)}
-                                />
-                            </div>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="Instagram" value="Instagram" />
-                                </div>
-                                <TextInput
-                                    color={!instagramError ? 'gray' : 'failure'}
-                                    id="Instagram"
-                                    type="url"
-                                    placeholder={userData.details.socialMedia.Instagram}
-                                    onChange={(e) => handleInputChange(e)}
-                                />
-                            </div>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="Telegram" value="Telegram" />
-                                </div>
-                                <TextInput
-                                    color={!telegramError ? 'gray' : 'failure'}
-                                    id="Telegram"
-                                    type="url"
-                                    placeholder={userData.details.socialMedia.Telegram}
-                                    onChange={(e) => handleInputChange(e)}
-                                />
-                            </div>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="X" value="X" />
-                                </div>
-                                <TextInput
-                                    color={!xError ? 'gray' : 'failure'}
-                                    id="X"
-                                    type="url"
-                                    placeholder={userData.details.socialMedia.X}
-                                    onChange={(e) => handleInputChange(e)}
-                                />
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
                 <div className="w-full mt-4">
-                    <Button className="w-full" onClick={handleSaveChanges}>
+                    <Button className="w-full bg-[#607d8b]" onClick={handleSaveChanges}>
                         Сохранить
                     </Button>
                 </div>

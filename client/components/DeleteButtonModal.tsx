@@ -14,7 +14,12 @@ const DeleteButtonModal = ({ file, fileId }: { file: string; fileId: string }) =
     const props = { openModal, setOpenModal };
 
     const handleDeleteDocument = async () => {
-        const response = await instance.delete(`/workflow/${fileId}`);
+        const token = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+        };
+        const response = await instance.delete(`/workflow/${fileId}`, { headers });
 
         window.location.reload();
     };
