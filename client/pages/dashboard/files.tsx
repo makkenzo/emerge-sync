@@ -74,11 +74,14 @@ const Files = () => {
 
         fetchData();
     }, []);
+    useEffect(() => {
+        console.log(userFiles);
+    }, [userFiles]);
 
     return (
         <>
             <Head>
-                <title>EmergeSync | Files</title>
+                <title>ExcelStockList | Files</title>
             </Head>
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />
@@ -88,12 +91,12 @@ const Files = () => {
                             <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
                                 Файлы
                             </CardHeader>
-                            {!userFiles ? (
-                                <div className="text-center mb-4">
-                                    <p>Файлов нет</p>
-                                </div>
-                            ) : (
-                                <CardBody className="px-0 pt-0 pb-2">
+                            <CardBody className="px-0 pt-0 pb-2">
+                                {userFiles.length < 1 ? (
+                                    <div className="text-center mb-4">
+                                        <p>Файлов нет</p>
+                                    </div>
+                                ) : (
                                     <table className="w-full min-w-[640px] table-auto">
                                         <thead>
                                             <tr>
@@ -144,8 +147,8 @@ const Files = () => {
                                             ))}
                                         </tbody>
                                     </table>
-                                </CardBody>
-                            )}
+                                )}
+                            </CardBody>
                         </Card>
                         <div>
                             <div className="flex flex-col items-center justify-center">

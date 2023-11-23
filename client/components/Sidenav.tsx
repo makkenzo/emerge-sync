@@ -3,8 +3,6 @@ import { AiFillHome, AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 const Sidenav = () => {
     const router = useRouter();
@@ -19,8 +17,13 @@ const Sidenav = () => {
     return (
         <aside className="bg-[#102E44] inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl">
             <div className="relative border-b border-white/20">
-                <Link href="/dashboard/files" className="flex items-center gap-4 py-6 px-8">
-                    <Image src="/brand-logo.png" alt="brand logo" width={300} height={40} />
+                <Link
+                    href="/dashboard/files"
+                    className="flex flex-col items-center justify-center mx-12 my-4 p-4 space-y-2 bg-white rounded-lg"
+                >
+                    <Image src="/am.jpg" alt="brand logo" width={300} height={40} />
+                    {/* <Image src="/foton.jpg" alt="brand logo" width={300} height={40} />
+                    <Image src="/hyundai.jpg" alt="brand logo" width={300} height={40} /> */}
                 </Link>
             </div>
             <div className="m-4">

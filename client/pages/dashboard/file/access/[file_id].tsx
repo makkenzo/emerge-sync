@@ -40,7 +40,7 @@ const FileSettings = () => {
     return (
         <>
             <Head>
-                <title>EmergeSync | File access</title>
+                <title>ExcelStockList | File access</title>
             </Head>
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />

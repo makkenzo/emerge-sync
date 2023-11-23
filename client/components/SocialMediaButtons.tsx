@@ -1,7 +1,7 @@
+import { SocialMediaKey, UserData } from '@/types';
 import { AiFillInstagram, AiFillLinkedin } from 'react-icons/ai';
 import { FaXTwitter } from 'react-icons/fa6';
 import { TbBrandTelegram } from 'react-icons/tb';
-import { SocialMediaKey, UserData } from '@/types';
 
 const socialMediaButtonsData: { key: SocialMediaKey; icon: JSX.Element; text: string }[] = [
     {

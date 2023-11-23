@@ -66,9 +66,18 @@ interface Rule {
 }
 
 export interface RoleModel {
+    _id: string;
     name: string;
     rule: Rule[];
     user_id: string;
     is_delete: boolean;
     workflow_id: string;
+}
+
+export interface Workflow {
+    _id: string;
+    name: string;
+    create_at: string;
+    last_modify: string;
+    user_id: string;
 }

@@ -1,13 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsEmailValid, setIsPhoneValid, setIsURLValid } from '@/redux/slices/validationSlice';
+import instance from '@/lib/api';
+import { setIsEmailValid, setIsPhoneValid } from '@/redux/slices/validationSlice';
 import { RootState } from '@/redux/store';
 import { ProfileIndoModalTypes } from '@/types';
-import { Typography } from '@material-tailwind/react';
-import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
+import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import validator from 'validator';
-import axios from 'axios';
-import instance from '@/lib/api';
 
 const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTypes) => {
     const isEmailValid = useSelector((state: RootState) => state.validation.isEmailValid);

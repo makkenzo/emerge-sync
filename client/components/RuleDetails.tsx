@@ -1,9 +1,9 @@
 // components/RuleDetails.tsx
 
 import instance from '@/lib/api';
-import { Button, Input } from '@material-tailwind/react';
+import { Button } from '@material-tailwind/react';
 import { Label, Select, TextInput } from 'flowbite-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Определение enum для статусов
 enum RuleStatus {
@@ -12,9 +12,16 @@ enum RuleStatus {
     Unknown = 2,
 }
 
+interface ExistingRule {
+    _id: string;
+    status: RuleStatus;
+    fields: Record<string, string>;
+}
+
 interface RuleDetailsProps {
     role: string;
     fileId: string | string[] | undefined;
+    existingRules?: ExistingRule[];
 }
 
 interface Rule {
@@ -22,8 +29,20 @@ interface Rule {
     fields: Record<string, string>;
 }
 
-const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
+const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId, existingRules = [] }) => {
     const [rules, setRules] = useState<Rule[]>([]);
+
+    // Инициализируем состояние rules с существующими правилами
+    useEffect(() => {
+        if (existingRules.length > 0) {
+            setRules(
+                existingRules.map((rule) => ({
+                    status: rule.status,
+                    fields: { ...rule.fields },
+                }))
+            );
+        }
+    }, [existingRules]);
 
     const addRule = () => {
         const newRule: Rule = {
@@ -95,10 +114,10 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                     </div>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="field" value="Fields" />
+                            <Label htmlFor={`field_${index}`} value="Fields" />
                         </div>
                         <TextInput
-                            id="field"
+                            id={`field_${index}`}
                             value={rule.fields.field}
                             onChange={(e) => updateRuleField(index, 'field', e.target.value)}
                             placeholder="Field name"

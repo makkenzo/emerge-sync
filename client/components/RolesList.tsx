@@ -1,12 +1,12 @@
 // components/RolesList.tsx
 
+import instance from '@/lib/api';
+import { RoleModel } from '@/types';
 import { Button, List, ListItem } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import { RoleDetails } from '.';
-import instance from '@/lib/api';
-import { useRouter } from 'next/router';
-import { RoleModel } from '@/types';
 import AddRoleModal from './AddRoleModal';
 
 interface RolesListProps {
@@ -17,6 +17,7 @@ interface RolesListProps {
 
 const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, setEditRole }) => {
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+    const [selectedRoleId, setSelectedRoleId] = useState<string>();
     const [roles, setRoles] = useState<RoleModel[]>([]);
     const [users, setUsers] = useState<string[]>();
     const [selectedUser, setSelectedUser] = useState<string | null>(null);
@@ -58,12 +59,13 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
     const handleListItemClick = (role: RoleModel) => {
         setSelectedRole(role.name);
         setSelectedUser(role.user_id);
+        setSelectedRoleId(role._id);
     };
 
     return (
         <>
             <div className="p-4 w-1/3">
-                <div className="flex justify-between">
+                <div className="flex justify-between px-4">
                     <h2 className="text-xl font-bold mb-4">Доступные роли</h2>
                     <Button
                         size="sm"
@@ -85,7 +87,13 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
                 )}
             </div>
             {selectedRole && (
-                <RoleDetails role={selectedRole} user={selectedUser || ''} rules={rules} setEditRole={setEditRole} />
+                <RoleDetails
+                    role={selectedRole}
+                    user={selectedUser || ''}
+                    rules={rules}
+                    setEditRole={setEditRole}
+                    roleId={selectedRoleId}
+                />
             )}
             {fileId && <AddRoleModal isModalOpen={isModalOpen} closeModal={closeModal} fileId={fileId} />}
         </>

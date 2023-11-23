@@ -66,7 +66,7 @@ const Auth = () => {
     return (
         <>
             <Head>
-                <title>EmergeSync | Authentication</title>
+                <title>ExcelStockList | Authentication</title>
             </Head>
             <ToastContainer position="top-center" />
             <div className="min-h-screen bg-cover bg-center bg-[#0d6e6d] flex items-center justify-center">

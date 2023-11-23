@@ -90,7 +90,7 @@ const Profile = () => {
     return (
         <>
             <Head>
-                <title>EmergeSync | Profile</title>
+                <title>ExcelStockList | Profile</title>
             </Head>
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />

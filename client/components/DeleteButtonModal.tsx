@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 import { Button, Modal } from 'flowbite-react';
 
+import instance from '@/lib/api';
+import axios from 'axios';
 import { AiFillDelete } from 'react-icons/ai';
 import { PiWarningCircleBold } from 'react-icons/pi';
-import axios from 'axios';
-import instance from '@/lib/api';
 
 const DeleteButtonModal = ({ file, fileId }: { file: string; fileId: string }) => {
     const [openModal, setOpenModal] = useState<string | undefined>();

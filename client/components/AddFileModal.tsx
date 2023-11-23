@@ -32,7 +32,8 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
                 console.log(response);
 
                 closeModal();
-                redirect(`/dashboard/file/access/${response.data}`);
+                // redirect(`/dashboard/file/access/${response.data}`);
+                window.location.reload();
             } catch (error: any) {
                 toast.error(`Ошибка: ${error}`);
             }

@@ -2,7 +2,7 @@ import instance from '@/lib/api';
 import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import React, { useState, useEffect } from 'react';
 
-interface KeyData {
+interface UserData {
     _id: string;
     first_name: string;
     last_name: string;
@@ -11,12 +11,12 @@ interface KeyData {
 interface AddRoleModalProps {
     isModalOpen: boolean;
     closeModal: () => void;
-    fileId: string;
+    fileId: string | string[];
 }
 
 const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fileId }) => {
     const [role, setRole] = useState('');
-    const [keys, setKeys] = useState<KeyData[]>();
+    const [users, setUsers] = useState<UserData[]>();
     const [selectedUser, setSelectedUser] = useState<string | undefined>(undefined);
     useEffect(() => {
         const fetchKeys = async () => {
@@ -28,8 +28,8 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
                 //const response = await instance.post('/role/', data, { headers });
 
                 // http://localhost:8000/user/users
-                const response = await instance.get<KeyData[]>('/user/users/', { headers });
-                setKeys(response.data);
+                const response = await instance.get<UserData[]>('/user/users/', { headers });
+                setUsers(response.data);
             } catch (error) {
                 console.error('Ошибка при получении данных с сервера:', error);
             }
@@ -43,6 +43,8 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
         const headers = {
             Authorization: `Bearer ${token}`,
         };
+
+        console.log(selectedUser);
 
         const data = {
             name: role,
@@ -77,8 +79,8 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
                     <div className="mb-2 block">
                         <Label htmlFor="fields" value="Пользователь" />
                         <Select onChange={(e) => setSelectedUser(e.target.value)} value={selectedUser || ''}>
-                            {keys &&
-                                keys.map((key, index) => (
+                            {users &&
+                                users.map((key, index) => (
                                     <option key={key._id} value={key._id}>
                                         {key.first_name} {key.last_name}
                                     </option>

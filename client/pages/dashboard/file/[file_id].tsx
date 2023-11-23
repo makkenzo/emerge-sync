@@ -37,11 +37,15 @@ const FilePage = () => {
     const fileId = router.query.file_id;
 
     const [xlsxDocument, setDocument] = useState<ResponseData>();
-    const [filePath, setFilePath] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const tok = localStorage.getItem('token') ?? '';
+                const headers = {
+                    Authorization: `Bearer ${tok}`,
+                    'Content-Type': 'multipart/form-data',
+                };
                 const response = await instance.get(`/workflow_item/without_pagination/${fileId}`, { headers });
                 setDocument(response.data);
             } catch (error) {
@@ -96,7 +100,7 @@ const FilePage = () => {
     return (
         <>
             <Head>
-                <title>EmergeSync | File overview</title>
+                <title>ExcelStockList | File overview</title>
             </Head>
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />
