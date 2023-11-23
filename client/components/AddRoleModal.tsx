@@ -1,11 +1,42 @@
 import instance from '@/lib/api';
-import { RoleModalTypes } from '@/types';
-import { Button, Label, Modal, TextInput } from 'flowbite-react';
-import React, { useState } from 'react';
+import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
+import React, { useState, useEffect } from 'react';
 
-const AddRoleModal = ({ isModalOpen, closeModal, fileId }: RoleModalTypes) => {
+interface KeyData {
+    _id: string;
+    first_name: string;
+    last_name: string;
+}
+
+interface AddRoleModalProps {
+    isModalOpen: boolean;
+    closeModal: () => void;
+    fileId: string;
+}
+
+const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fileId }) => {
     const [role, setRole] = useState('');
-    const [keys, setKeys] = useState({});
+    const [keys, setKeys] = useState<KeyData[]>();
+    const [selectedUser, setSelectedUser] = useState<string | undefined>(undefined);
+    useEffect(() => {
+        const fetchKeys = async () => {
+            const token = localStorage.getItem('token');
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            try {
+                //const response = await instance.post('/role/', data, { headers });
+
+                // http://localhost:8000/user/users
+                const response = await instance.get<KeyData[]>('/user/users/', { headers });
+                setKeys(response.data);
+            } catch (error) {
+                console.error('Ошибка при получении данных с сервера:', error);
+            }
+        };
+
+        fetchKeys();
+    }, []);
 
     const handleSave = async () => {
         const token = localStorage.getItem('token');
@@ -16,15 +47,19 @@ const AddRoleModal = ({ isModalOpen, closeModal, fileId }: RoleModalTypes) => {
         const data = {
             name: role,
             rule: [],
-            user_id: '',
+            user_id: selectedUser,
             is_delete: false,
             workflow_id: fileId,
         };
 
-        const response = await instance.post('/role/', data, { headers });
+        try {
+            const response = await instance.post('/role/', data, { headers });
 
-        if (response.status === 201) {
-            window.location.reload();
+            if (response.status === 201) {
+                window.location.reload();
+            }
+        } catch (err) {
+            alert(err);
         }
     };
 
@@ -36,6 +71,19 @@ const AddRoleModal = ({ isModalOpen, closeModal, fileId }: RoleModalTypes) => {
                     <div className="mb-2 block">
                         <Label htmlFor="file" value="Роль" />
                         <TextInput onChange={(e) => setRole(e.target.value)} />
+                    </div>
+                </div>
+                <div className="mb-2">
+                    <div className="mb-2 block">
+                        <Label htmlFor="fields" value="Пользователь" />
+                        <Select onChange={(e) => setSelectedUser(e.target.value)} value={selectedUser || ''}>
+                            {keys &&
+                                keys.map((key, index) => (
+                                    <option key={key._id} value={key._id}>
+                                        {key.first_name} {key.last_name}
+                                    </option>
+                                ))}
+                        </Select>
                     </div>
                 </div>
                 <div className="w-full mt-4">

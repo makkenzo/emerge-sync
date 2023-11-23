@@ -95,7 +95,7 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                     </div>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="field" value="Field" />
+                            <Label htmlFor="field" value="Fields" />
                         </div>
                         <TextInput
                             id="field"

@@ -1,25 +1,25 @@
-import Sidenav from './Sidenav';
-import ProfileInfo from './ProfileInfo';
-import SocialMediaButtons from './SocialMediaButtons';
-import EditProfileInfoModal from './EditProfileInfoModal';
-import DeleteButtonModal from './DeleteButtonModal';
-import EditProfilePictureModal from './EditProfilePictureModal';
 import AddFileModal from './AddFileModal';
+import DeleteButtonModal from './DeleteButtonModal';
+import EditProfileInfoModal from './EditProfileInfoModal';
+import EditProfilePictureModal from './EditProfilePictureModal';
 import FunctionModal from './FunctionModal';
-import RolesList from './RolesList';
+import ProfileInfo from './ProfileInfo';
 import RoleDetails from './RoleDetails';
+import RolesList from './RolesList';
 import RuleDetails from './RuleDetails';
+import Sidenav from './Sidenav';
+import SocialMediaButtons from './SocialMediaButtons';
 
 export {
-    Sidenav,
+    AddFileModal,
     DeleteButtonModal,
-    ProfileInfo,
-    SocialMediaButtons,
     EditProfileInfoModal,
     EditProfilePictureModal,
-    AddFileModal,
     FunctionModal,
-    RolesList,
+    ProfileInfo,
     RoleDetails,
+    RolesList,
     RuleDetails,
+    Sidenav,
+    SocialMediaButtons,
 };
