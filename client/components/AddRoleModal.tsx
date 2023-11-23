@@ -44,12 +44,10 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
             Authorization: `Bearer ${token}`,
         };
 
-        console.log(selectedUser);
-
         const data = {
             name: role,
             rule: [],
-            user_id: selectedUser,
+            user_id: selectedUser || (users && users[0]?.first_name),
             is_delete: false,
             workflow_id: fileId,
         };
@@ -78,14 +76,19 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
                 <div className="mb-2">
                     <div className="mb-2 block">
                         <Label htmlFor="fields" value="Пользователь" />
-                        <Select onChange={(e) => setSelectedUser(e.target.value)} value={selectedUser || ''}>
-                            {users &&
-                                users.map((key, index) => (
+                        {users && (
+                            <Select
+                                onChange={(e) => setSelectedUser(e.target.value)}
+                                value={selectedUser || ''}
+                                defaultValue={users[0].first_name}
+                            >
+                                {users.map((key, index) => (
                                     <option key={key._id} value={key._id}>
                                         {key.first_name} {key.last_name}
                                     </option>
                                 ))}
-                        </Select>
+                            </Select>
+                        )}
                     </div>
                 </div>
                 <div className="w-full mt-4">

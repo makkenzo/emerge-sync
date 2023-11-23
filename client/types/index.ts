@@ -72,6 +72,7 @@ export interface RoleModel {
     user_id: string;
     is_delete: boolean;
     workflow_id: string;
+    creater_id: string;
 }
 
 export interface Workflow {

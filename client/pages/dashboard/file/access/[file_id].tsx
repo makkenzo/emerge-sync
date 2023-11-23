@@ -37,6 +37,7 @@ const FileSettings = () => {
 
     const [selectedRole, setSelectedRole] = useState<string | null>(null);
     const [editRole, setEditRole] = useState<boolean>(false);
+    const [userId, setUserId] = useState<string | null>(null);
     return (
         <>
             <Head>
@@ -59,9 +60,13 @@ const FileSettings = () => {
                                     selectedRole={selectedRole}
                                     setSelectedRole={setSelectedRole}
                                     setEditRole={setEditRole}
+                                    userId={userId}
+                                    setUserId={setUserId}
                                 />
 
-                                {editRole && selectedRole && <RuleDetails role={selectedRole} fileId={fileId} />}
+                                {editRole && selectedRole && (
+                                    <RuleDetails role={selectedRole} fileId={fileId} userId={userId} />
+                                )}
                             </div>
                             {/* <Button color="blue" onClick={addRule}>
                                 Добавить правило

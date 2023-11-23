@@ -22,6 +22,7 @@ interface RuleDetailsProps {
     role: string;
     fileId: string | string[] | undefined;
     existingRules?: ExistingRule[];
+    userId: string | null;
 }
 
 interface Rule {
@@ -29,7 +30,7 @@ interface Rule {
     fields: Record<string, string>;
 }
 
-const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId, existingRules = [] }) => {
+const RuleDetails: React.FC<RuleDetailsProps> = ({ role, userId, fileId, existingRules = [] }) => {
     const [rules, setRules] = useState<Rule[]>([]);
 
     // Инициализируем состояние rules с существующими правилами
@@ -65,6 +66,11 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId, existingRules =
     };
 
     const handleUpdateRules = async () => {
+        const token = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+
         const requestData = {
             name: role,
             rule: rules.map((rule) => ({
@@ -72,17 +78,12 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId, existingRules =
                 fields: rule.fields,
                 is_delete: false,
             })),
-            user_id: 'string',
+            user_id: userId,
             is_delete: false,
             workflow_id: fileId,
         };
 
-        const token = localStorage.getItem('token');
-        const headers = {
-            Authorization: `Bearer ${token}`,
-        };
-
-        const response = await instance.put(`/role/`, requestData, { headers });
+        // const response = await instance.put(`/role/`, requestData, { headers });
     };
 
     return (

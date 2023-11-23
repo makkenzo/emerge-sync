@@ -12,14 +12,17 @@ import AddRoleModal from './AddRoleModal';
 interface RolesListProps {
     selectedRole: string | null;
     setSelectedRole: React.Dispatch<React.SetStateAction<string | null>>;
+    setUserId: React.Dispatch<React.SetStateAction<string | null>>;
     setEditRole: React.Dispatch<React.SetStateAction<boolean>>;
+    userId: string | null;
 }
 
-const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, setEditRole }) => {
+const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, setEditRole, userId, setUserId }) => {
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
-    const [selectedRoleId, setSelectedRoleId] = useState<string>();
+    const [selectedRoleId, setSelectedRoleId] = useState<string>('');
     const [roles, setRoles] = useState<RoleModel[]>([]);
     const [users, setUsers] = useState<string[]>();
+    // const [userId, setUserId] = useState<string>();
     const [selectedUser, setSelectedUser] = useState<string | null>(null);
     const [rules, setRules] = useState({
         name: 'papa',
@@ -49,6 +52,10 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
             const rolesData: RoleModel[] = response.data;
 
             setRoles(rolesData);
+            // setRules(response.data.rule);
+            console.log(rolesData);
+
+            // setUserId(response.data._id);
         };
 
         if (fileId) {
@@ -60,6 +67,7 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
         setSelectedRole(role.name);
         setSelectedUser(role.user_id);
         setSelectedRoleId(role._id);
+        setUserId(role.creater_id);
     };
 
     return (
@@ -93,6 +101,7 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
                     rules={rules}
                     setEditRole={setEditRole}
                     roleId={selectedRoleId}
+                    setUserId={setUserId}
                 />
             )}
             {fileId && <AddRoleModal isModalOpen={isModalOpen} closeModal={closeModal} fileId={fileId} />}

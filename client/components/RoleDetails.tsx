@@ -8,12 +8,18 @@ interface RoleDetailsProps {
     user: string;
     rules: Record<string, any>;
     setEditRole: React.Dispatch<React.SetStateAction<boolean>>;
+    setUserId: React.Dispatch<React.SetStateAction<string | null>>;
     roleId: string | undefined;
 }
 
-const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, setEditRole }) => {
+const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, setEditRole, setUserId }) => {
     const [username, setUsername] = useState('');
-    const [userId, setUserId] = useState('');
+    // const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+        console.log(role);
+        console.log(rules);
+    }, []);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -38,12 +44,14 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
             Authorization: `Bearer ${token}`,
         };
         const params = {
-            id: roleId,
+            role_id: roleId,
         };
 
-        const response = await instance
-            .delete('/role/', { params, headers })
-            .then((res) => setUsername(res.data.first_name));
+        const response = await instance.delete('/role/', { params, headers });
+
+        if (response.status === 200) {
+            window.location.reload();
+        }
     };
 
     return (
