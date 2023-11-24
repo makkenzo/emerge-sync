@@ -1,10 +1,11 @@
 import instance from '@/lib/api';
+import { RoleModel } from '@/types';
 import { Button } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 
 interface RoleDetailsProps {
-    role: string;
+    role: RoleModel;
     user: string;
     rules: Record<string, any>;
     setEditRole: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +18,7 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
     // const [userId, setUserId] = useState('');
 
     useEffect(() => {
-        console.log(role);
+        console.log(role.name);
         console.log(rules);
     }, []);
 
@@ -29,9 +30,22 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
         };
 
         const fetchData = async () => {
-            const response = await instance.get(`/user/${user}`, { headers }).then((res) => {
-                setUsername(res.data.first_name);
-                setUserId(res.data._id);
+            const response = await instance.get(`/user/${role.user_id}`, { headers }).then((res) => {
+                const { first_name, last_name } = res.data;
+                let fullName: string = "";
+
+                if (first_name) {
+                fullName += first_name;
+                }
+                if (last_name) {
+                if (fullName.length > 0) {
+                    fullName += " ";
+                }
+                fullName += last_name;
+                }
+            
+                setUsername(fullName);
+                setUserId(res.data._id);//зачем?
             });
         };
 
@@ -57,7 +71,7 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
     return (
         <div className="p-4 space-y-4 w-1/3 bg-white rounded-lg shadow-md">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">Детали роли</h2>
+                <h2 className="text-xl font-bold">Описание роли</h2>
                 <div className="flex space-x-2">
                     <Button
                         onClick={handleDeleteRole}
@@ -80,19 +94,22 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
                 </div>
             </div>
             <p className="mb-2">
-                <span className="font-bold">Роль:</span> {role}
+                <span className="font-bold">Наименование роли:</span> {role.name}
             </p>
             <p className="mb-2">
-                <span className="font-bold">Пользователь:</span> {username}
+                <span className="font-bold">Применяется к пользователю:</span> {username}
             </p>
-            <p className="mb-2">
+            {/* <p className="mb-2">
                 <span className="font-bold">Поля:</span>
             </p>
             <ul className="list-disc pl-4 mb-4">
-                {Object.entries(rules).map(([key, value]) => (
+               
+                {Object.entries(role.rule).map(([key, value]) => (
                     <li key={key}>{key}</li>
                 ))}
-            </ul>
+            </ul> 
+            не понятно что это и что должно отображаться
+            */  }
         </div>
     );
 };

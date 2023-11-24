@@ -61,7 +61,7 @@ interface Field {
 interface Rule {
     id: string;
     status: number;
-    fields: Field;
+    fields: Record<string, string>;
     is_delete: boolean;
 }
 

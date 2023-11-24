@@ -10,8 +10,9 @@ import { RoleDetails } from '.';
 import AddRoleModal from './AddRoleModal';
 
 interface RolesListProps {
-    selectedRole: string | null;
-    setSelectedRole: React.Dispatch<React.SetStateAction<string | null>>;
+    selectedRole: RoleModel | null;
+   // setSelectedRole: React.Dispatch<React.SetStateAction<string | null>>;
+    setSelectedRole: React.Dispatch<React.SetStateAction<RoleModel | null>>;
     setUserId: React.Dispatch<React.SetStateAction<string | null>>;
     setEditRole: React.Dispatch<React.SetStateAction<boolean>>;
     userId: string | null;
@@ -52,10 +53,11 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
             const rolesData: RoleModel[] = response.data;
 
             setRoles(rolesData);
-            // setRules(response.data.rule);
+            //alert(rolesData[0].rule)
+             //setRules();
             console.log(rolesData);
 
-            // setUserId(response.data._id);
+             //setUserId(response.data._id);
         };
 
         if (fileId) {
@@ -64,7 +66,7 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
     }, [fileId]);
 
     const handleListItemClick = (role: RoleModel) => {
-        setSelectedRole(role.name);
+        setSelectedRole(role);
         setSelectedUser(role.user_id);
         setSelectedRoleId(role._id);
         setUserId(role.creater_id);
@@ -74,7 +76,7 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
         <>
             <div className="p-4 w-1/3">
                 <div className="flex justify-between px-4">
-                    <h2 className="text-xl font-bold mb-4">Доступные роли</h2>
+                    <h2 className="text-xl font-bold mb-4">Созданные роли</h2>
                     <Button
                         size="sm"
                         color="blue"

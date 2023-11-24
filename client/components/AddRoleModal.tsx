@@ -25,9 +25,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
                 Authorization: `Bearer ${token}`,
             };
             try {
-                //const response = await instance.post('/role/', data, { headers });
-
-                // http://localhost:8000/user/users
+    
                 const response = await instance.get<UserData[]>('/user/users/', { headers });
                 setUsers(response.data);
             } catch (error) {
