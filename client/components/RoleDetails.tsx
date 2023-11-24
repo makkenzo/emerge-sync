@@ -30,6 +30,8 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
         };
 
         const fetchData = async () => {
+            try {
+            
             const response = await instance.get(`/user/${role.user_id}`, { headers }).then((res) => {
                 const { first_name, last_name } = res.data;
                 let fullName: string = "";
@@ -46,11 +48,16 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
             
                 setUsername(fullName);
                 setUserId(res.data._id);//зачем?
-            });
+              
+            });}catch (ex){
+                console.error(ex)
+            }
+            
         };
 
         fetchData();
     }, []);
+    
 
     const handleDeleteRole = async () => {
         const token = localStorage.getItem('token');
@@ -60,12 +67,15 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
         const params = {
             role_id: roleId,
         };
-
+        try{
         const response = await instance.delete('/role/', { params, headers });
 
         if (response.status === 200) {
             window.location.reload();
         }
+    }catch (ex){
+        console.error(ex)
+    }
     };
 
     return (

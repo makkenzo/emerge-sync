@@ -49,6 +49,7 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
         };
 
         const fetchData = async () => {
+            try{
             const response = await instance.get(`/role/${fileId}`, { headers });
             const rolesData: RoleModel[] = response.data;
 
@@ -56,7 +57,11 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
             //alert(rolesData[0].rule)
              //setRules();
             console.log(rolesData);
+            }
+            catch(ex){
+        console.error(ex)
 
+            }
              //setUserId(response.data._id);
         };
 
