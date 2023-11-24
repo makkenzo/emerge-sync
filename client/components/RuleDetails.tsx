@@ -102,7 +102,7 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, userId, fileId, existin
                 throw new Error("Field cannot be null");
             }
         } catch {
-            alert(123)
+       
             return
         }
 
