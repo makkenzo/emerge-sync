@@ -75,7 +75,7 @@ const Files = () => {
         fetchData();
     }, []);
     useEffect(() => {
-        console.log(userFiles);
+        userFiles;
     }, [userFiles]);
 
     return (

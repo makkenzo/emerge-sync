@@ -18,8 +18,8 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
     // const [userId, setUserId] = useState('');
 
     useEffect(() => {
-        console.log(role.name);
-        console.log(rules);
+        role.name;
+        rules;
     }, []);
 
     useEffect(() => {
@@ -31,33 +31,30 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
 
         const fetchData = async () => {
             try {
-            
-            const response = await instance.get(`/user/${role.user_id}`, { headers }).then((res) => {
-                const { first_name, last_name } = res.data;
-                let fullName: string = "";
+                const response = await instance.get(`/user/${role.user_id}`, { headers }).then((res) => {
+                    const { first_name, last_name } = res.data;
+                    let fullName: string = '';
 
-                if (first_name) {
-                fullName += first_name;
-                }
-                if (last_name) {
-                if (fullName.length > 0) {
-                    fullName += " ";
-                }
-                fullName += last_name;
-                }
-            
-                setUsername(fullName);
-                setUserId(res.data._id);//зачем?
-              
-            });}catch (ex){
-                console.error(ex)
+                    if (first_name) {
+                        fullName += first_name;
+                    }
+                    if (last_name) {
+                        if (fullName.length > 0) {
+                            fullName += ' ';
+                        }
+                        fullName += last_name;
+                    }
+
+                    setUsername(fullName);
+                    setUserId(res.data._id); //зачем?
+                });
+            } catch (ex) {
+                console.error(ex);
             }
-            
         };
 
         fetchData();
     }, []);
-    
 
     const handleDeleteRole = async () => {
         const token = localStorage.getItem('token');
@@ -67,19 +64,19 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
         const params = {
             role_id: roleId,
         };
-        try{
-        const response = await instance.delete('/role/', { params, headers });
+        try {
+            const response = await instance.delete('/role/', { params, headers });
 
-        if (response.status === 200) {
-            window.location.reload();
+            if (response.status === 200) {
+                window.location.reload();
+            }
+        } catch (ex) {
+            console.error(ex);
         }
-    }catch (ex){
-        console.error(ex)
-    }
     };
 
     return (
-        <div className="p-4 space-y-4 w-1/3 bg-white rounded-lg shadow-md">
+        <div className="p-4 space-y-4 w-1/3 bg-white">
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold">Описание роли</h2>
                 <div className="flex space-x-2">
@@ -103,23 +100,14 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
                     </Button>
                 </div>
             </div>
-            <p className="mb-2">
-                <span className="font-bold">Наименование роли:</span> {role.name}
-            </p>
-            <p className="mb-2">
-                <span className="font-bold">Применяется к пользователю:</span> {username}
-            </p>
-            {/* <p className="mb-2">
-                <span className="font-bold">Поля:</span>
-            </p>
-            <ul className="list-disc pl-4 mb-4">
-               
-                {Object.entries(role.rule).map(([key, value]) => (
-                    <li key={key}>{key}</li>
-                ))}
-            </ul> 
-            не понятно что это и что должно отображаться
-            */  }
+            <div className="shadow-md p-2 rounded-lg">
+                <p className="mb-2">
+                    <span className="font-bold">Наименование роли:</span> {role.name}
+                </p>
+                <p className="mb-2">
+                    <span className="font-bold">Применяется к пользователю:</span> {username}
+                </p>
+            </div>
         </div>
     );
 };

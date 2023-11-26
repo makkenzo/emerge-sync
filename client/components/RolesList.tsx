@@ -11,7 +11,7 @@ import AddRoleModal from './AddRoleModal';
 
 interface RolesListProps {
     selectedRole: RoleModel | null;
-   // setSelectedRole: React.Dispatch<React.SetStateAction<string | null>>;
+    //    setSelectedRole: React.Dispatch<React.SetStateAction<string | null>>;
     setSelectedRole: React.Dispatch<React.SetStateAction<RoleModel | null>>;
     setUserId: React.Dispatch<React.SetStateAction<string | null>>;
     setEditRole: React.Dispatch<React.SetStateAction<boolean>>;
@@ -49,20 +49,18 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
         };
 
         const fetchData = async () => {
-            try{
-            const response = await instance.get(`/role/${fileId}`, { headers });
-            const rolesData: RoleModel[] = response.data;
+            try {
+                const response = await instance.get(`/role/${fileId}`, { headers });
+                const rolesData: RoleModel[] = response.data;
 
-            setRoles(rolesData);
-            //alert(rolesData[0].rule)
-             //setRules();
-            console.log(rolesData);
+                setRoles(rolesData);
+                //alert(rolesData[0].rule)
+                //setRules();
+                rolesData;
+            } catch (ex) {
+                console.error(ex);
             }
-            catch(ex){
-        console.error(ex)
-
-            }
-             //setUserId(response.data._id);
+            //setUserId(response.data._id);
         };
 
         if (fileId) {
@@ -91,7 +89,7 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
                         <FaPlus size={20} className="inline-block" />
                     </Button>
                 </div>
-                {roles && (
+                {roles && roles.length > 0 ? (
                     <List className="shadow-lg rounded-xl">
                         {roles.map((role) => (
                             <ListItem key={role.name} onClick={() => handleListItemClick(role)}>
@@ -99,6 +97,8 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
                             </ListItem>
                         ))}
                     </List>
+                ) : (
+                    <h1>Ролей пока нет..</h1>
                 )}
             </div>
             {selectedRole && (

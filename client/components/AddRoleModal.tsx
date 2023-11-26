@@ -1,12 +1,7 @@
 import instance from '@/lib/api';
+import { UserData } from '@/types';
 import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import React, { useState, useEffect } from 'react';
-
-interface UserData {
-    _id: string;
-    first_name: string;
-    last_name: string;
-}
 
 interface AddRoleModalProps {
     isModalOpen: boolean;
@@ -25,9 +20,12 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
                 Authorization: `Bearer ${token}`,
             };
             try {
-    
                 const response = await instance.get<UserData[]>('/user/users/', { headers });
                 setUsers(response.data);
+
+                if (response.data.length > 0) {
+                    setSelectedUser(response.data[0].user_id);
+                }
             } catch (error) {
                 console.error('Ошибка при получении данных с сервера:', error);
             }
@@ -45,7 +43,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
         const data = {
             name: role,
             rule: [],
-            user_id: selectedUser || (users && users[0]?.first_name),
+            user_id: selectedUser,
             is_delete: false,
             workflow_id: fileId,
         };

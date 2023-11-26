@@ -29,7 +29,6 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
                 formData.append('file', file, file.name);
 
                 const response = await instance.post('/workflow', formData, { headers });
-                console.log(response);
 
                 closeModal();
                 // redirect(`/dashboard/file/access/${response.data}`);

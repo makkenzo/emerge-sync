@@ -1,11 +1,11 @@
-export type UserData = {
-    _id: string;
-    user_id: string;
-    first_name: string;
-    last_name: string;
-    phone: string;
-    email: string;
-};
+// export type UserData = {
+//     _id: string;
+//     user_id: string;
+//     first_name: string;
+//     last_name: string;
+//     phone: string;
+//     email: string;
+// };
 
 export type SocialMediaKey = 'LinkedIn' | 'Instagram' | 'Telegram' | 'X';
 
@@ -58,12 +58,12 @@ interface Field {
     [key: string]: any;
 }
 
-interface Rule {
-    id: string;
-    status: number;
-    fields: Record<string, string>;
-    is_delete: boolean;
-}
+// interface Rule {
+//     id: string;
+//     status: number;
+//     fields: Record<string, string>;
+//     is_delete: boolean;
+// }
 
 export interface RoleModel {
     _id: string;
@@ -81,4 +81,16 @@ export interface Workflow {
     create_at: string;
     last_modify: string;
     user_id: string;
+}
+
+export interface UserData {
+    _id: string;
+    first_name: string;
+    last_name: string;
+    user_id: string;
+}
+
+export interface Rule {
+    status: number;
+    fields: Record<string, string>;
 }

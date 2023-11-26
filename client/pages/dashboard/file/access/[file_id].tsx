@@ -1,20 +1,19 @@
 import { RoleDetails, RolesList, RuleDetails, Sidenav } from '@/components';
 import AddRoleModal from '@/components/AddRoleModal';
-import { Fields, MyModel } from '@/types';
+import { Fields, MyModel, RoleModel, Rule } from '@/types';
 import { Card, CardBody, CardHeader } from '@material-tailwind/react';
 import { Button } from 'flowbite-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-interface Rule {
-    status: number;
-    fields: Record<string, string>;
-}
-
 const FileSettings = () => {
     const router = useRouter();
     const fileId = router.query.file_id;
+
+    const [selectedRole, setSelectedRole] = useState<RoleModel | null>(null);
+    const [editRole, setEditRole] = useState<boolean>(false);
+    const [userId, setUserId] = useState<string | null>(null);
 
     const [rules, setRules] = useState<Rule[]>([]);
     const addRule = () => {
@@ -32,12 +31,9 @@ const FileSettings = () => {
         setRules(updatedRules);
     };
     useEffect(() => {
-        console.log(rules);
+        rules;
     }, [rules]);
 
-    const [selectedRole, setSelectedRole] = useState<string | null>(null);
-    const [editRole, setEditRole] = useState<boolean>(false);
-    const [userId, setUserId] = useState<string | null>(null);
     return (
         <>
             <Head>
@@ -68,33 +64,6 @@ const FileSettings = () => {
                                     <RuleDetails role={selectedRole} fileId={fileId} userId={userId} />
                                 )}
                             </div>
-                            {/* <Button color="blue" onClick={addRule}>
-                                Добавить правило
-                            </Button>
-                            <div className="w-[1300px] h-[795px] overflow-x-auto flex flex-col mx-4">
-                                {rules.map((rule, index) => (
-                                    <div key={index} className="mt-4">
-                                        <div>
-                                            <label>Status:</label>
-                                            <input
-                                                type="number"
-                                                value={rule.status}
-                                                onChange={(e) => updateRuleField(index, 'status', e.target.value)}
-                                            />
-                                        </div>
-                                        <h1>Fields:</h1>
-                                        <div>
-                                            <input
-                                                type="text"
-                                                // value={rule.fields}
-                                                onChange={(e) =>
-                                                    updateRuleField(index, 'fields.field   ', e.target.value)
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div> */}
                         </CardBody>
                     </Card>
                 </div>
