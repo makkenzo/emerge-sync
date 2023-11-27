@@ -1,41 +1,31 @@
 import instance from '@/lib/api';
 import { RoleModel } from '@/types';
 import { Button } from '@material-tailwind/react';
-import { Label, Select, TextInput } from 'flowbite-react';
-import React, { useEffect, useState } from 'react';
-import { FaPlus } from 'react-icons/fa6';
-import { object, string } from 'zod';
+import { Checkbox, Label, Select, TextInput } from 'flowbite-react';
+import { useEffect, useState } from 'react';
 
 enum RuleStatus {
     Hiding = 0,
     Visible = 1,
     Unknown = 2,
-}
-
-interface ExistingRule {
-    _id: string;
-    status: RuleStatus;
-    fields: Record<string, string>;
+    AllHiding = 3,
+    AllVisible = 4,
 }
 
 interface RuleDetailsProps {
     role: RoleModel;
     fileId: string | string[] | undefined;
-    existingRules?: ExistingRule[];
     userId: string | null;
 }
 
 interface Rule {
     [key: string]: any;
 }
-interface SaveKeyValue {
-    index: number;
-    key: string;
-}
 
-const RuleDetails: React.FC<RuleDetailsProps> = ({ role, userId, fileId, existingRules = [] }) => {
+const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
     const [rules, setRules] = useState<Rule[]>(role.rule);
     const [keys, setKeys] = useState<string[]>();
+    const [canModify, setCanModify] = useState<boolean>(role.can_modify);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -59,13 +49,6 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, userId, fileId, existin
         fetchData();
     }, []);
 
-    const addField = (index: number) => {
-        const updatedRules = [...rules];
-        const newField = { [keys![0]]: '' }; // Assuming keys is not empty
-        updatedRules[index].fields = { ...updatedRules[index].fields, ...newField };
-        setRules(updatedRules);
-    };
-
     const saveRules = async () => {
         const token = localStorage.getItem('token');
         const headers = {
@@ -86,6 +69,7 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, userId, fileId, existin
             is_delete: false,
             workflow_id: role.workflow_id,
             creater_id: role.creater_id,
+            can_modify: canModify,
         };
 
         const reponse = await instance.put('/role/', dataToSave, { headers });
@@ -108,12 +92,10 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, userId, fileId, existin
     const handleFieldChange = (ruleIndex: number, key: string, value: string) => {
         const updatedRules = [...rules];
 
-        // Ensure 'fields' is initialized
         if (!updatedRules[ruleIndex].fields) {
             updatedRules[ruleIndex].fields = {};
         }
 
-        // If value is empty, remove the key
         if (value === '') {
             delete updatedRules[ruleIndex].fields[key];
         } else {
@@ -163,7 +145,19 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, userId, fileId, existin
                         >
                             <option value={RuleStatus.Hiding}>Невидимо</option>
                             <option value={RuleStatus.Visible}>Видимо</option>
+                            <option value={RuleStatus.AllHiding}>Скрыты все</option>
+                            <option value={RuleStatus.AllVisible}>Видимы все</option>
                         </Select>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <Checkbox
+                            id="can_modify_checkbox"
+                            checked={canModify}
+                            onChange={() => setCanModify(!canModify)}
+                            className="text-[#607d8b] focus:border-gray-500 focus:ring-gray-500"
+                        />
+                        <Label htmlFor="promotion">Доступны для редактирования</Label>
                     </div>
 
                     <div className="mb-2 block">

@@ -1,12 +1,3 @@
-// export type UserData = {
-//     _id: string;
-//     user_id: string;
-//     first_name: string;
-//     last_name: string;
-//     phone: string;
-//     email: string;
-// };
-
 export type SocialMediaKey = 'LinkedIn' | 'Instagram' | 'Telegram' | 'X';
 
 export type SocialMediaData = {
@@ -41,12 +32,10 @@ export type LogsData = {
     change: string;
 };
 
-// Интерфейс для структуры полей
 export interface Fields {
     [key: string]: string;
 }
 
-// Интерфейс для модели
 export interface MyModel {
     status: number;
     fields: Fields;
@@ -54,16 +43,8 @@ export interface MyModel {
 }
 
 interface Field {
-    // Ваши уникальные ключи и значения
     [key: string]: any;
 }
-
-// interface Rule {
-//     id: string;
-//     status: number;
-//     fields: Record<string, string>;
-//     is_delete: boolean;
-// }
 
 export interface RoleModel {
     _id: string;
@@ -73,6 +54,7 @@ export interface RoleModel {
     is_delete: boolean;
     workflow_id: string;
     creater_id: string;
+    can_modify: boolean;
 }
 
 export interface Workflow {
@@ -88,6 +70,8 @@ export interface UserData {
     first_name: string;
     last_name: string;
     user_id: string;
+    phone: string;
+    email: string;
 }
 
 export interface Rule {

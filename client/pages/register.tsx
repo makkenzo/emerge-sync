@@ -1,12 +1,12 @@
+import instance from '@/lib/api';
 import { registerUser } from '@/redux/slices/authSlice';
+import { Typography } from '@material-tailwind/react';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { AiFillLock, AiOutlineUser } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import instance from '@/lib/api';
-import { Typography } from '@material-tailwind/react';
 
 const RegisterPage = () => {
     const [username, setUsername] = useState('');
@@ -37,8 +37,6 @@ const RegisterPage = () => {
                 const { accsess_token } = reponse2.data;
 
                 if (accsess_token) {
-                    // dispatch(registerUser({ token, userId }));
-
                     localStorage.setItem('token', accsess_token);
                     localStorage.setItem('userId', user_id);
 

@@ -1,5 +1,3 @@
-// components/RolesList.tsx
-
 import instance from '@/lib/api';
 import { RoleModel } from '@/types';
 import { Button, List, ListItem } from '@material-tailwind/react';
@@ -11,7 +9,6 @@ import AddRoleModal from './AddRoleModal';
 
 interface RolesListProps {
     selectedRole: RoleModel | null;
-    //    setSelectedRole: React.Dispatch<React.SetStateAction<string | null>>;
     setSelectedRole: React.Dispatch<React.SetStateAction<RoleModel | null>>;
     setUserId: React.Dispatch<React.SetStateAction<string | null>>;
     setEditRole: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,8 +19,6 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const [selectedRoleId, setSelectedRoleId] = useState<string>('');
     const [roles, setRoles] = useState<RoleModel[]>([]);
-    const [users, setUsers] = useState<string[]>();
-    // const [userId, setUserId] = useState<string>();
     const [selectedUser, setSelectedUser] = useState<string | null>(null);
     const [rules, setRules] = useState({
         name: 'papa',
@@ -54,13 +49,10 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
                 const rolesData: RoleModel[] = response.data;
 
                 setRoles(rolesData);
-                //alert(rolesData[0].rule)
-                //setRules();
                 rolesData;
             } catch (ex) {
                 console.error(ex);
             }
-            //setUserId(response.data._id);
         };
 
         if (fileId) {
@@ -111,7 +103,9 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
                     setUserId={setUserId}
                 />
             )}
-            {fileId && <AddRoleModal isModalOpen={isModalOpen} closeModal={closeModal} fileId={fileId} />}
+            {fileId && isModalOpen && (
+                <AddRoleModal isModalOpen={isModalOpen} closeModal={closeModal} fileId={fileId} />
+            )}
         </>
     );
 };

@@ -65,22 +65,6 @@ const ProfileInfo: React.FC<{ userData: UserData }> = ({ userData }) => {
                                 {userData.email !== '' ? userData.email : 'Данных нет..'}
                             </Typography>
                         </li>
-                        {/* <li className="flex items-center gap-4">
-                            <Typography variant="small" color="blue-gray" className="font-semibold">
-                                Расположение:
-                            </Typography>
-                            <Typography variant="small" className="font-normal text-blue-gray-500">
-                                {userData?.details['location'] !== '' ? userData?.details['location'] : 'Данных нет..'}
-                            </Typography>
-                        </li>
-                        <li className="flex items-center gap-4">
-                            <Typography variant="small" color="blue-gray" className="font-semibold">
-                                Пол:
-                            </Typography>
-                            <Typography variant="small" className="font-normal text-blue-gray-500 capitalize">
-                                {userData?.details['gender'] !== '' ? userData?.details['gender'] : 'Данных нет..'}
-                            </Typography>
-                        </li> */}
                     </ul>
                 </CardBody>
             </Card>

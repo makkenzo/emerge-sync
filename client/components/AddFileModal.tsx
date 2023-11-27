@@ -1,7 +1,6 @@
 import instance from '@/lib/api';
 import { ProfileIndoModalTypes } from '@/types';
 import { Button, FileInput, Label, Modal, TextInput } from 'flowbite-react';
-import { redirect } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,7 +30,6 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
                 const response = await instance.post('/workflow', formData, { headers });
 
                 closeModal();
-                // redirect(`/dashboard/file/access/${response.data}`);
                 window.location.reload();
             } catch (error: any) {
                 toast.error(`Ошибка: ${error}`);

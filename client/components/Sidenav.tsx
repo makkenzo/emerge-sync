@@ -22,8 +22,6 @@ const Sidenav = () => {
                     className="flex flex-col items-center justify-center mx-12 my-4 p-4 space-y-2 bg-white rounded-lg"
                 >
                     <Image src="/am.jpg" alt="brand logo" width={300} height={40} />
-                    {/* <Image src="/foton.jpg" alt="brand logo" width={300} height={40} />
-                    <Image src="/hyundai.jpg" alt="brand logo" width={300} height={40} /> */}
                 </Link>
             </div>
             <div className="m-4">

@@ -2,14 +2,14 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { AiOutlineUser, AiFillLock } from 'react-icons/ai';
+import { AiFillLock, AiOutlineUser } from 'react-icons/ai';
 import { ToastContainer, toast } from 'react-toastify';
 
+import instance from '@/lib/api';
 import { loginUser } from '@/redux/slices/authSlice';
-import Head from 'next/head';
 import { Typography } from '@material-tailwind/react';
 import { registerLicense } from '@syncfusion/ej2-base';
-import instance from '@/lib/api';
+import Head from 'next/head';
 
 const Auth = () => {
     registerLicense('ORg4AjUWIQA/Gnt2VlhhQlJCfV5DQmVWfFN0RnNRdVt0flZBcC0sT3RfQF5iSX5Udk1mXH1bdHJQQg==');
