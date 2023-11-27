@@ -90,7 +90,7 @@ const Profile = () => {
     return (
         <>
             <Head>
-                <title>ExcelStockList | Profile</title>
+                <title>ExcelStockList | Профиль</title>
             </Head>
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />

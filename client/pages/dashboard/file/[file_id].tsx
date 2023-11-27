@@ -3,7 +3,7 @@
 import { Sidenav } from '@/components';
 import instance, { SERVICE_URI } from '@/lib/api';
 import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
-import { registerLicense } from '@syncfusion/ej2-base';
+import { L10n, registerLicense } from '@syncfusion/ej2-base';
 import { DataManager, Query, RemoteSaveAdaptor, ReturnOption, WebApiAdaptor } from '@syncfusion/ej2-data';
 import { ClickEventArgs } from '@syncfusion/ej2-navigations';
 import {
@@ -37,6 +37,25 @@ const FilePage = () => {
     const fileId = router.query.file_id;
 
     const [xlsxDocument, setDocument] = useState<ResponseData>();
+
+    L10n.load({
+        'ru-RU': {
+            grid: {
+                Add: 'Добавить',
+                Edit: 'Редактировать',
+                Delete: 'Удалить',
+                Update: 'Сохранить изменения',
+                Cancel: 'Отмена',
+                Excelexport: 'Экспорт в Excel',
+                EmptyRecord: 'Нет данных для отображения',
+                EditOperationAlert: 'Нет записей, выбранных для редактирования',
+            },
+            pager: {
+                currentPageInfo: '{0} из {1} страниц',
+                totalItemsInfo: '({0} позиций)',
+            },
+        },
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -100,7 +119,7 @@ const FilePage = () => {
     return (
         <>
             <Head>
-                <title>ExcelStockList | File overview</title>
+                <title>ExcelStockList | Обзор файла</title>
             </Head>
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />
@@ -122,8 +141,8 @@ const FilePage = () => {
                                         editSettings={editOptions}
                                         toolbar={toolbarOptions}
                                         // allowGrouping={true}
-                                        allowSorting={true}
-                                        allowFiltering={true}
+                                        // allowSorting={true}
+                                        // allowFiltering={true}
                                         allowPaging={true}
                                         pageSettings={pageSettings}
                                         filterSettings={filterSettings}
@@ -132,9 +151,9 @@ const FilePage = () => {
                                         allowExcelExport={true}
                                         toolbarClick={toolbarClick}
                                         ref={(g) => (grid = g)}
+                                        locale="ru-RU"
                                     >
                                         <ColumnsDirective>
-                                            {/* <ColumnDirective field="0" headerText="0" /> */}
                                             {Object.keys(xlsxDocument.Items[0]).map((key) => {
                                                 if (key === '_id' || key === 'workflow_id') {
                                                     return (

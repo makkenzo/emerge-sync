@@ -55,7 +55,7 @@ const RegisterPage = () => {
     return (
         <>
             <Head>
-                <title>ExcelStockList | Authentication</title>
+                <title>ExcelStockList | Регистрация</title>
             </Head>
             <ToastContainer position="top-center" />
             <div className="min-h-screen bg-cover bg-center bg-[#0d6e6d] flex items-center justify-center">

@@ -37,7 +37,7 @@ const FileSettings = () => {
     return (
         <>
             <Head>
-                <title>ExcelStockList | File access</title>
+                <title>ExcelStockList | Настройки доступа</title>
             </Head>
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />

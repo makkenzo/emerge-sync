@@ -81,7 +81,7 @@ const Files = () => {
     return (
         <>
             <Head>
-                <title>ExcelStockList | Files</title>
+                <title>ExcelStockList | Панель</title>
             </Head>
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />

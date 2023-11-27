@@ -33,11 +33,11 @@ const Sidenav = () => {
                             <button
                                 type="button"
                                 className={`w-full rounded-md flex items-center gap-4 px-4 py-4 capitalize hover:bg-blue-gray-500 ${
-                                    router.pathname === '/dashboard/files' ? 'bg-white text-black' : 'text-white'
+                                    router.pathname !== '/dashboard/profile' ? 'bg-white text-black' : 'text-white'
                                 }`}
                             >
                                 <AiFillHome />
-                                Dashboard
+                                Главная панель
                             </button>
                         </Link>
                     </li>
@@ -51,7 +51,7 @@ const Sidenav = () => {
                                 }`}
                             >
                                 <AiOutlineUser />
-                                Profile
+                                Профиль
                             </button>
                         </Link>
                     </li>
@@ -64,7 +64,7 @@ const Sidenav = () => {
                     className="w-full rounded-md flex items-center gap-4 px-4 py-4 capitalize text-white hover:bg-blue-gray-500"
                 >
                     <AiOutlineLogout />
-                    Logout
+                    Выход
                 </button>
             </div>
         </aside>
