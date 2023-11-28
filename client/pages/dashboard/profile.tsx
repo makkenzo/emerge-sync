@@ -53,8 +53,10 @@ const Profile = () => {
                 setUserData(response.data);
                 dispatch(setIsLoading(false));
             });
+  
             instance
-                .get(`/workflow_log/6550b49e5b02c0ae2880e5c7`, { headers })
+            
+                .get(`/workflow_log`, { headers })
                 .then((response) => setLogs(response.data));
 
             instance.get('/workflow', { headers }).then((res) => {
