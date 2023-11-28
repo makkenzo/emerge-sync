@@ -102,7 +102,12 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
         if (typeof value === 'string') {
             updatedRules[ruleIndex].fields[key] = value;
         } else {
-            updatedRules[ruleIndex].fields[key] = `${value}`;
+            if (value){
+            updatedRules[ruleIndex].fields[key] = value;
+            }else{
+                delete updatedRules[ruleIndex].fields[key];
+
+            }
         }
 
         setRules(updatedRules);
