@@ -132,7 +132,7 @@ const Profile = () => {
                                         {/* <SocialMediaButtons userData={userData} /> */}
                                         <div>
                                             <Typography variant="h5" className="mb-1" color="blue-gray">
-                                                Логи
+                                                Логирование
                                             </Typography>
                                             <div className="max-h-60 overflow-y-auto p-4 bg-gray-100 rounded-md">
                                                 <ul className="list-disc pl-4">
