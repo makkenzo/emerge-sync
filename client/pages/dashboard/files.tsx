@@ -16,6 +16,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { IoMdSettings } from 'react-icons/io';
+import { toast } from 'react-toastify';
 
 const Files = () => {
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
@@ -64,6 +65,7 @@ const Files = () => {
                 setUserData(userData);
 
                 const documentsResponse = await instance.get('/workflow', { headers });
+             
                 const documents: XlsxDocument[] = documentsResponse.data;
 
                 setUserFiles(documents);
@@ -134,12 +136,17 @@ const Files = () => {
                                                             >
                                                                 <AiFillEdit size={20} />
                                                             </Link>
-                                                            <DeleteButtonModal file={file.name} fileId={file._id} />
+                                                                {
+                                                                file.is_creator?<DeleteButtonModal file={file.name} fileId={file._id}  />:null
+                                                                }
                                                             <Link
                                                                 href={`/dashboard/file/access/${file._id}`}
                                                                 className="ml-2 text-[#56CCF2] hover:text-black"
                                                             >
-                                                                <IoMdSettings size={20} />
+                                                                    {
+                                                                file.is_creator?<IoMdSettings size={20} />:null
+                                                                }
+                                                                
                                                             </Link>
                                                         </div>
                                                     </td>

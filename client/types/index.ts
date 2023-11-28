@@ -22,6 +22,7 @@ export type XlsxDocument = {
     create_at: string;
     last_modify: string;
     user_id: string;
+    is_creator:boolean
 };
 
 export type LogsData = {

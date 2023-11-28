@@ -26,9 +26,9 @@ const DeleteButtonModal = ({ file, fileId }: { file: string; fileId: string }) =
 
     return (
         <>
-            <button className="text-red-600 hover:text-black" onClick={() => props.setOpenModal('pop-up')}>
+            <button    className="text-red-600 hover:text-black"  onClick={() => props.setOpenModal('pop-up')}>
                 <AiFillDelete size={20} />
-            </button>
+            </button >
             <Modal show={props.openModal === 'pop-up'} size="md" popup onClose={() => props.setOpenModal(undefined)}>
                 <Modal.Header />
                 <Modal.Body>

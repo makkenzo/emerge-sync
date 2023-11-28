@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import axios from 'axios';
 
-import { Sidenav, ProfileInfo, SocialMediaButtons, EditProfilePictureModal } from '@/components';
+import { Sidenav, ProfileInfo, } from '@/components';
 import { CardBody, Typography } from '@material-tailwind/react';
 import { Avatar, Card } from '@material-tailwind/react';
 import { LogsData, UserData, XlsxDocument } from '@/types';
@@ -164,9 +164,9 @@ const Profile = () => {
                     </Card>
                 </div>
             </div>
-            {userData && (
+            {/* {userData && (
                 <EditProfilePictureModal isModalOpen={isModalOpen} closeModal={closeModal} userData={userData} />
-            )}
+            )} */}
         </>
     );
 };
