@@ -58,7 +58,8 @@ const Auth = () => {
                     toast.error('Ошибка аутентификации: Токен не получен.');
                 }
             } catch (error: any) {
-                toast.error(`Ошибка при попытке входа: ${error.response.data.message}`);
+                toast.error(`Неверный логин или пароль`);
+                console.error(error);
             }
         }
     };
