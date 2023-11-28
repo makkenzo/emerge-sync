@@ -2,9 +2,9 @@
 
 import { Sidenav } from '@/components';
 import instance, { SERVICE_URI } from '@/lib/api';
-import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
+import { Card, CardBody, CardHeader } from '@material-tailwind/react';
 import { L10n, registerLicense } from '@syncfusion/ej2-base';
-import { DataManager, Query, RemoteSaveAdaptor, ReturnOption, WebApiAdaptor } from '@syncfusion/ej2-data';
+import { DataManager, WebApiAdaptor } from '@syncfusion/ej2-data';
 import { ClickEventArgs } from '@syncfusion/ej2-navigations';
 import {
     ColumnDirective,
@@ -19,12 +19,9 @@ import {
     Sort,
     Toolbar,
 } from '@syncfusion/ej2-react-grids';
-import { Button } from 'flowbite-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import { BiSave } from 'react-icons/bi';
-import { PiExport } from 'react-icons/pi';
 
 interface ResponseData {
     Items: any[];
@@ -35,6 +32,7 @@ const FilePage = () => {
     registerLicense('Ngo9BigBOggjHTQxAR8/V1NHaF5cXmpCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdgWH9eeXRWQmFdVUJ/X0o=');
     const router = useRouter();
     const fileId = router.query.file_id;
+    const [permission, setPermission] = useState(true);
 
     const [xlsxDocument, setDocument] = useState<ResponseData>();
 
@@ -60,7 +58,7 @@ const FilePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const tok = localStorage.getItem('token') ?? '';
+                const tok = localStorage.getItem('token');
                 const headers = {
                     Authorization: `Bearer ${tok}`,
                     'Content-Type': 'multipart/form-data',
@@ -72,23 +70,35 @@ const FilePage = () => {
             }
         };
 
+        const fetchRole = async () => {
+            try {
+                const tok = localStorage.getItem('token');
+                const headers = {
+                    Authorization: `Bearer ${tok}`,
+                    'Content-Type': 'multipart/form-data',
+                };
+                const userId = localStorage.getItem('userId');
+
+                const response = await instance.get(`/role/my_role/${fileId}`, { headers });
+
+                if (response.status === 200) {
+                    setPermission(response.data.can_modify);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
         if (fileId !== undefined) {
             fetchData();
+            fetchRole();
         }
     }, [setDocument, fileId]);
 
     const [token, setToken] = useState('');
-    const [headers, setHeaders] = useState({});
 
     useEffect(() => {
-        const tok = localStorage.getItem('token') ?? '';
-        const hed = {
-            Authorization: `Bearer ${tok}`,
-            'Content-Type': 'multipart/form-data',
-        };
-
-        setToken(tok);
-        setHeaders(hed);
+        setToken(localStorage.getItem('token') ?? '');
     }, []);
 
     const data = new DataManager({
@@ -110,6 +120,9 @@ const FilePage = () => {
 
     const editOptions = { allowEditing: true, allowAdding: true, allowDeleting: true };
     const toolbarOptions = ['Add', 'Edit', 'Delete', 'Update', 'Cancel', 'ExcelExport'];
+    const updatedToolbarOptions = toolbarOptions.filter((option) => {
+        return !(['Add', 'Edit', 'Delete', 'Update', 'Cancel'].includes(option) && !permission);
+    });
     const toolbarClick = (args: ClickEventArgs) => {
         if (grid && args.item.id === 'grid_659440375_0_excelexport') {
             grid.excelExport();
@@ -139,7 +152,7 @@ const FilePage = () => {
                                     <GridComponent
                                         dataSource={data}
                                         editSettings={editOptions}
-                                        toolbar={toolbarOptions}
+                                        toolbar={permission ? toolbarOptions : updatedToolbarOptions}
                                         // allowGrouping={true}
                                         // allowSorting={true}
                                         // allowFiltering={true}
@@ -169,7 +182,13 @@ const FilePage = () => {
                                                 }
                                             })}
                                         </ColumnsDirective>
-                                        <Inject services={[Edit, Toolbar, Filter, Sort, ExcelExport, Page]} />
+                                        <Inject
+                                            services={
+                                                permission
+                                                    ? [Edit, Toolbar, ExcelExport, Page]
+                                                    : [Toolbar, ExcelExport, Page]
+                                            }
+                                        />
                                     </GridComponent>
                                 ) : (
                                     <h1>No data</h1>

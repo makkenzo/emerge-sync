@@ -142,7 +142,7 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                         onChange={() => setCanModify(!canModify)}
                         className="text-[#607d8b] focus:border-gray-500 focus:ring-gray-500"
                     />
-                    <Label htmlFor="can_modify_checkbox">Доступны для редактирования</Label>
+                    <Label htmlFor="can_modify_checkbox">Документ доступен для редактирования</Label>
                 </div>
             )}
             {rules.map((rule, index) => (
