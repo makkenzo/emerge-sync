@@ -25,7 +25,10 @@ interface Rule {
 const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
     const [rules, setRules] = useState<Rule[]>(role.rule);
     const [keys, setKeys] = useState<string[]>();
-    const [canModify, setCanModify] = useState<boolean>(role.can_modify);
+    const [canModify, setCanModify] = useState<boolean>(role.can_modify ? role.can_modify : false);
+    const isAllStatus = (status: RuleStatus) => {
+        return status === RuleStatus.AllHiding || status === RuleStatus.AllVisible;
+    };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -89,15 +92,15 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
         setRules(updatedRules);
     };
 
-    const handleFieldChange = (ruleIndex: number, key: string, value: string) => {
+    const handleFieldChange = (ruleIndex: number, key: string, value: string | boolean) => {
         const updatedRules = [...rules];
 
         if (!updatedRules[ruleIndex].fields) {
             updatedRules[ruleIndex].fields = {};
         }
 
-        if (value === '') {
-            delete updatedRules[ruleIndex].fields[key];
+        if (typeof value === 'string') {
+            updatedRules[ruleIndex].fields[key] = value;
         } else {
             updatedRules[ruleIndex].fields[key] = value;
         }
@@ -131,6 +134,17 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                     Сохранить изменения
                 </Button>
             </div>
+            {rules && rules.length > 0 && (
+                <div className="flex items-center gap-2 mt-4">
+                    <Checkbox
+                        id="can_modify_checkbox"
+                        checked={canModify}
+                        onChange={() => setCanModify(!canModify)}
+                        className="text-[#607d8b] focus:border-gray-500 focus:ring-gray-500"
+                    />
+                    <Label htmlFor="can_modify_checkbox">Доступны для редактирования</Label>
+                </div>
+            )}
             {rules.map((rule, index) => (
                 <div key={index} className="mt-4 space-y-4 border border-dashed border-gray-700 p-4 rounded-lg">
                     <div>
@@ -150,16 +164,6 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                         </Select>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        <Checkbox
-                            id="can_modify_checkbox"
-                            checked={canModify}
-                            onChange={() => setCanModify(!canModify)}
-                            className="text-[#607d8b] focus:border-gray-500 focus:ring-gray-500"
-                        />
-                        <Label htmlFor="promotion">Доступны для редактирования</Label>
-                    </div>
-
                     <div className="mb-2 block">
                         <Label htmlFor={`field_${index}`} value="Поля" />
                     </div>
@@ -169,26 +173,55 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                                 Оставьте значение поля пустым, если оно не включено в правило.
                             </p>
                         </blockquote>
-                        {keys?.map((key, inx) => (
-                            <div key={inx} className="flex items-center mt-2 space-x-2">
-                                <Select
-                                    id={`key_select_${index}`}
-                                    value={key}
-                                    onChange={(e) => handleKeyChange(index, e.target.value)}
-                                    disabled
-                                    className="w-1/3"
-                                >
-                                    <option value={key}>{key}</option>
-                                </Select>
-                                <TextInput
-                                    id={`field_${index}`}
-                                    value={(rules[index]?.fields && rules[index]?.fields[key]) || ''}
-                                    onChange={(e) => handleFieldChange(index, key, e.target.value)}
-                                    placeholder="Имя поля"
-                                    className="w-2/3"
-                                />
+                        {isAllStatus(rule.status) ? (
+                            // Render checkboxes
+                            <div>
+                                {keys?.map((key, inx) => (
+                                    <div key={inx} className="flex items-center mt-2 space-x-2">
+                                        <Select
+                                            id={`key_select_${index}`}
+                                            value={key}
+                                            onChange={(e) => handleKeyChange(index, e.target.value)}
+                                            disabled
+                                            className="w-1/3"
+                                        >
+                                            <option value={key}>{key}</option>
+                                        </Select>
+                                        <Checkbox
+                                            id={`checkbox_${index}_${inx}`}
+                                            checked={Boolean(rules[index]?.fields && rules[index]?.fields[key])}
+                                            onChange={(e) => handleFieldChange(index, key, e.target.checked)}
+                                            className=""
+                                        />
+                                        <Label htmlFor={`checkbox_${index}_${inx}`}>Выбрать поле</Label>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        ) : (
+                            // Render text inputs
+                            <div>
+                                {keys?.map((key, inx) => (
+                                    <div key={inx} className="flex items-center mt-2 space-x-2">
+                                        <Select
+                                            id={`key_select_${index}`}
+                                            value={key}
+                                            onChange={(e) => handleKeyChange(index, e.target.value)}
+                                            disabled
+                                            className="w-1/3"
+                                        >
+                                            <option value={key}>{key}</option>
+                                        </Select>
+                                        <TextInput
+                                            id={`field_${index}`}
+                                            value={(rules[index]?.fields && rules[index]?.fields[key]) || ''}
+                                            onChange={(e) => handleFieldChange(index, key, e.target.value)}
+                                            placeholder="Имя поля"
+                                            className="w-2/3"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             ))}
