@@ -65,7 +65,7 @@ const Files = () => {
                 setUserData(userData);
 
                 const documentsResponse = await instance.get('/workflow', { headers });
-             
+
                 const documents: XlsxDocument[] = documentsResponse.data;
 
                 setUserFiles(documents);
@@ -136,17 +136,14 @@ const Files = () => {
                                                             >
                                                                 <AiFillEdit size={20} />
                                                             </Link>
-                                                                {
-                                                                file.is_creator?<DeleteButtonModal file={file.name} fileId={file._id}  />:null
-                                                                }
+                                                            {file.is_creator ? (
+                                                                <DeleteButtonModal file={file.name} fileId={file._id} />
+                                                            ) : null}
                                                             <Link
                                                                 href={`/dashboard/file/access/${file._id}`}
                                                                 className="ml-2 text-[#56CCF2] hover:text-black"
                                                             >
-                                                                    {
-                                                                file.is_creator?<IoMdSettings size={20} />:null
-                                                                }
-                                                                
+                                                                {file.is_creator ? <IoMdSettings size={20} /> : null}
                                                             </Link>
                                                         </div>
                                                     </td>
