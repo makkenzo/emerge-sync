@@ -23,7 +23,13 @@ const FileSettings = () => {
         };
         setRules([...rules, newRule]);
     };
-
+    useEffect(() => {
+        // Check if the token is not present in localStorage, and redirect to the login page
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/auth');
+        }
+      }, [router]);
     // Функция для обновления значения поля в правиле
     const updateRuleField = (index: number, field: string, value: string) => {
         const updatedRules = [...rules];

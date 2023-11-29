@@ -17,7 +17,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { IoMdSettings } from 'react-icons/io';
 import { toast } from 'react-toastify';
-
+import { useRouter } from 'next/router';
 const Files = () => {
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const [userData, setUserData] = useState<UserData>();
@@ -31,7 +31,7 @@ const Files = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filesTableData.slice(indexOfFirstItem, indexOfLastItem);
-
+    const router=useRouter()
     const totalPages = Math.ceil(filesTableData.length / itemsPerPage);
 
     const handlePageChange = (newPage: number) => {
@@ -79,7 +79,13 @@ const Files = () => {
     useEffect(() => {
         userFiles;
     }, [userFiles]);
-
+    useEffect(() => {
+        // Check if the token is not present in localStorage, and redirect to the login page
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/auth');
+        }
+      }, [router]);
     return (
         <>
             <Head>
@@ -88,7 +94,7 @@ const Files = () => {
             <div className="min-h-screen bg-slate-200 flex">
                 <Sidenav />
                 <div className="container mx-auto pt-8">
-                    <div className="mt-4 flex flex-col justify-between h-[880px]">
+                    <div className="mt-4 flex flex-col justify-between h-[730px]">
                         <Card>
                             <CardHeader variant="filled" color="blue-gray" className="mb-8 p-6">
                                 Файлы

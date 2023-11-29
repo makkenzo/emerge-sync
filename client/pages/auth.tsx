@@ -9,13 +9,18 @@ import instance from '@/lib/api';
 import { loginUser } from '@/redux/slices/authSlice';
 import { Typography } from '@material-tailwind/react';
 import { registerLicense } from '@syncfusion/ej2-base';
+import Cookies from 'universal-cookie';
 import Head from 'next/head';
+
 
 const Auth = () => {
     registerLicense('ORg4AjUWIQA/Gnt2VlhhQlJCfV5DQmVWfFN0RnNRdVt0flZBcC0sT3RfQF5iSX5Udk1mXH1bdHJQQg==');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-
+    const userdata= new Cookies();
+   
+ 
+    const [username, setUsername] = useState(userdata.get("userName")??"");
+    const [password, setPassword] = useState(userdata.get("password")??"");
+ 
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -52,10 +57,11 @@ const Auth = () => {
 
                     localStorage.setItem('token', accsess_token);
                     localStorage.setItem('userId', user_id);
-
+                    userdata.set("userName",username,{path:'/auth'})
+                    userdata.set("password",password,{path:'/auth'})
                     router.push('/dashboard/files');
                 } else {
-                    toast.error('Ошибка аутентификации: Токен не получен.');
+                    toast.error('Ошибка аутентификации: неверный логин или пароль');
                 }
             } catch (error: any) {
                 toast.error(`Неверный логин или пароль`);

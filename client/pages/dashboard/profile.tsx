@@ -33,7 +33,13 @@ const Profile = () => {
 
     const router = useRouter();
     const dispatch = useDispatch();
-
+    useEffect(() => {
+        // Check if the token is not present in localStorage, and redirect to the login page
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/auth');
+        }
+      }, [router]);
     useEffect(() => {
         const userId = localStorage.getItem('userId');
 

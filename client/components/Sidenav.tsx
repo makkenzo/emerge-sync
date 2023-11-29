@@ -3,6 +3,7 @@ import { AiFillHome, AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { pagerRefresh } from '@syncfusion/ej2-react-grids';
 
 const Sidenav = () => {
     const router = useRouter();
@@ -10,8 +11,10 @@ const Sidenav = () => {
     const handleLogOut = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
-
+        
+       
         router.push('/auth');
+      
     };
 
     return (
