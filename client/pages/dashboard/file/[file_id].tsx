@@ -41,7 +41,7 @@ const FilePage = () => {
         if (!token) {
             router.push('/auth');
         }
-      }, [router]);
+    }, [router]);
     L10n.load({
         'ru-RU': {
             grid: {
@@ -106,13 +106,13 @@ const FilePage = () => {
     useEffect(() => {
         setToken(localStorage.getItem('token') ?? '');
     }, []);
- useEffect(() => {
-    // Check if the token is not present in localStorage, and redirect to the login page
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/login');
-    }
-  }, [router]);
+    useEffect(() => {
+        // Check if the token is not present in localStorage, and redirect to the login page
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/login');
+        }
+    }, [router]);
     const data = new DataManager({
         adaptor: new WebApiAdaptor(),
         url: `${SERVICE_URI}/workflow_item/${fileId}`,
@@ -136,7 +136,7 @@ const FilePage = () => {
         return !(['Add', 'Edit', 'Delete', 'Update', 'Cancel'].includes(option) && !permission);
     });
     const toolbarClick = (args: ClickEventArgs) => {
-        if (grid && args.item.id === 'grid_659440375_0_excelexport') {
+        if (grid && args.item.id === 'grid_excelexport') {
             grid.excelExport();
         }
     };
@@ -162,6 +162,7 @@ const FilePage = () => {
                             <div className="w-[1300px] h-[795px] overflow-x-auto flex mx-4">
                                 {xlsxDocument && data ? (
                                     <GridComponent
+                                        id="grid"
                                         dataSource={data}
                                         editSettings={editOptions}
                                         toolbar={permission ? toolbarOptions : updatedToolbarOptions}
