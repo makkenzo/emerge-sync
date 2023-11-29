@@ -217,6 +217,15 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                                             <Label htmlFor={`checkbox_${index}_${inx}`}>Выбрать поле</Label>
                                         </div>
                                     ))}
+                                    <div className="flex items-center justify-between mt-4">
+                                        <Button
+                                            size="sm"
+                                            onClick={() => handleDeleteRule(index)}
+                                            className="bg-[#e53935] text-white rounded-md hover:bg-[#c62828] transition duration-300 w-full"
+                                        >
+                                            Удалить условие
+                                        </Button>
+                                    </div>
                                 </div>
                             ) : (
                                 // Render text inputs
