@@ -35,7 +35,13 @@ const FilePage = () => {
     const [permission, setPermission] = useState(true);
 
     const [xlsxDocument, setDocument] = useState<ResponseData>();
-
+    useEffect(() => {
+        // Check if the token is not present in localStorage, and redirect to the login page
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/auth');
+        }
+      }, [router]);
     L10n.load({
         'ru-RU': {
             grid: {
@@ -100,7 +106,13 @@ const FilePage = () => {
     useEffect(() => {
         setToken(localStorage.getItem('token') ?? '');
     }, []);
-
+ useEffect(() => {
+    // Check if the token is not present in localStorage, and redirect to the login page
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
     const data = new DataManager({
         adaptor: new WebApiAdaptor(),
         url: `${SERVICE_URI}/workflow_item/${fileId}`,

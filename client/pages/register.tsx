@@ -7,12 +7,12 @@ import React, { useState } from 'react';
 import { AiFillLock, AiOutlineUser } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-
+import Cookies from 'universal-cookie';
 const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
-
+    const userdata=new Cookies();
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -39,10 +39,11 @@ const RegisterPage = () => {
                 if (accsess_token) {
                     localStorage.setItem('token', accsess_token);
                     localStorage.setItem('userId', user_id);
-
+                    userdata.set("userName",username,{path:'/auth'})
+                    userdata.set("password",password,{path:'/auth'})
                     router.push('/dashboard/files');
                 } else {
-                    return toast.error('Ошибка аутентификации: Токен не получен.');
+                    return toast.error('Ошибка аутентификации: Повторите попытку позже');
                 }
             } catch (error: any) {
                 toast.error(`Ошибка при попытке входа: ${error.response.data.message}`);
