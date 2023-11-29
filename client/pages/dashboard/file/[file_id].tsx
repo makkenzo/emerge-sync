@@ -136,7 +136,7 @@ const FilePage = () => {
         return !(['Add', 'Edit', 'Delete', 'Update', 'Cancel'].includes(option) && !permission);
     });
     const toolbarClick = (args: ClickEventArgs) => {
-        if (grid && args.item.id === 'grid_659440375_0_excelexport') {
+        if (grid && args.item.id && args.item.id.toLowerCase().includes('excelexport'))  {
             grid.excelExport();
         }
     };
