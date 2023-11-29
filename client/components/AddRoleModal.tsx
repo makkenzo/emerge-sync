@@ -23,7 +23,6 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
             try {
                 const response = await instance.get<UserData[]>(`/user/users/${fileId}`, { headers });
                 setUsers(response.data);
-                console.log(response.data);
 
                 if (response.data.length > 0) {
                     setSelectedUser(response.data[0].user_id);
