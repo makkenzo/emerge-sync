@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import axios from 'axios';
 
-import { Sidenav, ProfileInfo, } from '@/components';
+import { Sidenav, ProfileInfo } from '@/components';
 import { CardBody, Typography } from '@material-tailwind/react';
 import { Avatar, Card } from '@material-tailwind/react';
 import { LogsData, UserData, XlsxDocument } from '@/types';
@@ -39,7 +39,7 @@ const Profile = () => {
         if (!token) {
             router.push('/auth');
         }
-      }, [router]);
+    }, [router]);
     useEffect(() => {
         const userId = localStorage.getItem('userId');
 
@@ -51,19 +51,16 @@ const Profile = () => {
         try {
             const token = localStorage.getItem('token');
             const headers = {
-                Authorization: `Bearer ${token}`, // Замените YOUR_ACCESS_TOKEN на реальный токен
-                'Content-Type': 'multipart/form-data', // Устанавливаем тип содержимого как multipart/form-data
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
             };
 
             instance.get(`/user`, { headers }).then((response) => {
                 setUserData(response.data);
                 dispatch(setIsLoading(false));
             });
-  
-            instance
-            
-                .get(`/workflow_log`, { headers })
-                .then((response) => setLogs(response.data));
+
+            instance.get(`/workflow_log`, { headers }).then((response) => setLogs(response.data));
 
             instance.get('/workflow', { headers }).then((res) => {
                 setWorkflows(res.data);

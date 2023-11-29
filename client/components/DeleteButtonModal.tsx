@@ -14,21 +14,25 @@ const DeleteButtonModal = ({ file, fileId }: { file: string; fileId: string }) =
     const props = { openModal, setOpenModal };
 
     const handleDeleteDocument = async () => {
-        const token = localStorage.getItem('token');
-        const headers = {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-        };
-        const response = await instance.delete(`/workflow/${fileId}`, { headers });
+        try {
+            const token = localStorage.getItem('token');
+            const headers = {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            };
+            const response = await instance.delete(`/workflow/${fileId}`, { headers });
 
-        window.location.reload();
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
         <>
-            <button    className="text-red-600 hover:text-black"  onClick={() => props.setOpenModal('pop-up')}>
+            <button className="text-red-600 hover:text-black" onClick={() => props.setOpenModal('pop-up')}>
                 <AiFillDelete size={20} />
-            </button >
+            </button>
             <Modal show={props.openModal === 'pop-up'} size="md" popup onClose={() => props.setOpenModal(undefined)}>
                 <Modal.Header />
                 <Modal.Body>
