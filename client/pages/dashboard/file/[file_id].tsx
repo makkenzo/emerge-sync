@@ -22,6 +22,7 @@ import {
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface ResponseData {
     Items: any[];
@@ -46,6 +47,13 @@ const FilePage = () => {
     useEffect(() => {
         // Check if the token is not present in localStorage, and redirect to the login page
         const token = localStorage.getItem('token');
+            
+    // document.addEventListener('copy', event => {
+        
+    //     toast.error("копировать данные запрещено")
+    //    // Display a warning or take appropriate action
+    //    event.preventDefault();
+    //  });
         if (!token) {
             router.push('/auth');
         }
@@ -77,7 +85,7 @@ const FilePage = () => {
                     Authorization: `Bearer ${tok}`,
                     'Content-Type': 'multipart/form-data',
                 };
-                const response = await instance.get(`/workflow_item/without_pagination/${fileId}`, { headers });
+                const response = await instance.get(`/workflow_item/${fileId}`, { headers });
                 setDocument(response.data);
             } catch (error) {
                 console.error(error);
