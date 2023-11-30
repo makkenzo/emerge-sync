@@ -31,7 +31,7 @@ const Files = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filesTableData.slice(indexOfFirstItem, indexOfLastItem);
-    const router=useRouter()
+    const router = useRouter();
     const totalPages = Math.ceil(filesTableData.length / itemsPerPage);
 
     const handlePageChange = (newPage: number) => {
@@ -85,7 +85,7 @@ const Files = () => {
         if (!token) {
             router.push('/auth');
         }
-      }, [router]);
+    }, [router]);
     return (
         <>
             <Head>
