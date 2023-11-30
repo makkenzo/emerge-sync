@@ -11,6 +11,8 @@ enum RuleStatus {
     Unknown = 2,
     AllHiding = 3,
     AllVisible = 4,
+    LineHiding=5,
+    LineVisible=6
 }
 
 interface RuleDetailsProps {
@@ -182,6 +184,8 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                                 <option value={RuleStatus.Visible}>Видимо</option>
                                 <option value={RuleStatus.AllHiding}>Скрыты все</option>
                                 <option value={RuleStatus.AllVisible}>Видимы все</option>
+                                <option value={RuleStatus.LineHiding}>Скрыть строку</option>
+                                <option value={RuleStatus.LineVisible}>Видима строка</option>
                             </Select>
                         </div>
 
