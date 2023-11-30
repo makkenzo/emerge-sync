@@ -144,7 +144,7 @@ const FilePage = () => {
         return !(['Add', 'Edit', 'Delete', 'Update', 'Cancel'].includes(option) && !permission);
     });
     const toolbarClick = (args: ClickEventArgs) => {
-        if (grid && args.item.id === 'excelexport') {
+        if (grid && args.item.id === 'grid_excelexport') {
             grid.excelExport();
         }
     };
@@ -180,8 +180,7 @@ const FilePage = () => {
                                         allowPaging={true}
                                         pageSettings={pageSettings}
                                         filterSettings={filterSettings}
-                                        height={670}
-                                        // height={710}
+                                        height={650}
                                         allowExcelExport={true}
                                         toolbarClick={toolbarClick}
                                         ref={(g) => (grid = g)}
@@ -189,7 +188,6 @@ const FilePage = () => {
                                     >
                                         <ColumnsDirective>
                                             {Object.keys(maxKeysElement).map((key) => {
-                                                console.log(maxKeysElement);
                                                 if (key === '_id' || key === 'workflow_id') {
                                                     return (
                                                         <ColumnDirective
@@ -200,7 +198,15 @@ const FilePage = () => {
                                                         />
                                                     );
                                                 } else {
-                                                    return <ColumnDirective key={key} field={key} headerText={key} />;
+                                                    return (
+                                                        <ColumnDirective
+                                                            key={key}
+                                                            field={key}
+                                                            headerText={key}
+                                                            width={150}
+                                                            minWidth={150}
+                                                        />
+                                                    );
                                                 }
                                             })}
                                         </ColumnsDirective>
