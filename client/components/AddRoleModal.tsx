@@ -23,7 +23,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
             try {
                 const response = await instance.get<UserData[]>(`/user/users/${fileId}`, { headers });
                 setUsers(response.data);
-
+                //alert(response.data)
                 if (response.data.length > 0) {
                     setSelectedUser(response.data[0].user_id);
                 }
@@ -40,7 +40,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
         const headers = {
             Authorization: `Bearer ${token}`,
         };
-
+        
         const data = {
             name: role,
             rule: [],
@@ -83,7 +83,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
                                         defaultValue={users[0].first_name}
                                     >
                                         {users.map((key, index) => (
-                                            <option key={key._id} value={key._id}>
+                                            <option key={key.user_id} value={key.user_id}>
                                                 {key.first_name} {key.last_name}
                                             </option>
                                         ))}
