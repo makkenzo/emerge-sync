@@ -167,7 +167,7 @@ const FilePage = () => {
                             Документ
                         </CardHeader>
                         <CardBody className="px-0 pt-0 pb-2 gap-4">
-                            <div className="w-[1300px] h-[795px] overflow-x-auto flex mx-4">
+                            <div className="w-[1300px] h-[810px] overflow-x-auto flex mx-4">
                                 {xlsxDocument && data && columns.length > 0 ? (
                                     <GridComponent
                                         id="grid"
@@ -180,7 +180,7 @@ const FilePage = () => {
                                         allowPaging={true}
                                         pageSettings={pageSettings}
                                         filterSettings={filterSettings}
-                                        height={650}
+                                        height={665}
                                         allowExcelExport={true}
                                         toolbarClick={toolbarClick}
                                         ref={(g) => (grid = g)}
