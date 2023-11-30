@@ -29,7 +29,7 @@ const FileSettings = () => {
         if (!token) {
             router.push('/auth');
         }
-      }, [router]);
+    }, [router]);
     // Функция для обновления значения поля в правиле
     const updateRuleField = (index: number, field: string, value: string) => {
         const updatedRules = [...rules];
