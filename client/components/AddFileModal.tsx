@@ -32,10 +32,10 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
                 closeModal();
                 window.location.reload();
             } catch (error: any) {
-                toast.error(`Ошибка: ${error}`);
+                toast.error(`Ошибка: В файле присутствуют значения которые не поддерживаются`);
             }
         } else {
-            toast.error('Вы не выбрали файл');
+            toast.error('Файл не выбран');
         }
     };
 

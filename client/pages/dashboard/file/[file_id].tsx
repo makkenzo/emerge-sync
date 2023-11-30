@@ -33,8 +33,14 @@ const FilePage = () => {
     const router = useRouter();
     const fileId = router.query.file_id;
     const [permission, setPermission] = useState(true);
-
+    const excludedKeys = ['_id', 'workflow_id'];
     const [xlsxDocument, setDocument] = useState<ResponseData>();
+    const items = xlsxDocument?.Items;
+
+    // Find the element with the maximum number of keys
+    const maxKeysElement = items?.reduce((prev, current) => (Object.keys(prev).length > Object.keys(current).length ? prev : current), {});
+    const columns = Object.keys(maxKeysElement??[])
+    .filter((key) => !excludedKeys.includes(key)??false)
     useEffect(() => {
         // Check if the token is not present in localStorage, and redirect to the login page
         const token = localStorage.getItem('token');
@@ -162,7 +168,7 @@ const FilePage = () => {
                         </CardHeader>
                         <CardBody className="px-0 pt-0 pb-2 gap-4">
                             <div className="w-[1300px] h-[795px] overflow-x-auto flex mx-4">
-                                {xlsxDocument && data ? (
+                                {xlsxDocument && data  &&columns.length>0? (
                                     <GridComponent
                                         id="grid"
                                         dataSource={data}
@@ -182,7 +188,13 @@ const FilePage = () => {
                                         locale="ru-RU"
                                     >
                                         <ColumnsDirective>
-                                            {Object.keys(xlsxDocument.Items[0]).map((key) => {
+                                
+                                            {
+                               
+                                            
+                               Object.keys(maxKeysElement)
+                                .map((key) => {
+                                                console.log(maxKeysElement)
                                                 if (key === '_id' || key === 'workflow_id') {
                                                     return (
                                                         <ColumnDirective
@@ -206,7 +218,8 @@ const FilePage = () => {
                                         />
                                     </GridComponent>
                                 ) : (
-                                    <h1>No data</h1>
+                                    <h1 style={{ textAlign: 'center', margin: 'auto' }}
+                                    >Нет данных для отображения</h1>
                                 )}
                             </div>
                         </CardBody>
