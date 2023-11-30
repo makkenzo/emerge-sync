@@ -38,9 +38,11 @@ const FilePage = () => {
     const items = xlsxDocument?.Items;
 
     // Find the element with the maximum number of keys
-    const maxKeysElement = items?.reduce((prev, current) => (Object.keys(prev).length > Object.keys(current).length ? prev : current), {});
-    const columns = Object.keys(maxKeysElement??[])
-    .filter((key) => !excludedKeys.includes(key)??false)
+    const maxKeysElement = items?.reduce(
+        (prev, current) => (Object.keys(prev).length > Object.keys(current).length ? prev : current),
+        {}
+    );
+    const columns = Object.keys(maxKeysElement ?? []).filter((key) => !excludedKeys.includes(key) ?? false);
     useEffect(() => {
         // Check if the token is not present in localStorage, and redirect to the login page
         const token = localStorage.getItem('token');
@@ -142,9 +144,7 @@ const FilePage = () => {
         return !(['Add', 'Edit', 'Delete', 'Update', 'Cancel'].includes(option) && !permission);
     });
     const toolbarClick = (args: ClickEventArgs) => {
-
-        if (grid && args.item.id && args.item.id.toLowerCase().includes('excelexport'))  {
-
+        if (grid && args.item.id === 'excelexport') {
             grid.excelExport();
         }
     };
@@ -168,7 +168,7 @@ const FilePage = () => {
                         </CardHeader>
                         <CardBody className="px-0 pt-0 pb-2 gap-4">
                             <div className="w-[1300px] h-[795px] overflow-x-auto flex mx-4">
-                                {xlsxDocument && data  &&columns.length>0? (
+                                {xlsxDocument && data && columns.length > 0 ? (
                                     <GridComponent
                                         id="grid"
                                         dataSource={data}
@@ -188,13 +188,8 @@ const FilePage = () => {
                                         locale="ru-RU"
                                     >
                                         <ColumnsDirective>
-                                
-                                            {
-                               
-                                            
-                               Object.keys(maxKeysElement)
-                                .map((key) => {
-                                                console.log(maxKeysElement)
+                                            {Object.keys(maxKeysElement).map((key) => {
+                                                console.log(maxKeysElement);
                                                 if (key === '_id' || key === 'workflow_id') {
                                                     return (
                                                         <ColumnDirective
@@ -218,8 +213,7 @@ const FilePage = () => {
                                         />
                                     </GridComponent>
                                 ) : (
-                                    <h1 style={{ textAlign: 'center', margin: 'auto' }}
-                                    >Нет данных для отображения</h1>
+                                    <h1 style={{ textAlign: 'center', margin: 'auto' }}>Нет данных для отображения</h1>
                                 )}
                             </div>
                         </CardBody>
