@@ -26,13 +26,13 @@ const RegisterPage = () => {
                 return toast.error('Пароли должны совпадать.');
             }
             try {
-                const response = await instance.post('http://localhost:8000/user', {
+                const response = await instance.post('https://excelsync.5dev.kz/user', {
                     username,
                     password,
                 });
                 const user_id = response.data;
 
-                const reponse2 = await instance.post('http://localhost:8000/user/login', {
+                const reponse2 = await instance.post('https://excelsync.5dev.kz/user/login', {
                     username,
                     password,
                 });

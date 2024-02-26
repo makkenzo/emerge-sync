@@ -23,7 +23,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
                 Authorization: `Bearer ${token}`,
             };
             try {
-                const response = await instance.get<UserData[]>(`http://localhost:8000/user/users/${fileId}`, { headers });
+                const response = await instance.get<UserData[]>(`https://excelsync.5dev.kz/user/users/${fileId}`, { headers });
                 setUsers(response.data);
                 //alert(response.data)
                 if (response.data.length > 0) {
@@ -53,7 +53,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ isModalOpen, closeModal, fi
         };
 
         try {
-            const response = await instance.post('http://localhost:8000/role/', data, { headers });
+            const response = await instance.post('https://excelsync.5dev.kz/role/', data, { headers });
 
             if (response.status === 201) {
                 window.location.reload();

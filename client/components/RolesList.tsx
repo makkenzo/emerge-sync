@@ -47,7 +47,7 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
 
         const fetchData = async () => {
             try {
-                const response = await instance.get(`http://localhost:8000/role/${fileId}`, { headers });
+                const response = await instance.get(`https://excelsync.5dev.kz/role/${fileId}`, { headers });
                 const rolesData: RoleModel[] = response.data;
 
                 setRoles(rolesData);

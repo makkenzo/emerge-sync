@@ -61,12 +61,12 @@ const Files = () => {
                     'Content-Type': 'multipart/form-data',
                 };
 
-                const userResponse = await instance.get(`http://localhost:8000/user`, { headers });
+                const userResponse = await instance.get(`https://excelsync.5dev.kz/user`, { headers });
 
                 const userData = userResponse.data;
                 setUserData(userData);
 
-                const documentsResponse = await instance.get('http://localhost:8000/workflow', { headers });
+                const documentsResponse = await instance.get('https://excelsync.5dev.kz/workflow', { headers });
 
                 const documents: XlsxDocument[] = documentsResponse.data;
 

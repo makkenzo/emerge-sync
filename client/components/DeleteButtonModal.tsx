@@ -22,7 +22,7 @@ const DeleteButtonModal = ({ file, fileId }: { file: string; fileId: string }) =
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',
             };
-            const response = await instance.delete(`http://localhost:8000/workflow/${fileId}`, { headers });
+            const response = await instance.delete(`https://excelsync.5dev.kz/workflow/${fileId}`, { headers });
 
             window.location.reload();
         } catch (error) {

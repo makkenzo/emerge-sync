@@ -56,14 +56,14 @@ const Profile = () => {
                 'Content-Type': 'multipart/form-data',
             };
 
-            instance.get(`http://localhost:8000/user`, { headers }).then((response) => {
+            instance.get(`https://excelsync.5dev.kz/user`, { headers }).then((response) => {
                 setUserData(response.data);
                 dispatch(setIsLoading(false));
             });
 
-            instance.get(`http://localhost:8000/workflow_log`, { headers }).then((response) => setLogs(response.data));
+            instance.get(`https://excelsync.5dev.kz/workflow_log`, { headers }).then((response) => setLogs(response.data));
 
-            instance.get('http://localhost:8000/workflow', { headers }).then((res) => {
+            instance.get('https://excelsync.5dev.kz/workflow', { headers }).then((res) => {
                 setWorkflows(res.data);
             });
         } catch (error) {

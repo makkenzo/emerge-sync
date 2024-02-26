@@ -29,7 +29,7 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
 
                 formData.append('file', file, file.name);
 
-                const response = await instance.post('http://localhost:8000/workflow', formData, { headers });
+                const response = await instance.post('https://excelsync.5dev.kz/workflow', formData, { headers });
 
                 closeModal();
                 window.location.reload();

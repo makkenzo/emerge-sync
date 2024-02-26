@@ -89,7 +89,7 @@ const FilePage = () => {
                     Authorization: `Bearer ${tok}`,
                     'Content-Type': 'multipart/form-data',
                 };
-                const response = await instance.get(`http://localhost:8000/workflow_item/${fileId}`, { headers });
+                const response = await instance.get(`https://excelsync.5dev.kz/workflow_item/${fileId}`, { headers });
                 setDocument(response.data);
             } catch (error) {
                 console.error(error);
@@ -105,7 +105,7 @@ const FilePage = () => {
                 };
                 const userId = localStorage.getItem('userId');
 
-                const response = await instance.get(`http://localhost:8000/role/my_role/${fileId}`, { headers });
+                const response = await instance.get(`https://excelsync.5dev.kz/role/my_role/${fileId}`, { headers });
 
                 if (response.status === 200) {
                     setPermission(response.data.can_modify);
@@ -135,14 +135,14 @@ const FilePage = () => {
     }, [router]);
     const data = new DataManager({
         adaptor: new WebApiAdaptor(),
-        url: `http://localhost:8000/workflow_item/${fileId}`,
+        url: `https://excelsync.5dev.kz/workflow_item/${fileId}`,
         headers: [
             {
                 Authorization: `Bearer ${token}`,
             },
         ],
         crossDomain: true,
-        updateUrl: `http://localhost:8000/workflow_item/${fileId}/`,
+        updateUrl: `https://excelsync.5dev.kz/workflow_item/${fileId}/`,
     });
 
     let grid: Grid | null;

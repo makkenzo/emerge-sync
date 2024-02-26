@@ -67,7 +67,7 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
             role_id: roleId,
         };
         try {
-            const response = await instance.delete('http://localhost:8000/role/', { params, headers });
+            const response = await instance.delete('https://excelsync.5dev.kz/role/', { params, headers });
 
             if (response.status === 200) {
                 window.location.reload();

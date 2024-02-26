@@ -42,7 +42,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             };
-            const response = await instance.put(`http://localhost:8000/user`, formData, { headers });
+            const response = await instance.put(`https://excelsync.5dev.kz/user`, formData, { headers });
 
             if (response.status === 200) {
                 closeModal();

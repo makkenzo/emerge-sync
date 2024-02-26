@@ -37,7 +37,7 @@ const Auth = () => {
             toast.error('Имя пользователя и пароль обязательны для входа.');
         } else {
             try {
-                const response = await instance.post('http://localhost:8000/user/login', {
+                const response = await instance.post('https://excelsync.5dev.kz/user/login', {
                     username,
                     password,
                 });
@@ -48,7 +48,7 @@ const Auth = () => {
                     'Content-Type': 'multipart/form-data',
                 };
 
-                const getUserId = await instance.get('http://localhost:8000/user', { headers });
+                const getUserId = await instance.get('https://excelsync.5dev.kz/user', { headers });
 
                 const { user_id } = getUserId.data;
 
