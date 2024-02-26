@@ -1,4 +1,6 @@
-import instance from '@/lib/api';
+import axios from 'axios'; // Импортируем axios
+
+const instance = axios;
 import { setIsEmailValid, setIsPhoneValid } from '@/redux/slices/validationSlice';
 import { RootState } from '@/redux/store';
 import { ProfileIndoModalTypes } from '@/types';
@@ -40,7 +42,7 @@ const EditProfileInfoModal = ({ isModalOpen, closeModal, userData }: ProfileIndo
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             };
-            const response = await instance.put(`/user`, formData, { headers });
+            const response = await instance.put(`http://localhost:8000/user`, formData, { headers });
 
             if (response.status === 200) {
                 closeModal();

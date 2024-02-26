@@ -1,4 +1,6 @@
-import instance from '@/lib/api';
+import axios from 'axios'; 
+
+const instance = axios;
 import { ProfileIndoModalTypes } from '@/types';
 import { Button, FileInput, Label, Modal, TextInput } from 'flowbite-react';
 import { ChangeEvent, useState } from 'react';
@@ -27,7 +29,7 @@ const AddFileModal = ({ isModalOpen, closeModal, userData }: ProfileIndoModalTyp
 
                 formData.append('file', file, file.name);
 
-                const response = await instance.post('/workflow', formData, { headers });
+                const response = await instance.post('http://localhost:8000/workflow', formData, { headers });
 
                 closeModal();
                 window.location.reload();

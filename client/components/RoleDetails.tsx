@@ -1,4 +1,6 @@
-import instance from '@/lib/api';
+import axios from 'axios'; // Импортируем axios
+
+const instance = axios;
 import { RoleModel } from '@/types';
 import { Button } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
@@ -31,7 +33,7 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
 
         const fetchData = async () => {
             try {
-                const response = await instance.get(`/user/${role.user_id}`, { headers }).then((res) => {
+                const response = await instance.get(`http://127.0.0.1:8000/user/${role.user_id}`, { headers }).then((res) => {
                     const { first_name, last_name } = res.data;
                     let fullName: string = '';
 
@@ -65,7 +67,7 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, user, rules, roleId, se
             role_id: roleId,
         };
         try {
-            const response = await instance.delete('/role/', { params, headers });
+            const response = await instance.delete('http://localhost:8000/role/', { params, headers });
 
             if (response.status === 200) {
                 window.location.reload();

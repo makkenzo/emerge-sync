@@ -1,4 +1,6 @@
-import instance from '@/lib/api';
+import axios from 'axios'; // Импортируем axios
+
+const instance = axios;
 import { RoleModel } from '@/types';
 import { Button, List, ListItem } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -45,7 +47,7 @@ const RolesList: React.FC<RolesListProps> = ({ selectedRole, setSelectedRole, se
 
         const fetchData = async () => {
             try {
-                const response = await instance.get(`/role/${fileId}`, { headers });
+                const response = await instance.get(`http://localhost:8000/role/${fileId}`, { headers });
                 const rolesData: RoleModel[] = response.data;
 
                 setRoles(rolesData);

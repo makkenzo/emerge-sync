@@ -14,12 +14,19 @@
         "@material-tailwind/react": "^2.1.2",
         "@reduxjs/toolkit": "^1.9.7",
         "@syncfusion/ej2-base": "^23.1.41",
+        "@syncfusion/ej2-buttons": "^24.2.3",
+        "@syncfusion/ej2-calendars": "^24.2.3",
         "@syncfusion/ej2-data": "^23.1.44",
-        "@syncfusion/ej2-react-grids": "^23.1.44",
+        "@syncfusion/ej2-excel-export": "^24.2.4",
+        "@syncfusion/ej2-inputs": "^24.2.4",
+        "@syncfusion/ej2-navigations": "^24.2.4",
+        "@syncfusion/ej2-react-base": "^24.2.3",
+        "@syncfusion/ej2-react-grids": "^23.2.7",
         "@syncfusion/ej2-react-popups": "^23.1.44",
-        "axios": "^1.5.1",
+        "axios": "^1.6.7",
         "flowbite": "^1.8.1",
         "flowbite-react": "^0.6.4",
+        "immer": "^10.0.3",
         "next": "13.5.4",
         "react": "^18",
         "react-dom": "^18",
@@ -41,6 +48,6 @@
         "autoprefixer": "^10.4.16",
         "postcss": "^8.4.31",
         "tailwindcss": "^3.3.3",
-        "typescript": "^5"
+        "typescript": "5.3.3"
     }
 }

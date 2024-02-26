@@ -5,7 +5,9 @@ import { useDispatch } from 'react-redux';
 import { AiFillLock, AiOutlineUser } from 'react-icons/ai';
 import { ToastContainer, toast } from 'react-toastify';
 
-import instance from '@/lib/api';
+import axios from 'axios'; // Импортируем axios
+
+const instance = axios;
 import { loginUser } from '@/redux/slices/authSlice';
 import { Typography } from '@material-tailwind/react';
 import { registerLicense } from '@syncfusion/ej2-base';
@@ -35,7 +37,7 @@ const Auth = () => {
             toast.error('Имя пользователя и пароль обязательны для входа.');
         } else {
             try {
-                const response = await instance.post('/user/login', {
+                const response = await instance.post('http://localhost:8000/user/login', {
                     username,
                     password,
                 });
@@ -46,7 +48,7 @@ const Auth = () => {
                     'Content-Type': 'multipart/form-data',
                 };
 
-                const getUserId = await instance.get('/user', { headers });
+                const getUserId = await instance.get('http://localhost:8000/user', { headers });
 
                 const { user_id } = getUserId.data;
 

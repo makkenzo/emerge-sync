@@ -1,4 +1,6 @@
-import instance from '@/lib/api';
+import axios from 'axios'; // Импортируем axios
+
+const instance = axios;
 import { RoleModel } from '@/types';
 import { Button } from '@material-tailwind/react';
 import { Checkbox, Label, Select, TextInput } from 'flowbite-react';
@@ -42,7 +44,7 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
 
         const fetchData = async () => {
             try {
-                await instance.get(`/workflow_item/getKeys/${fileId}/`, { headers }).then((res) => {
+                await instance.get(`http://127.0.0.1:8000/workflow_item/getKeys/${fileId}/`, { headers }).then((res) => {
                     const { _id, workflow_id, ...cleanedData } = res.data;
 
                     setKeys(Object.keys(cleanedData));
@@ -79,7 +81,7 @@ const RuleDetails: React.FC<RuleDetailsProps> = ({ role, fileId }) => {
                 can_modify: canModify,
             };
 
-            const reponse = await instance.put('/role/', dataToSave, { headers });
+            const reponse = await instance.put('http://127.0.0.1:8000/role/', dataToSave, { headers });
 
             if (reponse.status === 200) {
                 toast.success('Роль успешно обновлена');

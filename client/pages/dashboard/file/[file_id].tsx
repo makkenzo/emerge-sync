@@ -1,7 +1,11 @@
 'use client';
 
 import { Sidenav } from '@/components';
-import instance, { SERVICE_URI } from '@/lib/api';
+//import instance, { SERVICE_URI } from '@/lib/api';
+
+import axios from 'axios'; 
+
+const instance = axios;
 import { Card, CardBody, CardHeader } from '@material-tailwind/react';
 import { L10n, registerLicense } from '@syncfusion/ej2-base';
 import { DataManager, WebApiAdaptor } from '@syncfusion/ej2-data';
@@ -85,7 +89,7 @@ const FilePage = () => {
                     Authorization: `Bearer ${tok}`,
                     'Content-Type': 'multipart/form-data',
                 };
-                const response = await instance.get(`/workflow_item/${fileId}`, { headers });
+                const response = await instance.get(`http://localhost:8000/workflow_item/${fileId}`, { headers });
                 setDocument(response.data);
             } catch (error) {
                 console.error(error);
@@ -101,7 +105,7 @@ const FilePage = () => {
                 };
                 const userId = localStorage.getItem('userId');
 
-                const response = await instance.get(`/role/my_role/${fileId}`, { headers });
+                const response = await instance.get(`http://localhost:8000/role/my_role/${fileId}`, { headers });
 
                 if (response.status === 200) {
                     setPermission(response.data.can_modify);
@@ -131,14 +135,14 @@ const FilePage = () => {
     }, [router]);
     const data = new DataManager({
         adaptor: new WebApiAdaptor(),
-        url: `${SERVICE_URI}/workflow_item/${fileId}`,
+        url: `http://localhost:8000/workflow_item/${fileId}`,
         headers: [
             {
                 Authorization: `Bearer ${token}`,
             },
         ],
         crossDomain: true,
-        updateUrl: `${SERVICE_URI}/workflow_item/${fileId}/`,
+        updateUrl: `http://localhost:8000/workflow_item/${fileId}/`,
     });
 
     let grid: Grid | null;

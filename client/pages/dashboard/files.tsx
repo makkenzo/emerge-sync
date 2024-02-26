@@ -9,7 +9,9 @@ import { filesTableData } from '@/data/files-table-data';
 
 import { AddFileModal, DeleteButtonModal, Sidenav } from '@/components';
 
-import instance from '@/lib/api';
+import axios from 'axios'; 
+
+const instance = axios;
 import { UserData, XlsxDocument } from '@/types';
 import { Button } from 'flowbite-react';
 import Head from 'next/head';
@@ -59,12 +61,12 @@ const Files = () => {
                     'Content-Type': 'multipart/form-data',
                 };
 
-                const userResponse = await instance.get(`/user`, { headers });
+                const userResponse = await instance.get(`http://localhost:8000/user`, { headers });
 
                 const userData = userResponse.data;
                 setUserData(userData);
 
-                const documentsResponse = await instance.get('/workflow', { headers });
+                const documentsResponse = await instance.get('http://localhost:8000/workflow', { headers });
 
                 const documents: XlsxDocument[] = documentsResponse.data;
 

@@ -4,8 +4,10 @@ import { useState } from 'react';
 
 import { Button, Modal } from 'flowbite-react';
 
-import instance from '@/lib/api';
-import axios from 'axios';
+import axios from 'axios'; // Импортируем axios
+
+const instance = axios;
+
 import { AiFillDelete } from 'react-icons/ai';
 import { PiWarningCircleBold } from 'react-icons/pi';
 
@@ -20,7 +22,7 @@ const DeleteButtonModal = ({ file, fileId }: { file: string; fileId: string }) =
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',
             };
-            const response = await instance.delete(`/workflow/${fileId}`, { headers });
+            const response = await instance.delete(`http://localhost:8000/workflow/${fileId}`, { headers });
 
             window.location.reload();
         } catch (error) {

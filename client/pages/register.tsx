@@ -1,4 +1,6 @@
-import instance from '@/lib/api';
+import axios from 'axios'; // Импортируем axios
+
+const instance = axios;
 import { registerUser } from '@/redux/slices/authSlice';
 import { Typography } from '@material-tailwind/react';
 import Head from 'next/head';
@@ -24,13 +26,13 @@ const RegisterPage = () => {
                 return toast.error('Пароли должны совпадать.');
             }
             try {
-                const response = await instance.post('/user', {
+                const response = await instance.post('http://localhost:8000/user', {
                     username,
                     password,
                 });
                 const user_id = response.data;
 
-                const reponse2 = await instance.post('/user/login', {
+                const reponse2 = await instance.post('http://localhost:8000/user/login', {
                     username,
                     password,
                 });
@@ -46,7 +48,7 @@ const RegisterPage = () => {
                     return toast.error('Ошибка аутентификации: Повторите попытку позже');
                 }
             } catch (error: any) {
-                toast.error(`Ошибка при попытке входа: ${error.response.data.message}`);
+                toast.error(`Ошибка при попытке входа: `);
             }
         }
     };

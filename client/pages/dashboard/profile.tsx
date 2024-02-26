@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
-import axios from 'axios';
+
 
 import { Sidenav, ProfileInfo } from '@/components';
 import { CardBody, Typography } from '@material-tailwind/react';
@@ -11,8 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setIsLoading } from '@/redux/slices/loadingSlice';
 import { AiFillEdit } from 'react-icons/ai';
-import instance from '@/lib/api';
+import axios from 'axios'; 
 
+const instance = axios;
 const Profile = () => {
     const [userData, setUserData] = useState<UserData>();
     const [logs, setLogs] = useState<LogsData[]>();
@@ -55,14 +56,14 @@ const Profile = () => {
                 'Content-Type': 'multipart/form-data',
             };
 
-            instance.get(`/user`, { headers }).then((response) => {
+            instance.get(`http://localhost:8000/user`, { headers }).then((response) => {
                 setUserData(response.data);
                 dispatch(setIsLoading(false));
             });
 
-            instance.get(`/workflow_log`, { headers }).then((response) => setLogs(response.data));
+            instance.get(`http://localhost:8000/workflow_log`, { headers }).then((response) => setLogs(response.data));
 
-            instance.get('/workflow', { headers }).then((res) => {
+            instance.get('http://localhost:8000/workflow', { headers }).then((res) => {
                 setWorkflows(res.data);
             });
         } catch (error) {
